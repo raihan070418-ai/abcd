@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Assalam.com</title>
+  <style>
+    body { 
+      font-family: 'Segoe UI', Tahoma, sans-serif; 
+      margin: 0;
+      background: linear-gradient(135deg, #ffffff, #e6f0ff, #cce0ff);
+      color: #222;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      padding: 20px;
+      background: linear-gradient(135deg, #0066cc, #3399ff);
+      color: white;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+    }
+
+    header img {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      border: 3px solid white;
+      object-fit: cover;
+    }
+
+    header .judul h1 {
+      margin: 0;
+      font-size: 22px;
+      font-weight: bold;
+    }
+
+    header .judul p {
+      margin: 3px 0 0;
+      font-size: 14px;
+      opacity: 0.9;
+    }
+
+    .controls {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin: 15px;
+      flex-wrap: wrap;
+    }
+
+    button {
+      background: linear-gradient(135deg, #0066cc, #3399ff);
+      border: none;
+      padding: 10px 18px;
+      border-radius: 8px;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.15);
+    }
+
+    button:hover {
+      background: linear-gradient(135deg, #0052a3, #1a8cff);
+      transform: scale(1.05);
+    }
+
+    #bendaharaMenu { 
+      margin: 20px; 
+      display: none; 
+      text-align: center;
+    }
+
+    #bendaharaMenu input {
+      padding: 8px;
+      border-radius: 6px;
+      border: 1px solid #aaa;
+      width: 200px;
+      margin-bottom: 10px;
+    }
+
+    table { 
+      border-collapse: collapse; 
+      margin: 20px auto; 
+      width: 95%; 
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    th, td { 
+      border: 1px solid #ddd; 
+      padding: 10px; 
+      text-align: center; 
+    }
+
+    th { 
+      background: linear-gradient(135deg, #0073e6, #3399ff);
+      color: white;
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    td {
+      background: #f9fcff;
+      font-size: 14px;
+    }
+
+    tr:nth-child(even) td { background: #f1f7ff; }
+    tr:hover td { background: #e6f2ff; transition: 0.3s; }
+
+    input[type=checkbox] { transform: scale(1.2); cursor: pointer; }
+
+    .total-merah { color: #e60000; font-weight: bold; }
+    .total-kuning { color: #e6a700; font-weight: bold; }
+    .total-hijau { color: #009933; font-weight: bold; }
+
+    /* saldoBox */
+    #saldoBox {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      margin: 20px auto;
+      font-weight: bold;
+      font-size: 16px;
+      color: #004080;
+      background: white;
+      padding: 12px 20px;
+      border-radius: 10px;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.15);
+      width: fit-content;
+    }
+
+    #saldoBox div {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    footer {
+      margin-top: 30px;
+      padding: 15px 25px;
+      font-size: 13px;
+      color: #333;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #f0f6ff;
+      border-top: 2px solid #cce0ff;
+    }
+
+    .rekening { text-align: left; font-size: 14px; line-height: 1.6; }
+    .copy { text-align: right; font-size: 12px; color: #666; }
+
+    /* Responsif untuk HP */
+@media (max-width: 768px) {
+  header {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  header img {
+    width: 60px;
+    height: 60px;
+  }
+
+  header .judul h1 {
+    font-size: 18px;
+  }
+
+  header .judul p {
+    font-size: 13px;
+  }
+
+  .controls {
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+
+  button {
+    width: 90%;
+    font-size: 14px;
+    padding: 10px;
+  }
+
+  table {
+    width: 100%;
+    font-size: 12px;
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  th, td {
+    padding: 8px;
+  }
+
+  #saldoBox {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    text-align: left;
+    width: 90%;
+  }
+
+  footer {
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+    gap: 10px;
+    font-size: 12px;
+  }
+
+  .rekening, .copy {
+    text-align: left;
+    width: 100%;
+  }
+}
+
+  </style>
+</head>
+<body>
+
+  <header>
+    <img src="assalam.jpg" alt="Foto Profil">
+    <div class="judul">
+      <h1>Bendahara Assalam</h1>
+      <p>Kelola iuran, saldo tambahan, dan pengeluaran Kas Organisasi Assalam</p>
+    </div>
+  </header>
+  
+  <div class="controls">
+    <button id="toggleMode">Masuk Sebagai Admin</button>
+    <button id="gantiPassword" style="display:none;">Ganti Sandi</button>
+    <button id="tambahAnak" style="display:none;">Tambah Anak</button>
+    <button id="tambahSaldoLain" style="display:none;">Tambah Saldo Lain</button>
+    <button id="tambahPengeluaran" style="display:none;">Tambah Pengeluaran</button>
+  </div>
+
+  <div id="bendaharaMenu">
+    <input type="text" id="cariAnak" placeholder="Cari nama anak...">
+  </div>
+
+  <!-- Tabel Iuran Anak -->
+  <table id="kasTable">
+    <thead>
+      <tr>
+        <th>No</th>
+        <th>Nama Anak</th>
+        <th>Oktober</th>
+        <th>November</th>
+        <th>Desember</th>
+        <th>Januari</th>
+        <th>Februari</th>
+        <th>Maret</th>
+        <th>April</th>
+        <th>Mei</th>
+        <th>Juni</th>
+        <th>Juli</th>
+        <th>Agustus</th>
+        <th>September</th>
+        <th>Total Bayar</th>
+        <th class="aksi-col" style="display:none;">Aksi</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  
+  <!-- Tabel Saldo Lain -->
+   <h2>Pemasukan</h2>
+<table id="lainTable" style="display:none;">
+  <thead>
+    <tr>
+      <th>No</th>
+      <th>Keterangan</th>
+      <th>Jumlah</th>
+        <th class="aksi-col" style="display:none;">Aksi</th>
+    </tr>
+  </thead>
+  <tbody></tbody>
+</table>
+
+
+  <!-- Tabel Pengeluaran -->
+   <H2>Pengluaran</H2>
+  <table id="pengeluaranTable" style="display:none;">
+    <thead>
+      <tr>
+        <th>No</th>
+        <th>Keterangan</th>
+        <th>Jumlah</th>
+        <th class="aksi-col" style="display:none;">Aksi</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <!-- saldoBox -->
+  <div id="saldoBox">
+    <div>💰 <span>Saldo Masuk: Rp <span id="totalSaldo">0</span></span></div>
+    <div>💸 <span>Saldo Keluar: Rp <span id="totalKeluar">0</span></span></div>
+    <div>🏦 <span>Saldo Terkini: Rp <span id="saldoTerkini">0</span></span></div>
+  </div>
+
+  <footer>
+    <div class="rekening">
+      <strong>Rekening Dana:</strong> 0856-6423-8134(a.n Muhammad Raihan)<br>
+      <strong>Kirim Bukti Transfer ke Admin:</strong> 0856-6423-8134 (WhatsApp)
+    </div>
+    <div class="copy">
+      Kas Assalam © 2025 - Bendahara 2025/Muhammad Raihan & Luqmanul Hakim
+    </div>
+  </footer>
+
+<script>
+let data = JSON.parse(localStorage.getItem("kasData")) || [
+  {nama:"Muhammad Raihan", bulan:[true,true,true,true,true,false,false,false,false,false,false,false]},
+  {nama:"Nama Baru", bulan:[false,true,false,false,false,false,false,false,false,false,false,false]},
+  {nama:"Andi", bulan:[true,false,true,false,false,false,false,false,false,false,false,false]}
+];
+
+let pengeluaran = JSON.parse(localStorage.getItem("kasPengeluaran")) || [];
+let saldoLain = JSON.parse(localStorage.getItem("kasSaldoLain")) || [];
+
+let isLocked = true;
+let passwordBendahara = localStorage.getItem("kasPassword") || "1234"; 
+let filterText = "";
+const hargaCeklis = 3000;
+
+function saveData(){
+  localStorage.setItem("kasData", JSON.stringify(data));
+  localStorage.setItem("kasPengeluaran", JSON.stringify(pengeluaran));
+  localStorage.setItem("kasSaldoLain", JSON.stringify(saldoLain));
+}
+
+function renderTable(){
+  const tbody = document.querySelector("#kasTable tbody");
+  tbody.innerHTML = "";
+
+  let filteredData = data
+    .filter(d => d.nama.toLowerCase().includes(filterText.toLowerCase()))
+    .sort((a,b)=> a.nama.localeCompare(b.nama));
+
+  let totalSaldo = 0;
+
+  filteredData.forEach((d,i)=>{
+    let row = document.createElement("tr");
+    row.innerHTML = `<td>${i+1}</td><td>${d.nama}</td>`;
+
+    d.bulan.forEach((val, bulanIndex)=>{
+      row.innerHTML += `<td><input type="checkbox" ${val ? "checked" : ""} ${isLocked ? 'onclick="return false;"' : ''}></td>`;
+    });
+
+    const total = d.bulan.filter(v=>v).length;
+    const totalUang = total * hargaCeklis;
+    totalSaldo += totalUang;
+
+    let kelas = total===0 ? "total-merah" : total<7 ? "total-kuning" : "total-hijau";
+    row.innerHTML += `<td class="${kelas}">${total} bulan = Rp ${totalUang.toLocaleString()}</td>`;
+
+    if (!isLocked) {
+      row.innerHTML += `<td><button onclick="hapusAnak(${data.indexOf(d)})">Hapus</button></td>`;
+    } else {
+      row.innerHTML += `<td style="display:none;"></td>`;
+    }
+
+    tbody.appendChild(row);
+  });
+
+  if (!isLocked){
+    tbody.querySelectorAll("input[type=checkbox]").forEach((cb, idx)=>{
+      cb.addEventListener("change", ()=>{
+        const anakIndex = Math.floor(idx/12);
+        const bulanIndex = idx % 12;
+        let filteredData = data
+          .filter(d => d.nama.toLowerCase().includes(filterText.toLowerCase()))
+          .sort((a,b)=> a.nama.localeCompare(b.nama));
+        const realIndex = data.indexOf(filteredData[anakIndex]);
+        data[realIndex].bulan[bulanIndex] = cb.checked;
+        saveData();
+        renderTable();
+      });
+    });
+  }
+
+  renderAll(totalSaldo);
+}
+
+function renderAll(totalSaldo){
+  renderPengeluaran();
+  let totalLain = renderSaldoLain();
+  let totalKeluar = pengeluaran.reduce((sum,p)=>sum+p.jumlah,0);
+  let saldoTerkini = totalSaldo + totalLain - totalKeluar;
+
+  document.getElementById("lainTable").style.display = "table";
+  document.getElementById("pengeluaranTable").style.display = "table";
+  document.getElementById("saldoBox").style.display = "flex";
+  document.getElementById("totalSaldo").innerText = (totalSaldo+totalLain).toLocaleString();
+  document.getElementById("totalKeluar").innerText = totalKeluar.toLocaleString();
+  document.getElementById("saldoTerkini").innerText = saldoTerkini.toLocaleString();
+}
+
+function renderPengeluaran(){
+  const tbody = document.querySelector("#pengeluaranTable tbody");
+  tbody.innerHTML = "";
+  pengeluaran.forEach((p,i)=>{
+    let row = document.createElement("tr");
+    row.innerHTML = `<td>${i+1}</td><td>${p.ket}</td><td>Rp ${p.jumlah.toLocaleString()}</td>`;
+    if (!isLocked){
+      row.innerHTML += `<td><button onclick="hapusPengeluaran(${i})">Hapus</button></td>`;
+    } else {
+      row.innerHTML += `<td class="aksi-col">-</td>`;
+    }
+    tbody.appendChild(row);
+  });
+}
+
+function renderSaldoLain(){
+  const tbody = document.querySelector("#lainTable tbody");
+  tbody.innerHTML = "";
+  let totalLain = 0;
+  saldoLain.forEach((s,i)=>{
+    totalLain += s.jumlah;
+    let row = document.createElement("tr");
+    row.innerHTML = `<td>${i+1}</td><td>${s.ket}</td><td>Rp ${s.jumlah.toLocaleString()}</td>`;
+    if (!isLocked){
+      row.innerHTML += `<td><button onclick="hapusSaldoLain(${i})">Hapus</button></td>`;
+    } else {
+      row.innerHTML += `<td class="aksi-col">-</td>`;
+    }
+    tbody.appendChild(row);
+  });
+  return totalLain;
+}
+
+function hapusAnak(index){
+  if(confirm("Yakin hapus anak ini?")){
+    data.splice(index,1);
+    saveData();
+    renderTable();
+  }
+}
+
+function hapusPengeluaran(index){
+  if(confirm("Yakin hapus pengeluaran ini?")){
+    pengeluaran.splice(index,1);
+    saveData();
+    renderTable();
+  }
+}
+
+function hapusSaldoLain(index){
+  if(confirm("Yakin hapus saldo lain ini?")){
+    saldoLain.splice(index,1);
+    saveData();
+    renderTable();
+  }
+}
+
+document.getElementById("toggleMode").addEventListener("click", ()=>{
+  if (isLocked) {
+    let pass = prompt("Masukkan sandi Admin:");
+    if (pass === passwordBendahara) {
+      isLocked = false;
+      document.getElementById("toggleMode").innerText = "Keluar dari Bendahara";
+      document.getElementById("gantiPassword").style.display = "inline-block";
+      document.getElementById("bendaharaMenu").style.display = "block";
+      document.getElementById("tambahAnak").style.display = "inline-block";
+      document.getElementById("tambahSaldoLain").style.display = "inline-block";
+      document.getElementById("tambahPengeluaran").style.display = "inline-block";
+      document.querySelectorAll(".aksi-col").forEach(el=>el.style.display="table-cell");
+      renderTable();
+    } else {
+      alert("Sandi salah!");
+    }
+  } else {
+    isLocked = true;
+    document.getElementById("toggleMode").innerText = "Masuk Sebagai Admin";
+    document.getElementById("gantiPassword").style.display = "none";
+    document.getElementById("bendaharaMenu").style.display = "none";
+    document.getElementById("tambahAnak").style.display = "none";
+    document.getElementById("tambahSaldoLain").style.display = "none";
+    document.getElementById("tambahPengeluaran").style.display = "none";
+    document.querySelectorAll(".aksi-col").forEach(el=>el.style.display="none");
+    renderTable();
+  }
+});
+
+document.getElementById("gantiPassword").addEventListener("click", ()=>{
+  let oldPass = prompt("Masukkan sandi lama:");
+  if (oldPass === passwordBendahara) {
+    let newPass = prompt("Masukkan sandi baru:");
+    if (newPass && newPass.trim() !== "") {
+      passwordBendahara = newPass;
+      localStorage.setItem("kasPassword", newPass);
+      alert("Sandi berhasil diganti!");
+    } else {
+      alert("Sandi baru tidak boleh kosong.");
+    }
+  } else {
+    alert("Sandi lama salah!");
+  }
+});
+
+document.getElementById("tambahAnak").addEventListener("click", ()=>{
+  let nama = prompt("Masukkan nama anak:");
+  if(nama && nama.trim()!==""){
+    data.push({nama:nama.trim(), bulan:Array(12).fill(false)});
+    saveData();
+    renderTable();
+  }
+});
+
+document.getElementById("tambahPengeluaran").addEventListener("click", ()=>{
+  let ket = prompt("Masukkan keterangan pengeluaran:");
+  let jumlah = parseInt(prompt("Masukkan jumlah pengeluaran:"));
+  if(ket && jumlah && jumlah>0){
+    pengeluaran.push({ket:ket.trim(), jumlah:jumlah});
+    saveData();
+    renderTable();
+  }
+});
+
+document.getElementById("tambahSaldoLain").addEventListener("click", ()=>{
+  let ket = prompt("Masukkan keterangan saldo lain:");
+  let jumlah = parseInt(prompt("Masukkan jumlah saldo lain:"));
+  if(ket && jumlah && jumlah>0){
+    saldoLain.push({ket:ket.trim(), jumlah:jumlah});
+    saveData();
+    renderTable();
+  }
+});
+
+document.getElementById("cariAnak").addEventListener("input", (e)=>{
+  filterText = e.target.value;
+  renderTable();
+});
+
+renderTable();
+</script>
+</body>
+</html>
