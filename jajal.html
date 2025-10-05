@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Assalam.com</title>
+  <style>
+    body { 
+      font-family: 'Segoe UI', Tahoma, sans-serif; 
+      margin: 0;
+      background: linear-gradient(135deg, #ffffff, #e6f0ff, #cce0ff);
+      color: #222;
+    }
+
+    header {
+      text-align: center;
+      padding: 20px;
+      background: linear-gradient(135deg, #0066cc, #3399ff);
+      color: white;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+    }
+
+    .switch {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-top: 15px;
+    }
+
+    .switch button {
+      padding: 10px 18px;
+      border: none;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #0066cc, #3399ff);
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.15);
+    }
+
+    .switch button.active {
+      background: linear-gradient(135deg, #004d99, #1a8cff);
+      transform: scale(1.05);
+    }
+
+    .controls {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin: 15px;
+      flex-wrap: wrap;
+    }
+
+    button {
+      background: linear-gradient(135deg, #0066cc, #3399ff);
+      border: none;
+      padding: 10px 18px;
+      border-radius: 8px;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.15);
+    }
+
+    button:hover {
+      background: linear-gradient(135deg, #0052a3, #1a8cff);
+      transform: scale(1.05);
+    }
+
+    table { 
+      border-collapse: collapse; 
+      margin: 20px auto; 
+      width: 95%; 
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    th, td { 
+      border: 1px solid #ddd; 
+      padding: 10px; 
+      text-align: center; 
+    }
+
+    th { 
+      background: linear-gradient(135deg, #0073e6, #3399ff);
+      color: white;
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    td { background: #f9fcff; font-size: 14px; }
+    tr:nth-child(even) td { background: #f1f7ff; }
+    tr:hover td { background: #e6f2ff; transition: 0.3s; }
+    input[type=checkbox] { transform: scale(1.2); cursor: pointer; }
+    .total-merah { color: #e60000; font-weight: bold; }
+    .total-kuning { color: #e6a700; font-weight: bold; }
+    .total-hijau { color: #009933; font-weight: bold; }
+
+    #saldoBox {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      margin: 20px auto;
+      font-weight: bold;
+      font-size: 16px;
+      color: #004080;
+      background: white;
+      padding: 12px 20px;
+      border-radius: 10px;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.15);
+      width: fit-content;
+    }
+
+    footer {
+      margin-top: 30px;
+      padding: 15px 25px;
+      font-size: 13px;
+      color: #333;
+      text-align: center;
+      background: #f0f6ff;
+      border-top: 2px solid #cce0ff;
+    }
+
+    @media (max-width: 768px) {
+      table { width: 100%; font-size: 12px; overflow-x: auto; display: block; white-space: nowrap; }
+      #saldoBox { flex-direction: column; align-items: center; gap: 8px; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Bendahara Assalam</h1>
+    <p>Kelola kas Putra & Putri secara terpisah</p>
+    <div class="switch">
+      <button id="btnPutra" class="active">Data Putra</button>
+      <button id="btnPutri">Data Putri</button>
+    </div>
+  </header>
+
+  <div class="controls">
+    <button id="toggleMode">Masuk Admin</button>
+    <button id="tambahAnak" style="display:none;">Tambah Anak</button>
+    <button id="tambahSaldoLain" style="display:none;">Tambah Saldo Lain</button>
+    <button id="tambahPengeluaran" style="display:none;">Tambah Pengeluaran</button>
+  </div>
+
+  <table id="kasTable">
+    <thead>
+      <tr>
+        <th>No</th>
+        <th>Nama</th>
+        <th>Oktober</th>
+        <th>November</th>
+        <th>Desember</th>
+        <th>Januari</th>
+        <th>Februari</th>
+        <th>Maret</th>
+        <th>April</th>
+        <th>Mei</th>
+        <th>Juni</th>
+        <th>Juli</th>
+        <th>Agustus</th>
+        <th>September</th>
+        <th>Total Bayar</th>
+        <th class="aksi-col" style="display:none;">Aksi</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <div id="saldoBox">
+    <div>💰 Saldo Masuk: Rp <span id="totalSaldo">0</span></div>
+    <div>💸 Saldo Keluar: Rp <span id="totalKeluar">0</span></div>
+    <div>🏦 Saldo Terkini: Rp <span id="saldoTerkini">0</span></div>
+  </div>
+
+  <footer>Kas Assalam © 2025 - Bendahara Putra & Putri</footer>
+
+<script>
+let currentGender = "putra";
+let hargaCeklis = 3000;
+let isLocked = true;
+let passwordPutra = localStorage.getItem("passPutra") || "1234";
+let passwordPutri = localStorage.getItem("passPutri") || "5678";
+
+let dataPutra = JSON.parse(localStorage.getItem("kasDataPutra")) || [
+  {nama:"Muhammad Raihan", bulan:Array(12).fill(true)},
+  {nama:"Andi", bulan:Array(12).fill(false)}
+];
+
+let dataPutri = JSON.parse(localStorage.getItem("kasDataPutri")) || [
+  {nama:"Aisyah", bulan:Array(12).fill(true)},
+  {nama:"Siti", bulan:Array(12).fill(false)}
+];
+
+let pengeluaranPutra = JSON.parse(localStorage.getItem("pengeluaranPutra")) || [];
+let pengeluaranPutri = JSON.parse(localStorage.getItem("pengeluaranPutri")) || [];
+let saldoPutra = JSON.parse(localStorage.getItem("saldoPutra")) || [];
+let saldoPutri = JSON.parse(localStorage.getItem("saldoPutri")) || [];
+
+function saveData() {
+  localStorage.setItem("kasDataPutra", JSON.stringify(dataPutra));
+  localStorage.setItem("kasDataPutri", JSON.stringify(dataPutri));
+  localStorage.setItem("pengeluaranPutra", JSON.stringify(pengeluaranPutra));
+  localStorage.setItem("pengeluaranPutri", JSON.stringify(pengeluaranPutri));
+  localStorage.setItem("saldoPutra", JSON.stringify(saldoPutra));
+  localStorage.setItem("saldoPutri", JSON.stringify(saldoPutri));
+}
+
+function getCurrentData() {
+  return currentGender === "putra" ? dataPutra : dataPutri;
+}
+function getCurrentPengeluaran() {
+  return currentGender === "putra" ? pengeluaranPutra : pengeluaranPutri;
+}
+function getCurrentSaldo() {
+  return currentGender === "putra" ? saldoPutra : saldoPutri;
+}
+
+function renderTable() {
+  const tbody = document.querySelector("#kasTable tbody");
+  tbody.innerHTML = "";
+
+  let data = getCurrentData();
+  let totalSaldo = 0;
+
+  data.forEach((d, i) => {
+    let row = document.createElement("tr");
+    row.innerHTML = `<td>${i + 1}</td><td>${d.nama}</td>`;
+
+    d.bulan.forEach((val, bIdx) => {
+      row.innerHTML += `<td><input type="checkbox" ${val ? "checked" : ""} ${isLocked ? "disabled" : ""}></td>`;
+    });
+
+    const total = d.bulan.filter(v => v).length;
+    const totalUang = total * hargaCeklis;
+    totalSaldo += totalUang;
+    let kelas = total === 0 ? "total-merah" : total < 7 ? "total-kuning" : "total-hijau";
+    row.innerHTML += `<td class="${kelas}">${total} bulan = Rp ${totalUang.toLocaleString()}</td>`;
+    row.innerHTML += !isLocked ? `<td><button onclick="hapusAnak(${i})">Hapus</button></td>` : `<td style="display:none;"></td>`;
+    tbody.appendChild(row);
+  });
+
+  renderSaldo(totalSaldo);
+}
+
+function renderSaldo(totalSaldo) {
+  let pengeluaran = getCurrentPengeluaran();
+  let saldoLain = getCurrentSaldo();
+  let totalLain = saldoLain.reduce((sum, s) => sum + s.jumlah, 0);
+  let totalKeluar = pengeluaran.reduce((sum, s) => sum + s.jumlah, 0);
+  let saldoTerkini = totalSaldo + totalLain - totalKeluar;
+
+  document.getElementById("totalSaldo").innerText = (totalSaldo + totalLain).toLocaleString();
+  document.getElementById("totalKeluar").innerText = totalKeluar.toLocaleString();
+  document.getElementById("saldoTerkini").innerText = saldoTerkini.toLocaleString();
+}
+
+function hapusAnak(i) {
+  if (confirm("Hapus anak ini?")) {
+    let data = getCurrentData();
+    data.splice(i, 1);
+    saveData();
+    renderTable();
+  }
+}
+
+document.getElementById("toggleMode").addEventListener("click", () => {
+  if (isLocked) {
+    let pass = prompt("Masukkan sandi Admin " + currentGender.toUpperCase());
+    if (
+      (currentGender === "putra" && pass === passwordPutra) ||
+      (currentGender === "putri" && pass === passwordPutri)
+    ) {
+      isLocked = false;
+      document.getElementById("toggleMode").innerText = "Keluar Admin";
+      document.getElementById("tambahAnak").style.display = "inline-block";
+      document.getElementById("tambahSaldoLain").style.display = "inline-block";
+      document.getElementById("tambahPengeluaran").style.display = "inline-block";
+      renderTable();
+    } else alert("Sandi salah!");
+  } else {
+    isLocked = true;
+    document.getElementById("toggleMode").innerText = "Masuk Admin";
+    document.getElementById("tambahAnak").style.display = "none";
+    document.getElementById("tambahSaldoLain").style.display = "none";
+    document.getElementById("tambahPengeluaran").style.display = "none";
+    renderTable();
+  }
+});
+
+document.getElementById("btnPutra").addEventListener("click", () => {
+  currentGender = "putra";
+  document.getElementById("btnPutra").classList.add("active");
+  document.getElementById("btnPutri").classList.remove("active");
+  isLocked = true;
+  document.getElementById("toggleMode").innerText = "Masuk Admin";
+  renderTable();
+});
+
+document.getElementById("btnPutri").addEventListener("click", () => {
+  currentGender = "putri";
+  document.getElementById("btnPutri").classList.add("active");
+  document.getElementById("btnPutra").classList.remove("active");
+  isLocked = true;
+  document.getElementById("toggleMode").innerText = "Masuk Admin";
+  renderTable();
+});
+
+document.getElementById("tambahAnak").addEventListener("click", () => {
+  let nama = prompt("Masukkan nama anak:");
+  if (nama) {
+    getCurrentData().push({ nama, bulan: Array(12).fill(false) });
+    saveData();
+    renderTable();
+  }
+});
+
+renderTable();
+</script>
+</body>
+</html>
