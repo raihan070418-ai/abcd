@@ -317,28 +317,61 @@
     </div>
   </footer>
 
+
 <script>
-let data = JSON.parse(localStorage.getItem("kasData")) || [
-  {nama:"Muhammad Raihan", bulan:[true,true,true,true,true,false,false,false,false,false,false,false]},
-  {nama:"Nama Baru", bulan:[false,true,false,false,false,false,false,false,false,false,false,false]},
-  {nama:"Andi", bulan:[true,false,true,false,false,false,false,false,false,false,false,false]}
-];
-
-let pengeluaran = JSON.parse(localStorage.getItem("kasPengeluaran")) || [];
-let saldoLain = JSON.parse(localStorage.getItem("kasSaldoLain")) || [];
-
-let isLocked = true;
-let passwordBendahara = localStorage.getItem("kasPassword") || "1234"; 
-let filterText = "";
+const API_URL = "https://script.google.com/macros/s/AKfycbyxnOWBOB3GBlmIo1unNX5ogrOF34m361hA6ToWFtJE-7qsF7cu9viss__11r9zFKAdsA/exec";
 const hargaCeklis = 3000;
 
-function saveData(){
-  localStorage.setItem("kasData", JSON.stringify(data));
-  localStorage.setItem("kasPengeluaran", JSON.stringify(pengeluaran));
-  localStorage.setItem("kasSaldoLain", JSON.stringify(saldoLain));
+let data = [];  // nanti diisi dari Sheets
+let pengeluaran = [];
+let saldoLain = [];
+let isLocked = true;
+let passwordBendahara = localStorage.getItem("kasPassword") || "1234";
+let filterText = "";
+
+// Ambil data dari Sheets
+function fetchData() {
+  return fetch(API_URL)
+    .then(res => res.json())
+    .then(arr => {
+      // arr adalah array dua dimensi dari sheet
+      // misal arr[0] = header row (“Nama”, “Okt”, “Nov”, …)
+      // mulai dari index 1 adalah data anak-anak
+      const header = arr[0];
+      const rows = arr.slice(1);
+
+      data = rows.map(row => {
+        const nama = row[0];
+        const bulan = row.slice(1, 13).map(cell => !!cell); // true/false
+        return { nama, bulan };
+      });
+    });
 }
 
-function renderTable(){
+// Kirim data ke Sheets: tambah atau update
+function sendDataToSheet(action, obj) {
+  return fetch(API_URL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      action: action,  // "add" atau "update"
+      nama: obj.nama,
+      bulan: obj.bulan
+    })
+  }).then(res => res.text());
+}
+
+function saveData() {
+  // contoh: data sudah diperbarui (set checkbox)
+  // kita kirim semua data ke Sheets (update per baris)
+  data.forEach(d => {
+    sendDataToSheet("update", d);
+  });
+}
+
+function renderTable() {
   const tbody = document.querySelector("#kasTable tbody");
   tbody.innerHTML = "";
 
@@ -348,39 +381,34 @@ function renderTable(){
 
   let totalSaldo = 0;
 
-  filteredData.forEach((d,i)=>{
+  filteredData.forEach((d,i) => {
     let row = document.createElement("tr");
     row.innerHTML = `<td>${i+1}</td><td>${d.nama}</td>`;
-
-    d.bulan.forEach((val, bulanIndex)=>{
+    d.bulan.forEach((val, bulanIndex) => {
       row.innerHTML += `<td><input type="checkbox" ${val ? "checked" : ""} ${isLocked ? 'onclick="return false;"' : ''}></td>`;
     });
-
     const total = d.bulan.filter(v=>v).length;
     const totalUang = total * hargaCeklis;
     totalSaldo += totalUang;
-
-    let kelas = total===0 ? "total-merah" : total<7 ? "total-kuning" : "total-hijau";
+    let kelas = total === 0 ? "total-merah" : total < 7 ? "total-kuning" : "total-hijau";
     row.innerHTML += `<td class="${kelas}">${total} bulan = Rp ${totalUang.toLocaleString()}</td>`;
-
     if (!isLocked) {
       row.innerHTML += `<td><button onclick="hapusAnak(${data.indexOf(d)})">Hapus</button></td>`;
     } else {
       row.innerHTML += `<td style="display:none;"></td>`;
     }
-
     tbody.appendChild(row);
   });
 
-  if (!isLocked){
-    tbody.querySelectorAll("input[type=checkbox]").forEach((cb, idx)=>{
-      cb.addEventListener("change", ()=>{
-        const anakIndex = Math.floor(idx/12);
+  if (!isLocked) {
+    tbody.querySelectorAll("input[type=checkbox]").forEach((cb, idx) => {
+      cb.addEventListener("change", () => {
+        const anakIndex = Math.floor(idx / 12);
         const bulanIndex = idx % 12;
-        let filteredData = data
+        let filteredData2 = data
           .filter(d => d.nama.toLowerCase().includes(filterText.toLowerCase()))
           .sort((a,b)=> a.nama.localeCompare(b.nama));
-        const realIndex = data.indexOf(filteredData[anakIndex]);
+        const realIndex = data.indexOf(filteredData2[anakIndex]);
         data[realIndex].bulan[bulanIndex] = cb.checked;
         saveData();
         renderTable();
@@ -391,157 +419,58 @@ function renderTable(){
   renderAll(totalSaldo);
 }
 
-function renderAll(totalSaldo){
+function renderPengeluaran() {
+  // kamu bisa tambahkan logic mirip untuk pengeluaran
+}
+
+function renderSaldoLain() {
+  // logic tambahan juga
+  return 0;
+}
+
+function renderAll(totalSaldo) {
   renderPengeluaran();
   let totalLain = renderSaldoLain();
-  let totalKeluar = pengeluaran.reduce((sum,p)=>sum+p.jumlah,0);
+  let totalKeluar = pengeluaran.reduce((sum,p)=>sum + p.jumlah, 0);
   let saldoTerkini = totalSaldo + totalLain - totalKeluar;
 
   document.getElementById("lainTable").style.display = "table";
   document.getElementById("pengeluaranTable").style.display = "table";
   document.getElementById("saldoBox").style.display = "flex";
-  document.getElementById("totalSaldo").innerText = (totalSaldo+totalLain).toLocaleString();
+  document.getElementById("totalSaldo").innerText = (totalSaldo + totalLain).toLocaleString();
   document.getElementById("totalKeluar").innerText = totalKeluar.toLocaleString();
   document.getElementById("saldoTerkini").innerText = saldoTerkini.toLocaleString();
 }
 
-function renderPengeluaran(){
-  const tbody = document.querySelector("#pengeluaranTable tbody");
-  tbody.innerHTML = "";
-  pengeluaran.forEach((p,i)=>{
-    let row = document.createElement("tr");
-    row.innerHTML = `<td>${i+1}</td><td>${p.ket}</td><td>Rp ${p.jumlah.toLocaleString()}</td>`;
-    if (!isLocked){
-      row.innerHTML += `<td><button onclick="hapusPengeluaran(${i})">Hapus</button></td>`;
-    } else {
-      row.innerHTML += `<td class="aksi-col">-</td>`;
-    }
-    tbody.appendChild(row);
-  });
-}
-
-function renderSaldoLain(){
-  const tbody = document.querySelector("#lainTable tbody");
-  tbody.innerHTML = "";
-  let totalLain = 0;
-  saldoLain.forEach((s,i)=>{
-    totalLain += s.jumlah;
-    let row = document.createElement("tr");
-    row.innerHTML = `<td>${i+1}</td><td>${s.ket}</td><td>Rp ${s.jumlah.toLocaleString()}</td>`;
-    if (!isLocked){
-      row.innerHTML += `<td><button onclick="hapusSaldoLain(${i})">Hapus</button></td>`;
-    } else {
-      row.innerHTML += `<td class="aksi-col">-</td>`;
-    }
-    tbody.appendChild(row);
-  });
-  return totalLain;
-}
-
-function hapusAnak(index){
-  if(confirm("Yakin hapus anak ini?")){
+function hapusAnak(index) {
+  if (confirm("Yakin hapus anak ini?")) {
+    const nama = data[index].nama;
+    // Untuk hapus, kamu harus implement di Apps Script-nya juga
+    // misalnya kamu tambahkan aksi "delete"
     data.splice(index,1);
     saveData();
     renderTable();
   }
 }
 
-function hapusPengeluaran(index){
-  if(confirm("Yakin hapus pengeluaran ini?")){
-    pengeluaran.splice(index,1);
-    saveData();
-    renderTable();
-  }
-}
-
-function hapusSaldoLain(index){
-  if(confirm("Yakin hapus saldo lain ini?")){
-    saldoLain.splice(index,1);
-    saveData();
-    renderTable();
-  }
-}
-
-document.getElementById("toggleMode").addEventListener("click", ()=>{
-  if (isLocked) {
-    let pass = prompt("Masukkan sandi Admin:");
-    if (pass === passwordBendahara) {
-      isLocked = false;
-      document.getElementById("toggleMode").innerText = "Keluar dari Bendahara";
-      document.getElementById("gantiPassword").style.display = "inline-block";
-      document.getElementById("bendaharaMenu").style.display = "block";
-      document.getElementById("tambahAnak").style.display = "inline-block";
-      document.getElementById("tambahSaldoLain").style.display = "inline-block";
-      document.getElementById("tambahPengeluaran").style.display = "inline-block";
-      document.querySelectorAll(".aksi-col").forEach(el=>el.style.display="table-cell");
-      renderTable();
-    } else {
-      alert("Sandi salah!");
-    }
-  } else {
-    isLocked = true;
-    document.getElementById("toggleMode").innerText = "Masuk Sebagai Admin";
-    document.getElementById("gantiPassword").style.display = "none";
-    document.getElementById("bendaharaMenu").style.display = "none";
-    document.getElementById("tambahAnak").style.display = "none";
-    document.getElementById("tambahSaldoLain").style.display = "none";
-    document.getElementById("tambahPengeluaran").style.display = "none";
-    document.querySelectorAll(".aksi-col").forEach(el=>el.style.display="none");
-    renderTable();
-  }
+// event listeners tombol, toggle mode, filter, dsb sama seperti sebelumnya
+document.getElementById("toggleMode").addEventListener("click", () => {
+  // ...
 });
-
-document.getElementById("gantiPassword").addEventListener("click", ()=>{
-  let oldPass = prompt("Masukkan sandi lama:");
-  if (oldPass === passwordBendahara) {
-    let newPass = prompt("Masukkan sandi baru:");
-    if (newPass && newPass.trim() !== "") {
-      passwordBendahara = newPass;
-      localStorage.setItem("kasPassword", newPass);
-      alert("Sandi berhasil diganti!");
-    } else {
-      alert("Sandi baru tidak boleh kosong.");
-    }
-  } else {
-    alert("Sandi lama salah!");
-  }
-});
-
-document.getElementById("tambahAnak").addEventListener("click", ()=>{
-  let nama = prompt("Masukkan nama anak:");
-  if(nama && nama.trim()!==""){
-    data.push({nama:nama.trim(), bulan:Array(12).fill(false)});
-    saveData();
-    renderTable();
-  }
-});
-
-document.getElementById("tambahPengeluaran").addEventListener("click", ()=>{
-  let ket = prompt("Masukkan keterangan pengeluaran:");
-  let jumlah = parseInt(prompt("Masukkan jumlah pengeluaran:"));
-  if(ket && jumlah && jumlah>0){
-    pengeluaran.push({ket:ket.trim(), jumlah:jumlah});
-    saveData();
-    renderTable();
-  }
-});
-
-document.getElementById("tambahSaldoLain").addEventListener("click", ()=>{
-  let ket = prompt("Masukkan keterangan saldo lain:");
-  let jumlah = parseInt(prompt("Masukkan jumlah saldo lain:"));
-  if(ket && jumlah && jumlah>0){
-    saldoLain.push({ket:ket.trim(), jumlah:jumlah});
-    saveData();
-    renderTable();
-  }
-});
-
-document.getElementById("cariAnak").addEventListener("input", (e)=>{
+document.getElementById("cariAnak").addEventListener("input", (e) => {
   filterText = e.target.value;
   renderTable();
 });
 
-renderTable();
+// Setelah halaman load, ambil data dulu lalu render
+window.addEventListener("load", () => {
+  fetchData()
+    .then(() => {
+      renderTable();
+    });
+});
+
+
 </script>
 </body>
 </html>
