@@ -5,44 +5,69 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Kas Assalam</title>
   <style>
+    /* 🌙 Tema Utama */
     * { box-sizing: border-box; font-family: "Poppins", sans-serif; }
     body {
       margin: 0;
       background: linear-gradient(135deg, #0f172a, #1e293b);
-      color: #fff;
+      color: #e2e8f0;
       display: flex;
       flex-direction: column;
       align-items: center;
       min-height: 100vh;
       padding: 20px;
     }
+
+    /* Judul */
     h1 {
-      font-size: 2em;
+      font-size: 2.2em;
       text-align: center;
-      margin-bottom: 10px;
+      margin-bottom: 15px;
+      color: #38bdf8;
+      text-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
     }
+
+    /* Kotak utama */
     .section {
       background: rgba(255,255,255,0.05);
       padding: 20px;
       border-radius: 15px;
-      width: 90%;
-      max-width: 700px;
-      box-shadow: 0 0 15px rgba(0,0,0,0.4);
+      width: 95%;
+      max-width: 850px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.4);
       margin-top: 20px;
+      transition: all 0.3s ease;
     }
+
+    .section:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 0 30px rgba(0,0,0,0.6);
+    }
+
+    /* Judul sub */
     h2 {
       text-align: center;
+      color: #f1f5f9;
       margin-bottom: 15px;
       border-bottom: 1px solid #334155;
       padding-bottom: 5px;
     }
-    input, select {
-      padding: 8px;
+
+    /* Input dan select */
+    input, select, textarea {
+      padding: 10px;
       border-radius: 8px;
       border: none;
       width: 100%;
       margin-bottom: 10px;
+      background: rgba(255,255,255,0.1);
+      color: #f1f5f9;
+      resize: none;
     }
+
+    textarea { height: 60px; }
+
+    /* Tombol */
     button {
       background: #2563eb;
       color: #fff;
@@ -50,9 +75,10 @@
       padding: 10px 15px;
       border-radius: 8px;
       cursor: pointer;
-      transition: background 0.3s;
+      transition: background 0.3s, transform 0.2s;
     }
-    button:hover { background: #1d4ed8; }
+
+    button:hover { background: #1d4ed8; transform: scale(1.05); }
     .hapus-btn {
       background: #dc2626;
       color: white;
@@ -63,25 +89,45 @@
       font-size: 12px;
     }
     .hapus-btn:hover { background: #b91c1c; }
+
+    /* Tabel */
     table {
       width: 100%;
       border-collapse: collapse;
       margin-top: 10px;
+      font-size: 14px;
     }
     th, td {
       border-bottom: 1px solid #334155;
       padding: 8px;
       text-align: left;
     }
-    th { background: #1e293b; }
-    .total { text-align: right; margin-top: 10px; font-weight: bold; }
+    th {
+      background: #1e293b;
+      color: #f8fafc;
+    }
+    tr:hover { background: rgba(255,255,255,0.05); }
+
+    /* Total dan saldo */
+    .total { text-align: right; margin-top: 10px; font-weight: bold; color: #93c5fd; }
     .saldo {
       text-align: right;
-      margin-top: 15px;
+      margin-top: 20px;
       font-size: 1.3em;
-      color: #22c55e;
       font-weight: bold;
     }
+    .saldo.positif { color: #22c55e; }
+    .saldo.negatif { color: #ef4444; }
+
+    /* Navigasi dan tombol lain */
+    #logoutBtn { background: #dc2626; margin-top: 15px; }
+    #logoutBtn:hover { background: #b91c1c; }
+    #printBtn { background: #22c55e; margin-top: 15px; }
+    #printBtn:hover { background: #16a34a; }
+    #excelBtn { background: #facc15; color: #000; margin-top: 15px; }
+    #excelBtn:hover { background: #eab308; }
+
+    /* Back */
     .back {
       margin-top: 25px;
       text-decoration: none;
@@ -89,16 +135,21 @@
       font-size: 14px;
     }
     .back:hover { color: white; }
-    #adminPanel { display: none; }
-    #logoutBtn { background: #dc2626; margin-top: 15px; }
-    #logoutBtn:hover { background: #b91c1c; }
-    #printBtn { background: #22c55e; margin-top: 15px; }
-    #printBtn:hover { background: #16a34a; }
+
+    /* Login */
+    #adminPanel, #viewerPanel { display: none; }
+
+    /* Animasi */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .section { animation: fadeIn 0.5s ease-in-out; }
   </style>
 </head>
 <body>
 
-  <h1>Kas Assalam</h1>
+  <h1>💰 Kas Assalam</h1>
 
   <div id="loginAdmin" class="section">
     <h2>Login Admin</h2>
@@ -106,13 +157,14 @@
     <button onclick="loginAdmin()">Masuk</button>
   </div>
 
-  <div id="viewerPanel" class="section" style="display:none;">
+  <div id="viewerPanel" class="section">
     <h2>Data Kas (Tampilan Umum)</h2>
     <div id="tabelView"></div>
     <button id="printBtn" onclick="cetakPDF()">Cetak PDF</button>
   </div>
 
   <div id="adminPanel">
+    <!-- 🟩 PEMASUKAN -->
     <div class="section" id="pemasukan">
       <h2>Pemasukan</h2>
       <input type="date" id="tglMasuk">
@@ -122,17 +174,19 @@
         <option value="Raihan">Raihan</option>
       </select>
       <input type="number" id="jumlahMasuk" placeholder="Jumlah (Rp)">
+      <textarea id="ketMasuk" placeholder="Keterangan (untuk apa uang ini)..."></textarea>
       <button onclick="tambahData('masuk')">+ Tambah Pemasukan</button>
 
       <table id="tabelMasuk">
         <thead>
-          <tr><th>Tanggal</th><th>Penanggung Jawab</th><th>Jumlah (Rp)</th><th>Aksi</th></tr>
+          <tr><th>Tanggal</th><th>Penanggung Jawab</th><th>Jumlah (Rp)</th><th>Keterangan</th><th>Aksi</th></tr>
         </thead>
         <tbody></tbody>
       </table>
       <div class="total">Total: <span id="totalMasuk">0</span> Rp</div>
     </div>
 
+    <!-- 🟥 PENGELUARAN -->
     <div class="section" id="pengeluaran">
       <h2>Pengeluaran</h2>
       <input type="date" id="tglKeluar">
@@ -142,25 +196,28 @@
         <option value="Raihan">Raihan</option>
       </select>
       <input type="number" id="jumlahKeluar" placeholder="Jumlah (Rp)">
+      <textarea id="ketKeluar" placeholder="Keterangan (untuk apa uang ini)..."></textarea>
       <button onclick="tambahData('keluar')">+ Tambah Pengeluaran</button>
 
       <table id="tabelKeluar">
         <thead>
-          <tr><th>Tanggal</th><th>Penanggung Jawab</th><th>Jumlah (Rp)</th><th>Aksi</th></tr>
+          <tr><th>Tanggal</th><th>Penanggung Jawab</th><th>Jumlah (Rp)</th><th>Keterangan</th><th>Aksi</th></tr>
         </thead>
         <tbody></tbody>
       </table>
       <div class="total">Total: <span id="totalKeluar">0</span> Rp</div>
     </div>
 
-    <div class="saldo">Sisa Kas: <span id="saldoAkhir">0</span> Rp</div>
-    <button id="logoutBtn" onclick="logoutAdmin()">Logout</button>
+    <div class="saldo" id="saldoAkhir"></div>
+    <button id="excelBtn" onclick="exportExcel()">Export Excel</button>
     <button id="printBtn" onclick="cetakPDF()">Cetak PDF</button>
+    <button id="logoutBtn" onclick="logoutAdmin()">Logout</button>
   </div>
 
   <a href="Halaman%20awal.html" class="back">← Kembali ke Menu Utama</a>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
   <script>
     const ADMIN_PASSWORD = "assalam123";
     let dataMasuk = JSON.parse(localStorage.getItem("kasMasuk") || "[]");
@@ -199,6 +256,7 @@
             <td>${item.tanggal}</td>
             <td>${item.penanggung}</td>
             <td>${item.jumlah.toLocaleString()}</td>
+            <td>${item.ket}</td>
             <td><button class="hapus-btn" onclick="hapusData('masuk', ${i})">Hapus</button></td>
           </tr>`;
       });
@@ -210,13 +268,17 @@
             <td>${item.tanggal}</td>
             <td>${item.penanggung}</td>
             <td>${item.jumlah.toLocaleString()}</td>
+            <td>${item.ket}</td>
             <td><button class="hapus-btn" onclick="hapusData('keluar', ${i})">Hapus</button></td>
           </tr>`;
       });
 
       document.getElementById("totalMasuk").innerText = totalMasuk.toLocaleString();
       document.getElementById("totalKeluar").innerText = totalKeluar.toLocaleString();
-      document.getElementById("saldoAkhir").innerText = (totalMasuk - totalKeluar).toLocaleString();
+      const saldo = totalMasuk - totalKeluar;
+      const saldoElem = document.getElementById("saldoAkhir");
+      saldoElem.innerText = `Sisa Kas: ${saldo.toLocaleString()} Rp`;
+      saldoElem.className = "saldo " + (saldo >= 0 ? "positif" : "negatif");
     }
 
     function renderViewer() {
@@ -228,30 +290,31 @@
       view.innerHTML = `
         <h3>Pemasukan</h3>
         <table border="1" cellpadding="5">
-          <tr><th>Tanggal</th><th>Penanggung Jawab</th><th>Jumlah</th></tr>
-          ${dataMasuk.map(d=>`<tr><td>${d.tanggal}</td><td>${d.penanggung}</td><td>${d.jumlah.toLocaleString()}</td></tr>`).join("")}
+          <tr><th>Tanggal</th><th>Penanggung</th><th>Jumlah</th><th>Keterangan</th></tr>
+          ${dataMasuk.map(d=>`<tr><td>${d.tanggal}</td><td>${d.penanggung}</td><td>${d.jumlah.toLocaleString()}</td><td>${d.ket}</td></tr>`).join("")}
         </table>
-        <p><b>Total Pemasukan:</b> ${totalMasuk.toLocaleString()} Rp</p>
+        <p><b>Total:</b> ${totalMasuk.toLocaleString()} Rp</p>
         <h3>Pengeluaran</h3>
         <table border="1" cellpadding="5">
-          <tr><th>Tanggal</th><th>Penanggung Jawab</th><th>Jumlah</th></tr>
-          ${dataKeluar.map(d=>`<tr><td>${d.tanggal}</td><td>${d.penanggung}</td><td>${d.jumlah.toLocaleString()}</td></tr>`).join("")}
+          <tr><th>Tanggal</th><th>Penanggung</th><th>Jumlah</th><th>Keterangan</th></tr>
+          ${dataKeluar.map(d=>`<tr><td>${d.tanggal}</td><td>${d.penanggung}</td><td>${d.jumlah.toLocaleString()}</td><td>${d.ket}</td></tr>`).join("")}
         </table>
-        <p><b>Total Pengeluaran:</b> ${totalKeluar.toLocaleString()} Rp</p>
-        <h2>Sisa Kas: ${saldo.toLocaleString()} Rp</h2>`;
+        <p><b>Total:</b> ${totalKeluar.toLocaleString()} Rp</p>
+        <h2 style="color:${saldo>=0?'#22c55e':'#ef4444'}">Sisa Kas: ${saldo.toLocaleString()} Rp</h2>`;
     }
 
     function tambahData(type) {
       const tgl = document.getElementById(type === 'masuk' ? 'tglMasuk' : 'tglKeluar').value;
       const penanggung = document.getElementById(type === 'masuk' ? 'penanggungMasuk' : 'penanggungKeluar').value;
       const jumlah = parseInt(document.getElementById(type === 'masuk' ? 'jumlahMasuk' : 'jumlahKeluar').value);
+      const ket = document.getElementById(type === 'masuk' ? 'ketMasuk' : 'ketKeluar').value;
 
-      if (!tgl || !penanggung || isNaN(jumlah)) {
+      if (!tgl || !penanggung || isNaN(jumlah) || !ket) {
         alert("Isi semua data dengan benar!");
         return;
       }
 
-      const dataBaru = { tanggal: tgl, penanggung, jumlah };
+      const dataBaru = { tanggal: tgl, penanggung, jumlah, ket };
       if (type === "masuk") {
         dataMasuk.push(dataBaru);
         localStorage.setItem("kasMasuk", JSON.stringify(dataMasuk));
@@ -287,8 +350,15 @@
       };
       html2pdf().set(opt).from(element).save();
     }
+
+    function exportExcel() {
+      const wb = XLSX.utils.book_new();
+      const wsMasuk = XLSX.utils.json_to_sheet(dataMasuk);
+      const wsKeluar = XLSX.utils.json_to_sheet(dataKeluar);
+      XLSX.utils.book_append_sheet(wb, wsMasuk, "Pemasukan");
+      XLSX.utils.book_append_sheet(wb, wsKeluar, "Pengeluaran");
+      XLSX.writeFile(wb, "Laporan_Kas_Assalam.xlsx");
+    }
   </script>
 </body>
 </html>
-
-
