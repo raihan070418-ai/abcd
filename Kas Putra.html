@@ -23,31 +23,150 @@ Catatan: Mode ini sederhana dan tidak aman untuk data sensitif karena semua ters
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Kas Putra — Catatan Kas Bendahara</title>
   <style>
-    :root{--bg:#f6fbff;--card:#fff;--muted:#667085;--accent:#2541b2}
-    *{box-sizing:border-box}
-    body{font-family:Inter, system-ui, -apple-system, 'Segoe UI', Roboto, Arial;margin:0;background:linear-gradient(180deg,var(--bg),#ffffff);color:#0b2240}
-    header{padding:18px 16px;text-align:center}
-    h1{margin:0;font-size:20px}
-    p.lead{margin:6px 0 0;color:var(--muted)}
-    .container{max-width:1100px;margin:18px auto;padding:0 16px}
-    .card{background:var(--card);border-radius:12px;box-shadow:0 6px 18px rgba(15,23,42,0.06);padding:16px;margin-bottom:16px}
-    .controls{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-    input,select,button{padding:10px 12px;border-radius:8px;border:1px solid #e6eef8;font-size:14px}
-    button{background:#fff;border:1px solid #dbeafe}
-    .btn-primary{background:var(--accent);color:white;border:none}
-    table{width:100%;border-collapse:collapse;margin-top:12px}
-    th,td{padding:8px;border-bottom:1px solid #f1f5f9;text-align:left;font-size:13px}
-    th.sticky{position:sticky;top:0;background:var(--card);z-index:2}
-    .small{font-size:12px;color:var(--muted)}
-    .right{text-align:right}
-    .badge{padding:6px 8px;border-radius:999px;font-size:12px}
-    .in{background:#e6fff6;color:#06623b}
-    .out{background:#fff1f0;color:#9b2c2c}
-    .admin-area{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-    .hidden{display:none}
-    footer{font-size:13px;color:var(--muted);text-align:center;padding:12px}
-    .month-col{min-width:62px;text-align:center}
-    @media (max-width:900px){.month-col{display:none}}
+    
+  :root {
+    --bg: #0f0f0f;
+    --card: #1a1a1a;
+    --text: #ffffff;
+    --muted: #9ca3af;
+    --accent: #3b82f6; /* biru lembut */
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: 'Poppins', 'Segoe UI', sans-serif;
+    margin: 0;
+    background: linear-gradient(180deg, #0d0d0d, #1b1b1b);
+    color: var(--text);
+  }
+
+  header {
+    padding: 18px 16px;
+    text-align: center;
+  }
+
+  h1 {
+    margin: 0;
+    font-size: 22px;
+    color: var(--text);
+  }
+
+  p.lead {
+    margin: 6px 0 0;
+    color: var(--muted);
+  }
+
+  .container {
+    max-width: 1100px;
+    margin: 18px auto;
+    padding: 0 16px;
+  }
+
+  .card {
+    background: var(--card);
+    border-radius: 16px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.5);
+    padding: 18px;
+    margin-bottom: 18px;
+  }
+
+  .controls, .admin-area {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  input, select, button {
+    padding: 10px 12px;
+    border-radius: 8px;
+    border: 1px solid #2d2d2d;
+    font-size: 14px;
+    background: #111;
+    color: var(--text);
+  }
+
+  button {
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  button:hover {
+    background: #222;
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: white;
+    border: none;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 12px;
+    color: var(--text);
+  }
+
+  th, td {
+    padding: 8px;
+    border-bottom: 1px solid #2f2f2f;
+    text-align: left;
+    font-size: 13px;
+  }
+
+  th.sticky {
+    position: sticky;
+    top: 0;
+    background: #111;
+    z-index: 2;
+  }
+
+  .small {
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  .right {
+    text-align: right;
+  }
+
+  .badge {
+    padding: 6px 8px;
+    border-radius: 999px;
+    font-size: 12px;
+  }
+  .in {
+    background: #064e3b;
+    color: #bbf7d0;
+  }
+  .out {
+    background: #7f1d1d;
+    color: #fecaca;
+  }
+  .hidden {
+    display: none;
+  }
+  footer {
+    font-size: 13px;
+    color: var(--muted);
+    text-align: center;
+    padding: 12px;
+  }
+  .month-col {
+    min-width: 62px;
+    text-align: center;
+  }
+  @media (max-width: 900px) {
+    .month-col {
+      display: none;
+    }
+  }
+</style>
+
   </style>
 </head>
 <body>
