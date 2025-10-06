@@ -1,10 +1,66 @@
-<!DOCTYPE html>
+<DOCTYPE html>
 <html lang="id">
 <head>
   <meta charset="utf-8" />
   <title>Kas Putra — Assalam</title>
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <style>
+    /* ==== RESPONSIVE FIX untuk HP ==== */
+@media (max-width: 768px) {
+  body {
+    padding: 16px 10px;
+  }
+
+  header h1 {
+    font-size: 1.6rem;
+  }
+
+  table {
+    font-size: 0.85rem;
+  }
+
+  th, td {
+    padding: 6px 4px;
+  }
+
+  /* Tabel bisa digeser kalau terlalu lebar */
+  table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  /* Elemen berdampingan jadi bertumpuk */
+  .dual {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .card {
+    padding: 10px;
+  }
+
+  .btn {
+    padding: 8px 12px;
+    font-size: 0.9rem;
+  }
+
+  .top-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  input, select {
+    width: 100%;
+    margin-bottom: 6px;
+  }
+
+  footer {
+    font-size: 0.8rem;
+  }
+}
+
    
   @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap');
   :root {
