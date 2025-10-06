@@ -5,31 +5,51 @@
   <title>Kas Putra</title>
   <style>
     body {
-      font-family: 'Segoe UI', sans-serif;
-      margin: 0;
-      background: #121212;
+      font-family: 'Poppins', sans-serif;
+      background: radial-gradient(circle at center, #1b1b1b 0%, #0d0d0d 100%);
       color: #f1f1f1;
       display: flex;
       flex-direction: column;
       align-items: center;
       min-height: 100vh;
+      margin: 0;
     }
 
-    h1 {
-      margin-top: 20px;
-      font-size: 2em;
-      color: #00ffc3;
+    header {
+      width: 100%;
+      text-align: center;
+      padding: 30px 0 10px;
+    }
+
+    header h1 {
+      color: #00c8ff;
+      font-size: 2rem;
+      margin-bottom: 10px;
+    }
+
+    header p {
+      color: #ccc;
+      font-size: 1rem;
+      margin: 0;
+    }
+
+    .container {
+      background: #161616;
+      box-shadow: 0 0 20px rgba(0, 255, 255, 0.15);
+      border-radius: 15px;
+      padding: 25px;
+      width: 90%;
+      max-width: 1100px;
+      margin: 20px auto;
     }
 
     table {
+      width: 100%;
       border-collapse: collapse;
-      width: 95%;
-      max-width: 1000px;
-      margin: 20px 0;
-      background: #1e1e1e;
+      margin-top: 15px;
+      background: #1f1f1f;
       border-radius: 10px;
       overflow: hidden;
-      box-shadow: 0 0 10px rgba(0, 255, 255, 0.2);
     }
 
     th, td {
@@ -39,8 +59,12 @@
     }
 
     th {
-      background: #00ffc3;
+      background: #00c8ff;
       color: #000;
+    }
+
+    td {
+      color: #e4e4e4;
     }
 
     input[type="checkbox"] {
@@ -48,69 +72,116 @@
       cursor: pointer;
     }
 
-    #adminSection {
-      margin-top: 20px;
+    .actions {
+      margin-top: 15px;
       text-align: center;
     }
 
     button {
-      background: #00ffc3;
+      background: #00c8ff;
       color: #000;
+      font-weight: 600;
       border: none;
       padding: 10px 18px;
-      border-radius: 6px;
-      font-weight: bold;
+      border-radius: 8px;
+      margin: 4px;
       cursor: pointer;
-      transition: 0.3s;
+      transition: all 0.25s ease;
     }
 
     button:hover {
-      background: #00bfa0;
+      background: #00a6d9;
+      transform: scale(1.05);
+    }
+
+    #addForm {
+      text-align: center;
+      margin: 10px 0;
+    }
+
+    input[type="text"] {
+      background: #2a2a2a;
+      border: 1px solid #444;
+      color: white;
+      padding: 8px;
+      border-radius: 8px;
+      width: 180px;
+    }
+
+    .hapus-btn {
+      background: #ff4d4d;
+      color: white;
+      padding: 6px 10px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: 0.25s;
+    }
+
+    .hapus-btn:hover {
+      background: #d93636;
     }
 
     #totalKas {
-      margin: 20px;
-      font-size: 1.2em;
-      color: #00ffc3;
+      text-align: right;
+      margin-top: 10px;
       font-weight: bold;
+      color: #00ffc3;
+      font-size: 1.2em;
+    }
+
+    footer {
+      margin-top: auto;
+      padding: 15px 0;
+      color: #666;
+      font-size: 0.9em;
     }
   </style>
 </head>
 <body>
+  <header>
+    <h1>Kas Putra</h1>
+    <p>Data pembayaran kas santri putra</p>
+  </header>
 
-  <h1>💰 Kas Putra</h1>
+  <div class="container">
+    <div class="actions">
+      <button id="loginBtn">Masuk Admin</button>
+      <button id="logoutBtn" style="display:none;">Keluar Admin</button>
+    </div>
 
-  <div id="adminSection">
-    <button id="loginBtn">Masuk Admin</button>
-    <button id="logoutBtn" style="display:none;">Keluar Admin</button>
+    <div id="addForm" style="display:none;">
+      <input type="text" id="newName" placeholder="Nama baru...">
+      <button id="addBtn">+ Tambah Anak</button>
+    </div>
+
+    <table id="kasTable">
+      <thead>
+        <tr>
+          <th>Nama</th>
+          <th>Okt</th><th>Nov</th><th>Des</th><th>Jan</th>
+          <th>Feb</th><th>Mar</th><th>Apr</th><th>Mei</th>
+          <th>Jun</th><th>Jul</th><th>Agu</th><th>Sep</th>
+          <th>Total</th><th>Aksi</th>
+        </tr>
+      </thead>
+      <tbody id="dataBody"></tbody>
+    </table>
+
+    <div id="totalKas">Total Kas: Rp 0</div>
   </div>
 
-  <table id="kasTable">
-    <thead>
-      <tr>
-        <th>Nama</th>
-        <th>Okt</th><th>Nov</th><th>Des</th><th>Jan</th>
-        <th>Feb</th><th>Mar</th><th>Apr</th><th>Mei</th>
-        <th>Jun</th><th>Jul</th><th>Agu</th><th>Sep</th>
-        <th>Total</th>
-      </tr>
-    </thead>
-    <tbody id="dataBody"></tbody>
-  </table>
-
-  <div id="totalKas">Total Kas: Rp 0</div>
+  <footer>© 2025 Assalam. All rights reserved.</footer>
 
   <script>
     const ADMIN_PASSWORD = "admin123";
     let isAdmin = false;
 
-    const siswa = [
-      "Ahmad", "Budi", "Candra", "Deni", "Eko", "Fajar", "Gilang", "Hasan"
-    ];
-
     const bulan = ["Okt", "Nov", "Des", "Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep"];
 
-    let data = JSON.parse(localStorage.getItem("kasPutraData")) || {};
+    let data = JSON.parse(localStorage.getItem("kasPutraData")) || {
+      "Ahmad": {}, "Budi": {}, "Candra": {}, "Deni": {}, "Eko": {}
+    };
 
     const tbody = document.getElementById("dataBody");
     const totalKasDisplay = document.getElementById("totalKas");
@@ -119,9 +190,7 @@
       tbody.innerHTML = "";
       let totalKas = 0;
 
-      siswa.forEach(nama => {
-        if (!data[nama]) data[nama] = {};
-
+      Object.keys(data).forEach(nama => {
         let row = document.createElement("tr");
         let total = 0;
 
@@ -152,6 +221,24 @@
         totalCell.textContent = "Rp " + total.toLocaleString();
         row.appendChild(totalCell);
 
+        let actionCell = document.createElement("td");
+        if (isAdmin) {
+          let delBtn = document.createElement("button");
+          delBtn.textContent = "Hapus";
+          delBtn.className = "hapus-btn";
+          delBtn.onclick = () => {
+            if (confirm(`Hapus ${nama}?`)) {
+              delete data[nama];
+              saveData();
+              renderTable();
+            }
+          };
+          actionCell.appendChild(delBtn);
+        } else {
+          actionCell.textContent = "-";
+        }
+        row.appendChild(actionCell);
+
         totalKas += total;
         tbody.appendChild(row);
       });
@@ -163,12 +250,23 @@
       localStorage.setItem("kasPutraData", JSON.stringify(data));
     }
 
+    document.getElementById("addBtn").onclick = () => {
+      const newName = document.getElementById("newName").value.trim();
+      if (!newName) return alert("Nama tidak boleh kosong!");
+      if (data[newName]) return alert("Nama sudah ada!");
+      data[newName] = {};
+      saveData();
+      document.getElementById("newName").value = "";
+      renderTable();
+    };
+
     document.getElementById("loginBtn").onclick = () => {
       const pass = prompt("Masukkan sandi admin:");
       if (pass === ADMIN_PASSWORD) {
         isAdmin = true;
         document.getElementById("loginBtn").style.display = "none";
         document.getElementById("logoutBtn").style.display = "inline";
+        document.getElementById("addForm").style.display = "block";
         renderTable();
       } else {
         alert("Sandi salah!");
@@ -179,12 +277,11 @@
       isAdmin = false;
       document.getElementById("loginBtn").style.display = "inline";
       document.getElementById("logoutBtn").style.display = "none";
+      document.getElementById("addForm").style.display = "none";
       renderTable();
     };
 
     renderTable();
   </script>
-
 </body>
 </html>
-
