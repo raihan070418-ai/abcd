@@ -5,11 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Kas Assalam</title>
   <style>
-    * {
-      box-sizing: border-box;
-      font-family: "Poppins", sans-serif;
-    }
-
+    * { box-sizing: border-box; font-family: "Poppins", sans-serif; }
     body {
       margin: 0;
       background: linear-gradient(135deg, #0f172a, #1e293b);
@@ -20,64 +16,26 @@
       min-height: 100vh;
       padding: 20px;
     }
-
     h1 {
       font-size: 2em;
       text-align: center;
-      margin-bottom: 20px;
+      margin-bottom: 10px;
     }
-
-    .tabs {
-      display: flex;
-      justify-content: center;
-      gap: 15px;
-      margin-bottom: 20px;
-    }
-
-    .tab-btn {
-      background: #1e293b;
-      color: white;
-      border: 2px solid #2563eb;
-      padding: 10px 20px;
-      border-radius: 10px;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-
-    .tab-btn.active, .tab-btn:hover {
-      background: #2563eb;
-    }
-
-    .tab-content {
-      display: none;
-      background: rgba(255, 255, 255, 0.05);
+    .section {
+      background: rgba(255,255,255,0.05);
       padding: 20px;
       border-radius: 15px;
       width: 90%;
-      max-width: 600px;
+      max-width: 700px;
       box-shadow: 0 0 15px rgba(0,0,0,0.4);
+      margin-top: 20px;
     }
-
-    .tab-content.active {
-      display: block;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 10px;
-    }
-
-    th, td {
+    h2 {
+      text-align: center;
+      margin-bottom: 15px;
       border-bottom: 1px solid #334155;
-      padding: 10px;
-      text-align: left;
+      padding-bottom: 5px;
     }
-
-    th {
-      background: #1e293b;
-    }
-
     input, select {
       padding: 8px;
       border-radius: 8px;
@@ -85,40 +43,16 @@
       width: 100%;
       margin-bottom: 10px;
     }
-
-    button.add-btn {
+    button {
       background: #2563eb;
       color: #fff;
       border: none;
       padding: 10px 15px;
       border-radius: 8px;
       cursor: pointer;
-      margin-top: 10px;
       transition: background 0.3s;
     }
-
-    button.add-btn:hover {
-      background: #1d4ed8;
-    }
-
-    .total {
-      text-align: right;
-      margin-top: 15px;
-      font-size: 1.2em;
-      font-weight: bold;
-    }
-
-    .back {
-      margin-top: 25px;
-      text-decoration: none;
-      color: #94a3b8;
-      font-size: 14px;
-    }
-
-    .back:hover {
-      color: white;
-    }
-
+    button:hover { background: #1d4ed8; }
     .hapus-btn {
       background: #dc2626;
       color: white;
@@ -128,96 +62,127 @@
       cursor: pointer;
       font-size: 12px;
     }
-
-    .hapus-btn:hover {
-      background: #b91c1c;
+    .hapus-btn:hover { background: #b91c1c; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
     }
-
+    th, td {
+      border-bottom: 1px solid #334155;
+      padding: 8px;
+      text-align: left;
+    }
+    th { background: #1e293b; }
+    .total { text-align: right; margin-top: 10px; font-weight: bold; }
     .saldo {
-      margin-top: 15px;
       text-align: right;
-      font-size: 1.2em;
+      margin-top: 15px;
+      font-size: 1.3em;
       color: #22c55e;
       font-weight: bold;
     }
+    .back {
+      margin-top: 25px;
+      text-decoration: none;
+      color: #94a3b8;
+      font-size: 14px;
+    }
+    .back:hover { color: white; }
+    #adminPanel { display: none; }
+    #logoutBtn { background: #dc2626; margin-top: 15px; }
+    #logoutBtn:hover { background: #b91c1c; }
+    #printBtn { background: #22c55e; margin-top: 15px; }
+    #printBtn:hover { background: #16a34a; }
   </style>
 </head>
 <body>
 
   <h1>Kas Assalam</h1>
 
-  <div class="tabs">
-    <button class="tab-btn active" onclick="showTab('pemasukan')">Pemasukan</button>
-    <button class="tab-btn" onclick="showTab('pengeluaran')">Pengeluaran</button>
+  <div id="loginAdmin" class="section">
+    <h2>Login Admin</h2>
+    <input type="password" id="adminPass" placeholder="Masukkan sandi admin...">
+    <button onclick="loginAdmin()">Masuk</button>
   </div>
 
-  <!-- PEMASUKAN -->
-  <div class="tab-content active" id="pemasukan">
-    <h3>Data Pemasukan</h3>
-    <input type="date" id="tglMasuk">
-    <select id="penanggungMasuk">
-      <option value="">-- Pilih Penanggung Jawab --</option>
-      <option value="Luqman">Luqman</option>
-      <option value="Raihan">Raihan</option>
-    </select>
-    <input type="number" id="jumlahMasuk" placeholder="Jumlah (Rp)">
-    <button class="add-btn" onclick="tambahData('masuk')">+ Tambah Pemasukan</button>
-
-    <table id="tabelMasuk">
-      <thead>
-        <tr>
-          <th>Tanggal</th>
-          <th>Penanggung Jawab</th>
-          <th>Jumlah (Rp)</th>
-          <th>Aksi</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
-
-    <div class="total">Total: <span id="totalMasuk">0</span> Rp</div>
+  <div id="viewerPanel" class="section" style="display:none;">
+    <h2>Data Kas (Tampilan Umum)</h2>
+    <div id="tabelView"></div>
+    <button id="printBtn" onclick="cetakPDF()">Cetak PDF</button>
   </div>
 
-  <!-- PENGELUARAN -->
-  <div class="tab-content" id="pengeluaran">
-    <h3>Data Pengeluaran</h3>
-    <input type="date" id="tglKeluar">
-    <select id="penanggungKeluar">
-      <option value="">-- Pilih Penanggung Jawab --</option>
-      <option value="Luqman">Luqman</option>
-      <option value="Raihan">Raihan</option>
-    </select>
-    <input type="number" id="jumlahKeluar" placeholder="Jumlah (Rp)">
-    <button class="add-btn" onclick="tambahData('keluar')">+ Tambah Pengeluaran</button>
+  <div id="adminPanel">
+    <div class="section" id="pemasukan">
+      <h2>Pemasukan</h2>
+      <input type="date" id="tglMasuk">
+      <select id="penanggungMasuk">
+        <option value="">-- Pilih Penanggung Jawab --</option>
+        <option value="Luqman">Luqman</option>
+        <option value="Raihan">Raihan</option>
+      </select>
+      <input type="number" id="jumlahMasuk" placeholder="Jumlah (Rp)">
+      <button onclick="tambahData('masuk')">+ Tambah Pemasukan</button>
 
-    <table id="tabelKeluar">
-      <thead>
-        <tr>
-          <th>Tanggal</th>
-          <th>Penanggung Jawab</th>
-          <th>Jumlah (Rp)</th>
-          <th>Aksi</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
+      <table id="tabelMasuk">
+        <thead>
+          <tr><th>Tanggal</th><th>Penanggung Jawab</th><th>Jumlah (Rp)</th><th>Aksi</th></tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+      <div class="total">Total: <span id="totalMasuk">0</span> Rp</div>
+    </div>
 
-    <div class="total">Total: <span id="totalKeluar">0</span> Rp</div>
+    <div class="section" id="pengeluaran">
+      <h2>Pengeluaran</h2>
+      <input type="date" id="tglKeluar">
+      <select id="penanggungKeluar">
+        <option value="">-- Pilih Penanggung Jawab --</option>
+        <option value="Luqman">Luqman</option>
+        <option value="Raihan">Raihan</option>
+      </select>
+      <input type="number" id="jumlahKeluar" placeholder="Jumlah (Rp)">
+      <button onclick="tambahData('keluar')">+ Tambah Pengeluaran</button>
+
+      <table id="tabelKeluar">
+        <thead>
+          <tr><th>Tanggal</th><th>Penanggung Jawab</th><th>Jumlah (Rp)</th><th>Aksi</th></tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+      <div class="total">Total: <span id="totalKeluar">0</span> Rp</div>
+    </div>
+
+    <div class="saldo">Sisa Kas: <span id="saldoAkhir">0</span> Rp</div>
+    <button id="logoutBtn" onclick="logoutAdmin()">Logout</button>
+    <button id="printBtn" onclick="cetakPDF()">Cetak PDF</button>
   </div>
-
-  <div class="saldo">Sisa Kas: <span id="saldoAkhir">0</span> Rp</div>
 
   <a href="Halaman%20awal.html" class="back">← Kembali ke Menu Utama</a>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   <script>
+    const ADMIN_PASSWORD = "assalam123";
     let dataMasuk = JSON.parse(localStorage.getItem("kasMasuk") || "[]");
     let dataKeluar = JSON.parse(localStorage.getItem("kasKeluar") || "[]");
 
-    function showTab(tabId) {
-      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-      document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
-      document.querySelector(`.tab-btn[onclick*="${tabId}"]`).classList.add('active');
-      document.getElementById(tabId).classList.add('active');
+    function loginAdmin() {
+      const input = document.getElementById("adminPass").value;
+      if (input === ADMIN_PASSWORD) {
+        document.getElementById("loginAdmin").style.display = "none";
+        document.getElementById("adminPanel").style.display = "block";
+        renderData();
+      } else {
+        document.getElementById("loginAdmin").style.display = "none";
+        document.getElementById("viewerPanel").style.display = "block";
+        renderViewer();
+      }
+    }
+
+    function logoutAdmin() {
+      document.getElementById("adminPanel").style.display = "none";
+      document.getElementById("viewerPanel").style.display = "block";
+      renderViewer();
     }
 
     function renderData() {
@@ -227,7 +192,6 @@
       tabelKeluar.innerHTML = "";
 
       let totalMasuk = 0, totalKeluar = 0;
-
       dataMasuk.forEach((item, i) => {
         totalMasuk += item.jumlah;
         tabelMasuk.innerHTML += `
@@ -255,6 +219,28 @@
       document.getElementById("saldoAkhir").innerText = (totalMasuk - totalKeluar).toLocaleString();
     }
 
+    function renderViewer() {
+      const view = document.getElementById("tabelView");
+      let totalMasuk = dataMasuk.reduce((a,b)=>a+b.jumlah,0);
+      let totalKeluar = dataKeluar.reduce((a,b)=>a+b.jumlah,0);
+      let saldo = totalMasuk - totalKeluar;
+
+      view.innerHTML = `
+        <h3>Pemasukan</h3>
+        <table border="1" cellpadding="5">
+          <tr><th>Tanggal</th><th>Penanggung Jawab</th><th>Jumlah</th></tr>
+          ${dataMasuk.map(d=>`<tr><td>${d.tanggal}</td><td>${d.penanggung}</td><td>${d.jumlah.toLocaleString()}</td></tr>`).join("")}
+        </table>
+        <p><b>Total Pemasukan:</b> ${totalMasuk.toLocaleString()} Rp</p>
+        <h3>Pengeluaran</h3>
+        <table border="1" cellpadding="5">
+          <tr><th>Tanggal</th><th>Penanggung Jawab</th><th>Jumlah</th></tr>
+          ${dataKeluar.map(d=>`<tr><td>${d.tanggal}</td><td>${d.penanggung}</td><td>${d.jumlah.toLocaleString()}</td></tr>`).join("")}
+        </table>
+        <p><b>Total Pengeluaran:</b> ${totalKeluar.toLocaleString()} Rp</p>
+        <h2>Sisa Kas: ${saldo.toLocaleString()} Rp</h2>`;
+    }
+
     function tambahData(type) {
       const tgl = document.getElementById(type === 'masuk' ? 'tglMasuk' : 'tglKeluar').value;
       const penanggung = document.getElementById(type === 'masuk' ? 'penanggungMasuk' : 'penanggungKeluar').value;
@@ -266,7 +252,6 @@
       }
 
       const dataBaru = { tanggal: tgl, penanggung, jumlah };
-
       if (type === "masuk") {
         dataMasuk.push(dataBaru);
         localStorage.setItem("kasMasuk", JSON.stringify(dataMasuk));
@@ -276,14 +261,6 @@
       }
 
       renderData();
-
-      if (type === 'masuk') {
-        document.getElementById('jumlahMasuk').value = '';
-        document.getElementById('penanggungMasuk').value = '';
-      } else {
-        document.getElementById('jumlahKeluar').value = '';
-        document.getElementById('penanggungKeluar').value = '';
-      }
     }
 
     function hapusData(type, index) {
@@ -299,7 +276,19 @@
       }
     }
 
-    renderData();
+    function cetakPDF() {
+      const element = document.body;
+      const opt = {
+        margin: 0.5,
+        filename: 'Laporan_Kas_Assalam.pdf',
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
+      };
+      html2pdf().set(opt).from(element).save();
+    }
   </script>
 </body>
 </html>
+
+
