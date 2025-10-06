@@ -1,304 +1,190 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Kas Putra — Assalam v2</title>
-<style>
-  body {
-    font-family: "Segoe UI", sans-serif;
-    background-color: #0e1621;
-    color: #e6eef5;
-    margin: 0;
-    padding: 0;
-    transition: background 0.3s, color 0.3s;
-  }
+  <meta charset="UTF-8">
+  <title>Kas Putra</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      background: #121212;
+      color: #f1f1f1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
 
-  header {
-    background: linear-gradient(90deg, #0b3d91, #1b2735);
-    color: #fff;
-    text-align: center;
-    padding: 1rem;
-    font-size: 1.5em;
-    letter-spacing: 1px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.4);
-  }
+    h1 {
+      margin-top: 20px;
+      font-size: 2em;
+      color: #00ffc3;
+    }
 
-  main {
-    padding: 20px;
-    max-width: 1000px;
-    margin: auto;
-  }
+    table {
+      border-collapse: collapse;
+      width: 95%;
+      max-width: 1000px;
+      margin: 20px 0;
+      background: #1e1e1e;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 0 10px rgba(0, 255, 255, 0.2);
+    }
 
-  .card {
-    background: #1c2833;
-    border-radius: 12px;
-    padding: 20px;
-    margin-bottom: 20px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-  }
+    th, td {
+      border: 1px solid #333;
+      padding: 8px;
+      text-align: center;
+    }
 
-  h2 {
-    border-bottom: 2px solid #1f6feb;
-    padding-bottom: 8px;
-  }
+    th {
+      background: #00ffc3;
+      color: #000;
+    }
 
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 10px;
-  }
+    input[type="checkbox"] {
+      transform: scale(1.3);
+      cursor: pointer;
+    }
 
-  th, td {
-    border-bottom: 1px solid #2c3e50;
-    padding: 8px;
-    text-align: left;
-  }
+    #adminSection {
+      margin-top: 20px;
+      text-align: center;
+    }
 
-  th {
-    background-color: #14202b;
-  }
+    button {
+      background: #00ffc3;
+      color: #000;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+    }
 
-  tr:hover {
-    background-color: #22303c;
-  }
+    button:hover {
+      background: #00bfa0;
+    }
 
-  input, button {
-    border-radius: 6px;
-    border: none;
-    padding: 8px 10px;
-    margin: 5px 0;
-  }
-
-  input {
-    width: 200px;
-  }
-
-  button {
-    background: #1f6feb;
-    color: white;
-    cursor: pointer;
-  }
-
-  button:hover {
-    background: #2d8bff;
-  }
-
-  .admin-section {
-    display: none;
-  }
-
-  .toast {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background: #1f6feb;
-    color: white;
-    padding: 12px 16px;
-    border-radius: 10px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.5);
-    opacity: 0;
-    transform: translateY(30px);
-    transition: all 0.4s ease;
-  }
-
-  .toast.show {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  .dark-mode {
-    background-color: #0e1621;
-    color: #e6eef5;
-  }
-
-  .light-mode {
-    background-color: #f4f6f8;
-    color: #111;
-  }
-
-  .switch {
-    float: right;
-    margin-top: -40px;
-  }
-
-</style>
+    #totalKas {
+      margin: 20px;
+      font-size: 1.2em;
+      color: #00ffc3;
+      font-weight: bold;
+    }
+  </style>
 </head>
 <body>
-<header>
-  💰 Kas Putra — Assalam v2
-  <button class="switch" onclick="toggleTheme()">🌓</button>
-</header>
 
-<main>
-  <div id="loginSection" class="card">
-    <h2>Login Admin</h2>
-    <input type="password" id="password" placeholder="Masukkan password admin">
-    <button onclick="login()">Masuk</button>
+  <h1>💰 Kas Putra</h1>
+
+  <div id="adminSection">
+    <button id="loginBtn">Masuk Admin</button>
+    <button id="logoutBtn" style="display:none;">Keluar Admin</button>
   </div>
 
-  <div id="appSection" style="display:none;">
-    <div class="card">
-      <h2>Data Santri</h2>
-      <input type="text" id="searchInput" placeholder="Cari nama santri..." onkeyup="searchSantri()">
-      <button onclick="addSantri()">+ Tambah Santri</button>
-      <table id="santriTable">
-        <thead>
-          <tr><th>Nama</th><th>Total Bayar</th><th>Aksi</th></tr>
-        </thead>
-        <tbody></tbody>
-      </table>
-    </div>
+  <table id="kasTable">
+    <thead>
+      <tr>
+        <th>Nama</th>
+        <th>Okt</th><th>Nov</th><th>Des</th><th>Jan</th>
+        <th>Feb</th><th>Mar</th><th>Apr</th><th>Mei</th>
+        <th>Jun</th><th>Jul</th><th>Agu</th><th>Sep</th>
+        <th>Total</th>
+      </tr>
+    </thead>
+    <tbody id="dataBody"></tbody>
+  </table>
 
-    <div class="card">
-      <h2>Transaksi</h2>
-      <button onclick="tambahPemasukan()">+ Tambah Pemasukan</button>
-      <button onclick="tambahPengeluaran()">+ Tambah Pengeluaran</button>
-      <p><strong>Saldo Saat Ini:</strong> <span id="saldo">Rp 0</span></p>
-      <table id="logTable">
-        <thead><tr><th>Tanggal</th><th>Keterangan</th><th>Jumlah</th></tr></thead>
-        <tbody></tbody>
-      </table>
-    </div>
+  <div id="totalKas">Total Kas: Rp 0</div>
 
-    <div class="card">
-      <h2>Pengaturan</h2>
-      <button onclick="gantiPassword()">Ganti Password</button>
-      <button onclick="logout()">Keluar Admin</button>
-    </div>
-  </div>
-</main>
+  <script>
+    const ADMIN_PASSWORD = "admin123";
+    let isAdmin = false;
 
-<audio id="notifSound" src="https://cdn.pixabay.com/audio/2022/03/15/audio_6a1e3b6613.mp3"></audio>
-<div id="toast" class="toast"></div>
+    const siswa = [
+      "Ahmad", "Budi", "Candra", "Deni", "Eko", "Fajar", "Gilang", "Hasan"
+    ];
 
-<script>
-  let ADMIN_PASSWORD = localStorage.getItem("adminPass") || "admin123";
-  let dataSantri = JSON.parse(localStorage.getItem("dataSantri") || "[]");
-  let dataLog = JSON.parse(localStorage.getItem("dataLog") || "[]");
-  let saldo = parseInt(localStorage.getItem("saldo") || 0);
+    const bulan = ["Okt", "Nov", "Des", "Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep"];
 
-  function saveAll(){
-    localStorage.setItem("dataSantri", JSON.stringify(dataSantri));
-    localStorage.setItem("dataLog", JSON.stringify(dataLog));
-    localStorage.setItem("saldo", saldo);
-  }
+    let data = JSON.parse(localStorage.getItem("kasPutraData")) || {};
 
-  function showToast(msg){
-    const toast = document.getElementById("toast");
-    const sound = document.getElementById("notifSound");
-    toast.innerText = msg;
-    toast.classList.add("show");
-    sound.currentTime = 0;
-    sound.play();
-    setTimeout(()=> toast.classList.remove("show"), 2500);
-  }
+    const tbody = document.getElementById("dataBody");
+    const totalKasDisplay = document.getElementById("totalKas");
 
-  function login(){
-    const pass = document.getElementById("password").value;
-    if(pass === ADMIN_PASSWORD){
-      document.getElementById("loginSection").style.display = "none";
-      document.getElementById("appSection").style.display = "block";
-      renderSantri();
-      renderLog();
-      updateSaldo();
-      showToast("✅ Login berhasil");
-    } else showToast("❌ Password salah");
-  }
+    function renderTable() {
+      tbody.innerHTML = "";
+      let totalKas = 0;
 
-  function logout(){
-    document.getElementById("loginSection").style.display = "block";
-    document.getElementById("appSection").style.display = "none";
-    showToast("🚪 Keluar admin");
-  }
+      siswa.forEach(nama => {
+        if (!data[nama]) data[nama] = {};
 
-  function gantiPassword(){
-    const newPass = prompt("Masukkan password baru:");
-    if(newPass){
-      ADMIN_PASSWORD = newPass;
-      localStorage.setItem("adminPass", newPass);
-      showToast("🔐 Password diganti");
+        let row = document.createElement("tr");
+        let total = 0;
+
+        let nameCell = document.createElement("td");
+        nameCell.textContent = nama;
+        row.appendChild(nameCell);
+
+        bulan.forEach(b => {
+          let cell = document.createElement("td");
+          let check = document.createElement("input");
+          check.type = "checkbox";
+          check.disabled = !isAdmin;
+          check.checked = data[nama][b] || false;
+
+          check.addEventListener("change", () => {
+            data[nama][b] = check.checked;
+            saveData();
+            renderTable();
+          });
+
+          cell.appendChild(check);
+          row.appendChild(cell);
+
+          if (check.checked) total += 3000;
+        });
+
+        let totalCell = document.createElement("td");
+        totalCell.textContent = "Rp " + total.toLocaleString();
+        row.appendChild(totalCell);
+
+        totalKas += total;
+        tbody.appendChild(row);
+      });
+
+      totalKasDisplay.textContent = "Total Kas: Rp " + totalKas.toLocaleString();
     }
-  }
 
-  function addSantri(){
-    const nama = prompt("Nama santri:");
-    if(!nama) return;
-    dataSantri.push({nama:nama,total:0});
-    saveAll();
-    renderSantri();
-    showToast("🧍 Santri ditambahkan");
-  }
-
-  function hapusSantri(i){
-    if(confirm("Yakin hapus santri ini?")){
-      dataSantri.splice(i,1);
-      saveAll();
-      renderSantri();
-      showToast("❌ Santri dihapus");
+    function saveData() {
+      localStorage.setItem("kasPutraData", JSON.stringify(data));
     }
-  }
 
-  function tambahPemasukan(){
-    const j = parseInt(prompt("Jumlah pemasukan (Rp):"))||0;
-    const ket = prompt("Keterangan:");
-    if(!j) return;
-    saldo += j;
-    dataLog.push({tgl:new Date().toLocaleString(),ket:"Pemasukan: "+ket,jumlah:"+Rp "+j});
-    saveAll();
-    renderLog();
-    updateSaldo();
-    showToast("💰 Pemasukan ditambah");
-  }
+    document.getElementById("loginBtn").onclick = () => {
+      const pass = prompt("Masukkan sandi admin:");
+      if (pass === ADMIN_PASSWORD) {
+        isAdmin = true;
+        document.getElementById("loginBtn").style.display = "none";
+        document.getElementById("logoutBtn").style.display = "inline";
+        renderTable();
+      } else {
+        alert("Sandi salah!");
+      }
+    };
 
-  function tambahPengeluaran(){
-    const j = parseInt(prompt("Jumlah pengeluaran (Rp):"))||0;
-    const ket = prompt("Keterangan:");
-    if(!j) return;
-    saldo -= j;
-    dataLog.push({tgl:new Date().toLocaleString(),ket:"Pengeluaran: "+ket,jumlah:"-Rp "+j});
-    saveAll();
-    renderLog();
-    updateSaldo();
-    showToast("📉 Pengeluaran dicatat");
-  }
+    document.getElementById("logoutBtn").onclick = () => {
+      isAdmin = false;
+      document.getElementById("loginBtn").style.display = "inline";
+      document.getElementById("logoutBtn").style.display = "none";
+      renderTable();
+    };
 
-  function renderSantri(){
-    const tbody = document.querySelector("#santriTable tbody");
-    tbody.innerHTML = "";
-    dataSantri.forEach((s,i)=>{
-      const tr = document.createElement("tr");
-      tr.innerHTML = `<td>${s.nama}</td><td>Rp ${s.total}</td><td><button onclick="hapusSantri(${i})">Hapus</button></td>`;
-      tbody.appendChild(tr);
-    });
-  }
+    renderTable();
+  </script>
 
-  function renderLog(){
-    const tbody = document.querySelector("#logTable tbody");
-    tbody.innerHTML = "";
-    dataLog.slice().reverse().forEach(l=>{
-      const tr = document.createElement("tr");
-      tr.innerHTML = `<td>${l.tgl}</td><td>${l.ket}</td><td>${l.jumlah}</td>`;
-      tbody.appendChild(tr);
-    });
-  }
-
-  function updateSaldo(){
-    document.getElementById("saldo").innerText = "Rp " + saldo.toLocaleString();
-  }
-
-  function searchSantri(){
-    const val = document.getElementById("searchInput").value.toLowerCase();
-    document.querySelectorAll("#santriTable tbody tr").forEach(tr=>{
-      tr.style.display = tr.innerText.toLowerCase().includes(val)? "":"none";
-    });
-  }
-
-  function toggleTheme(){
-    const body = document.body;
-    const dark = body.classList.toggle("light-mode");
-    body.classList.toggle("dark-mode", !dark);
-  }
-</script>
 </body>
 </html>
+
