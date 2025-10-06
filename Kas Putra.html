@@ -4,51 +4,197 @@
   <meta charset="utf-8" />
   <title>Kas Putra — Assalam</title>
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <style>
-    /* ==== RESPONSIVE FIX untuk HP ==== */
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap');
+
+/* === Warna dasar === */
+:root {
+  --bg-1:#0d0d0d;
+  --bg-2:#161616;
+  --card:#1b1b1b;
+  --muted:#a8a8a8;
+  --accent:#00c8ff;
+  --accent2:#00ffc3;
+  --danger:#ff4d4d;
+}
+
+*{box-sizing:border-box;}
+body {
+  margin:0;
+  min-height:100vh;
+  font-family:'Poppins',system-ui,Segoe UI,Arial;
+  background: radial-gradient(circle at top left, #0a0a0a 0%, #121212 50%, #090909 100%);
+  color:#f1f1f1;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  padding:28px 18px;
+}
+
+header {
+  width:100%;
+  max-width:1200px;
+  text-align:center;
+  margin-bottom:18px;
+}
+header h1 {
+  color:var(--accent);
+  font-size:2rem;
+  letter-spacing:1px;
+  text-shadow:0 0 15px rgba(0,200,255,0.7);
+}
+header p { color:var(--muted); }
+
+.container {
+  width:100%;
+  max-width:1200px;
+  background:rgba(255,255,255,0.02);
+  border-radius:16px;
+  box-shadow:0 8px 40px rgba(0,0,0,0.9);
+  padding:22px;
+  border:1px solid rgba(255,255,255,0.04);
+  backdrop-filter: blur(6px);
+  overflow:hidden;
+}
+
+/* Tombol */
+.btn {
+  border:none;
+  border-radius:12px;
+  padding:10px 16px;
+  font-weight:600;
+  cursor:pointer;
+  font-family:'Poppins',sans-serif;
+  background: linear-gradient(135deg, #00c8ff 0%, #00ffc3 100%);
+  color:#000;
+  box-shadow:0 0 10px rgba(0,255,255,0.4);
+  transition: all .25s ease;
+}
+.btn:hover { transform: translateY(-2px); box-shadow:0 0 16px rgba(0,255,255,0.8); }
+.btn:active { transform: scale(0.96); }
+.btn.ghost {
+  background: linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.1));
+  color:#eaeaea;
+  border:1px solid rgba(255,255,255,0.1);
+  text-shadow:0 0 6px rgba(255,255,255,0.4);
+}
+.btn.ghost:hover {
+  background: linear-gradient(135deg, rgba(255,255,255,0.15), rgba(255,255,255,0.25));
+}
+
+.hapus-btn {
+  background: linear-gradient(135deg, #ff4d4d, #ff7373);
+  color:#fff;
+  border:none;
+  border-radius:8px;
+  padding:6px 10px;
+  cursor:pointer;
+  font-weight:600;
+  transition: all .25s ease;
+  box-shadow:0 0 6px rgba(255,0,0,0.5);
+}
+.hapus-btn:hover {
+  box-shadow:0 0 12px rgba(255,0,0,0.8);
+  transform:translateY(-1px);
+}
+
+/* Struktur umum */
+.top-actions {
+  display:flex;
+  gap:10px;
+  justify-content:flex-end;
+  align-items:center;
+  margin-bottom:12px;
+  flex-wrap:wrap;
+}
+
+.card {
+  background:var(--card);
+  border-radius:12px;
+  padding:14px;
+  box-shadow: 0 6px 20px rgba(0,200,255,0.03);
+  border:1px solid rgba(255,255,255,0.02);
+  overflow-x:auto;
+}
+
+.card h2 {
+  margin:0 0 8px 0;
+  color:var(--accent2);
+  font-size:1.1rem;
+  text-shadow:0 0 8px rgba(0,255,195,0.4);
+}
+
+.small { color:var(--muted); font-size:0.92rem; margin-bottom:8px; }
+
+table { width:100%; border-collapse:collapse; background:transparent; min-width:700px; }
+th, td {
+  padding:8px 6px;
+  text-align:center;
+  border-bottom:1px solid rgba(255,255,255,0.05);
+}
+thead th {
+  background: linear-gradient(135deg, #00c8ff, #00ffc3);
+  color:#000;
+  font-weight:700;
+  position:sticky;
+  top:0;
+  z-index:2;
+}
+tbody tr:hover { background: rgba(255,255,255,0.02); }
+
+/* Checkbox neon */
+input[type="checkbox"] {
+  appearance:none;
+  width:18px; height:18px;
+  border:2px solid var(--accent);
+  border-radius:4px;
+  background:transparent;
+  cursor:pointer;
+  transition:all 0.25s ease;
+  position:relative;
+}
+input[type="checkbox"]:checked {
+  background:var(--accent);
+  box-shadow:0 0 6px rgba(0,200,255,0.6);
+  animation:popCheck .25s ease-out;
+}
+input[type="checkbox"]:checked::after {
+  content:'✓';
+  color:#000;
+  font-weight:700;
+  font-size:13px;
+  position:absolute;
+  top:50%; left:50%;
+  transform:translate(-50%,-58%);
+}
+@keyframes popCheck {
+  0%{transform:scale(0.8);}
+  60%{transform:scale(1.2);}
+  100%{transform:scale(1);}
+}
+
+footer {
+  margin-top:20px;
+  color:var(--muted);
+  text-align:center;
+  font-size:0.9rem;
+}
+
+/* === RESPONSIVE FIX untuk HP === */
 @media (max-width: 768px) {
-  body {
-    padding: 16px 10px;
-  }
+  body { padding: 16px 10px; }
 
-  header h1 {
-    font-size: 1.6rem;
-  }
+  header h1 { font-size: 1.6rem; }
+  header p { font-size: 0.9rem; }
 
-  table {
-    font-size: 0.85rem;
-  }
+  .container { padding: 14px; }
 
-  th, td {
-    padding: 6px 4px;
-  }
-
-  /* Tabel bisa digeser kalau terlalu lebar */
-  table {
-    display: block;
-    overflow-x: auto;
-    white-space: nowrap;
-  }
-
-  /* Elemen berdampingan jadi bertumpuk */
-  .dual {
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-  }
-
-  .card {
-    padding: 10px;
-  }
-
-  .btn {
-    padding: 8px 12px;
-    font-size: 0.9rem;
-  }
+  .btn { padding: 8px 12px; font-size: 0.9rem; width: 100%; }
 
   .top-actions {
     flex-direction: column;
     align-items: stretch;
+    gap: 8px;
   }
 
   input, select {
@@ -56,193 +202,29 @@
     margin-bottom: 6px;
   }
 
+  .dual {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  table {
+    font-size: 0.85rem;
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  .card {
+    padding: 10px;
+  }
+
   footer {
     font-size: 0.8rem;
   }
 }
-
-   
-  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap');
-  :root {
-    --bg-1:#0d0d0d;
-    --bg-2:#161616;
-    --card:#1b1b1b;
-    --muted:#a8a8a8;
-    --accent:#00c8ff;
-    --accent2:#00ffc3;
-    --danger:#ff4d4d;
-  }
-
-  *{box-sizing:border-box;}
-  body {
-    margin:0;
-    min-height:100vh;
-    font-family:'Poppins',system-ui,Segoe UI,Arial;
-    background: radial-gradient(circle at top left, #0a0a0a 0%, #121212 50%, #090909 100%);
-    color:#f1f1f1;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    padding:28px 18px;
-  }
-
-  header {
-    width:100%;
-    max-width:1200px;
-    text-align:center;
-    margin-bottom:18px;
-  }
-  header h1 {
-    color:var(--accent);
-    font-size:2rem;
-    letter-spacing:1px;
-    text-shadow:0 0 15px rgba(0,200,255,0.7);
-  }
-  header p { color:var(--muted); }
-
-  .container {
-    width:100%;
-    max-width:1200px;
-    background:rgba(255,255,255,0.02);
-    border-radius:16px;
-    box-shadow:0 8px 40px rgba(0,0,0,0.9);
-    padding:22px;
-    border:1px solid rgba(255,255,255,0.04);
-    backdrop-filter: blur(6px);
-  }
-
-  /* === Tombol elegan futuristik === */
-  .btn {
-    border:none;
-    border-radius:12px;
-    padding:10px 16px;
-    font-weight:600;
-    cursor:pointer;
-    font-family:'Poppins',sans-serif;
-    background: linear-gradient(135deg, #00c8ff 0%, #00ffc3 100%);
-    color:#000;
-    box-shadow:0 0 10px rgba(0,255,255,0.4);
-    transition: all .25s ease;
-  }
-  .btn:hover {
-    transform: translateY(-2px);
-    box-shadow:0 0 16px rgba(0,255,255,0.8);
-  }
-  .btn:active {
-    transform: scale(0.96);
-  }
-  .btn.ghost {
-    background: linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.1));
-    color:#eaeaea;
-    border:1px solid rgba(255,255,255,0.1);
-    text-shadow:0 0 6px rgba(255,255,255,0.4);
-  }
-  .btn.ghost:hover {
-    background: linear-gradient(135deg, rgba(255,255,255,0.15), rgba(255,255,255,0.25));
-  }
-
-  .hapus-btn {
-    background: linear-gradient(135deg, #ff4d4d, #ff7373);
-    color:#fff;
-    border:none;
-    border-radius:8px;
-    padding:6px 10px;
-    cursor:pointer;
-    font-weight:600;
-    transition: all .25s ease;
-    box-shadow:0 0 6px rgba(255,0,0,0.5);
-  }
-  .hapus-btn:hover {
-    box-shadow:0 0 12px rgba(255,0,0,0.8);
-    transform:translateY(-1px);
-  }
-
-  /* === Struktur umum tetap sama === */
-  .top-actions {
-    display:flex;
-    gap:10px;
-    justify-content:flex-end;
-    align-items:center;
-    margin-bottom:12px;
-    flex-wrap:wrap;
-  }
-
-  .card {
-    background:var(--card);
-    border-radius:12px;
-    padding:14px;
-    box-shadow: 0 6px 20px rgba(0,200,255,0.03);
-    border:1px solid rgba(255,255,255,0.02);
-  }
-
-  .card h2 {
-    margin:0 0 8px 0;
-    color:var(--accent2);
-    font-size:1.1rem;
-    text-shadow:0 0 8px rgba(0,255,195,0.4);
-  }
-
-  .small { color:var(--muted); font-size:0.92rem; margin-bottom:8px; }
-
-  table { width:100%; border-collapse:collapse; background:transparent; }
-  th, td {
-    padding:8px 6px; text-align:center;
-    border-bottom:1px solid rgba(255,255,255,0.05);
-  }
-  thead th {
-    background: linear-gradient(135deg, #00c8ff, #00ffc3);
-    color:#000;
-    font-weight:700;
-    position:sticky;
-    top:0;
-  }
-  tbody tr:hover { background: rgba(255,255,255,0.02); }
-
-  /* === Checkbox biru neon === */
-  input[type="checkbox"] {
-    appearance:none;
-    width:18px; height:18px;
-    border:2px solid var(--accent);
-    border-radius:4px;
-    background:transparent;
-    cursor:pointer;
-    transition:all 0.25s ease;
-    position:relative;
-  }
-  input[type="checkbox"]:checked {
-    background:var(--accent);
-    box-shadow:0 0 6px rgba(0,200,255,0.6);
-    animation:popCheck .25s ease-out;
-  }
-  input[type="checkbox"]:checked::after {
-    content:'✓';
-    color:#000;
-    font-weight:700;
-    font-size:13px;
-    position:absolute;
-    top:50%;
-    left:50%;
-    transform:translate(-50%,-58%);
-  }
-  @keyframes popCheck {
-    0%{transform:scale(0.8);}
-    60%{transform:scale(1.2);}
-    100%{transform:scale(1);}
-  }
-
-  footer {
-    margin-top:20px;
-    color:var(--muted);
-    text-align:center;
-    font-size:0.9rem;
-  }
-  @media(max-width:900px){
-    .dual{grid-template-columns:1fr;}
-    .top-actions{justify-content:center;}
-  }
 </style>
 
-  </style>
 </head>
 <body>
 
