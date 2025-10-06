@@ -1,445 +1,263 @@
-<!doctype html>
-<!--
-Bendahara — Kas Putra (Single-file)
-Mode: Simpel (localStorage) — publik lihat, Admin (password) bisa edit.
-Password default: admin123 (ubah di variabel ADMIN_PASSWORD pada script)
-
-Fitur utama:
-- Daftar anak dengan kolom ceklis mulai bulan Oktober (12 bulan dari Oktober tahun berjalan)
-- Jika admin menandai kotak, otomatis menambahkan pemasukan Rp 3.000 ke daftar pemasukan
-- Daftar pemasukan & pengeluaran (admin dapat tambah / hapus)
-- Semua data disimpan di localStorage (persisten di browser). Untuk menyimpan di repo/public online, butuh backend atau Firebase.
-
-Petunjuk singkat:
-1. Simpan file ini sebagai index.html dan buka di browser.
-2. Klik "Masuk Admin", masukkan password (default: admin123) untuk mengaktifkan mode edit.
-3. Di mode admin: centang pembayaran, tambahkan/hapus anak, dan atur pengeluaran.
-
-Catatan: Mode ini sederhana dan tidak aman untuk data sensitif karena semua tersimpan di browser. Untuk kebutuhan produksi, saya sarankan pakai Firebase atau backend.
--->
+<!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Kas Putra — Catatan Kas Bendahara</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kas Putra — Assalam</title>
   <style>
-    
-  :root {
-    --bg: #0f0f0f;
-    --card: #1a1a1a;
-    --text: #ffffff;
-    --muted: #9ca3af;
-    --accent: #3b82f6; /* biru lembut */
-  }
-
-  * {
-    box-sizing: border-box;
-  }
-
-  body {
-    font-family: 'Poppins', 'Segoe UI', sans-serif;
-    margin: 0;
-    background: linear-gradient(180deg, #0d0d0d, #1b1b1b);
-    color: var(--text);
-  }
-
-  header {
-    padding: 18px 16px;
-    text-align: center;
-  }
-
-  h1 {
-    margin: 0;
-    font-size: 22px;
-    color: var(--text);
-  }
-
-  p.lead {
-    margin: 6px 0 0;
-    color: var(--muted);
-  }
-
-  .container {
-    max-width: 1100px;
-    margin: 18px auto;
-    padding: 0 16px;
-  }
-
-  .card {
-    background: var(--card);
-    border-radius: 16px;
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.5);
-    padding: 18px;
-    margin-bottom: 18px;
-  }
-
-  .controls, .admin-area {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-    align-items: center;
-  }
-
-  input, select, button {
-    padding: 10px 12px;
-    border-radius: 8px;
-    border: 1px solid #2d2d2d;
-    font-size: 14px;
-    background: #111;
-    color: var(--text);
-  }
-
-  button {
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-
-  button:hover {
-    background: #222;
-  }
-
-  .btn-primary {
-    background: var(--accent);
-    color: white;
-    border: none;
-  }
-
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 12px;
-    color: var(--text);
-  }
-
-  th, td {
-    padding: 8px;
-    border-bottom: 1px solid #2f2f2f;
-    text-align: left;
-    font-size: 13px;
-  }
-
-  th.sticky {
-    position: sticky;
-    top: 0;
-    background: #111;
-    z-index: 2;
-  }
-
-  .small {
-    font-size: 12px;
-    color: var(--muted);
-  }
-
-  .right {
-    text-align: right;
-  }
-
-  .badge {
-    padding: 6px 8px;
-    border-radius: 999px;
-    font-size: 12px;
-  }
-  .in {
-    background: #064e3b;
-    color: #bbf7d0;
-  }
-  .out {
-    background: #7f1d1d;
-    color: #fecaca;
-  }
-  .hidden {
-    display: none;
-  }
-  footer {
-    font-size: 13px;
-    color: var(--muted);
-    text-align: center;
-    padding: 12px;
-  }
-  .month-col {
-    min-width: 62px;
-    text-align: center;
-  }
-  @media (max-width: 900px) {
-    .month-col {
-      display: none;
+    :root {
+      --bg: #0f0f0f;
+      --card: #1a1a1a;
+      --text: #ffffff;
+      --muted: #9ca3af;
+      --accent: #3b82f6;
     }
-  }
-</style>
 
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: 'Poppins', 'Segoe UI', sans-serif;
+      margin: 0;
+      background: linear-gradient(180deg, #0d0d0d, #1b1b1b);
+      color: var(--text);
+    }
+
+    header {
+      padding: 20px;
+      text-align: center;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 22px;
+      color: var(--text);
+    }
+
+    p {
+      margin-top: 5px;
+      color: var(--muted);
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 20px auto;
+      padding: 0 16px;
+    }
+
+    .card {
+      background: var(--card);
+      border-radius: 16px;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.5);
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      color: var(--text);
+      margin-top: 12px;
+    }
+
+    th, td {
+      padding: 10px;
+      border-bottom: 1px solid #2d2d2d;
+      text-align: center;
+      font-size: 14px;
+    }
+
+    th {
+      background: #111;
+      position: sticky;
+      top: 0;
+      z-index: 1;
+    }
+
+    input[type="checkbox"] {
+      transform: scale(1.2);
+      accent-color: var(--accent);
+      cursor: pointer;
+    }
+
+    .right { text-align: right; }
+
+    .hidden { display: none; }
+
+    button {
+      background: #111;
+      border: 1px solid #333;
+      color: var(--text);
+      border-radius: 8px;
+      padding: 8px 14px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    button:hover {
+      background: var(--accent);
+      color: white;
+    }
+
+    footer {
+      text-align: center;
+      color: var(--muted);
+      padding: 20px;
+      font-size: 13px;
+    }
   </style>
 </head>
 <body>
   <header>
-    <h1>Catatan Kas Bendahara — Kas Putra</h1>
-    <p class="lead">Publik dapat melihat. Hanya admin yang bisa mengedit (masuk lewat tombol "Masuk Admin").</p>
+    <h1>Kas Putra — Catatan Kas Bendahara</h1>
+    <p>Publik dapat melihat, hanya admin yang bisa mengedit</p>
   </header>
 
   <main class="container">
     <div class="card">
-      <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">
+        <strong>Daftar Pembayaran Santri (Oktober - 12 Bulan)</strong>
         <div>
-          <strong>Daftar Anak — Mulai: Oktober</strong>
-          <div class="small">Centang untuk menandai pembayaran (Rp 3.000 / ceklis). Jika admin menandai, otomatis masuk ke daftar pemasukan.</div>
-        </div>
-        <div class="admin-area">
           <button id="adminBtn">Masuk Admin</button>
           <button id="logoutBtn" class="hidden">Keluar Admin</button>
-          <button id="addChildBtn" class="hidden">Tambah Anak</button>
         </div>
       </div>
 
-      <div style="overflow:auto;margin-top:12px">
+      <div style="overflow:auto;margin-top:16px;">
         <table id="childrenTable">
           <thead>
-            <tr>
-              <th class="sticky">#</th>
-              <th class="sticky">Nama</th>
-              
-              <!-- month headers inserted by JS -->
-              <th class="sticky">Aksi</th>
+            <tr id="monthHeader">
+              <th>Nama</th>
+              <!-- bulan diisi lewat JS -->
+              <th>Total (Rp)</th>
             </tr>
           </thead>
           <tbody id="childrenBody"></tbody>
         </table>
       </div>
     </div>
-
-    <div class="card">
-      <strong>Daftar Pemasukan</strong>
-      <div class="small">Setiap ceklis bernilai Rp 3.000 dan otomatis tercatat saat admin menandai.</div>
-      <table id="incomeTable">
-        <thead><tr><th>#</th><th>Tanggal</th><th>Deskripsi</th><th class="right">Nominal (Rp)</th><th>Aksi</th></tr></thead>
-        <tbody id="incomeBody"></tbody>
-        <tfoot><tr><td colspan="3">Total</td><td id="incomeTotal" class="right">0</td><td></td></tr></tfoot>
-      </table>
-    </div>
-
-    <div class="card">
-      <strong>Daftar Pengeluaran</strong>
-      <div class="small">Hanya admin yang dapat menambah / menghapus pengeluaran.</div>
-      <div style="margin-top:8px">
-        <button id="addExpenseBtn" class="hidden">Tambah Pengeluaran</button>
-      </div>
-      <table id="expenseTable">
-        <thead><tr><th>#</th><th>Tanggal</th><th>Deskripsi</th><th class="right">Nominal (Rp)</th><th>Aksi</th></tr></thead>
-        <tbody id="expenseBody"></tbody>
-        <tfoot><tr><td colspan="3">Total</td><td id="expenseTotal" class="right">0</td><td></td></tr></tfoot>
-      </table>
-    </div>
-
-    <div class="card small">
-      <strong>Catatan Teknis</strong>
-      <ol>
-        <li>Data disimpan di <code>localStorage</code> browser. Jika ingin shared online, perlu backend / Firebase.</li>
-        <li>Password default admin: <code>admin123</code>. Ubah pada variabel <code>ADMIN_PASSWORD</code> di script sebelum dipublikasi.</li>
-      </ol>
-    </div>
   </main>
 
-  <footer>Butuh saya ubah ke Firebase biar semua orang lihat update realtime dan hanya kamu yang bisa edit? Beri tahu saya, Njingg.</footer>
+  <footer>© 2025 Assalam. Semua hak dilindungi.</footer>
 
   <script>
-    // ======= CONFIG ========
-    const ADMIN_PASSWORD = 'admin123'; // ubah kalau mau
-    const CHECK_AMOUNT = 3000; // nominal per ceklis
+    const ADMIN_PASSWORD = "admin123";
+    const CHECK_AMOUNT = 3000;
 
-    // ======= Utilities ========
-    function qs(id){return document.getElementById(id)}
-    function formatIDR(n){ return Number(n).toLocaleString('id-ID'); }
-    function nowISO(){ return new Date().toISOString(); }
-
-    // ======= Data model in localStorage ========
-    // keys: 'kas_children', 'kas_income', 'kas_expense', 'kas_settings'
-    function load(key, fallback){ try{ const v = localStorage.getItem(key); return v?JSON.parse(v):fallback; }catch(e){return fallback;} }
-    function save(key, val){ localStorage.setItem(key, JSON.stringify(val)); }
-
-    // ======= Initial sample data (if empty) ========
     const sampleChildren = [
-      {id:1, name:'Ahmad', kelas:'5A'},
-      {id:2, name:'Budi', kelas:'5B'},
-      {id:3, name:'Candra', kelas:'5C'}
+      { id: 1, name: "Ahmad", status: {} },
+      { id: 2, name: "Budi", status: {} },
+      { id: 3, name: "Candra", status: {} }
     ];
 
-    let children = load('kas_children', sampleChildren);
-    let income = load('kas_income', []);
-    let expense = load('kas_expense', []);
-    let settings = load('kas_settings', {admin:false});
+    let children = load("kas_children", sampleChildren);
+    let settings = load("kas_settings", { admin: false });
 
-    // generate 12 months starting from October of current year
-    function generateMonthsFromOctober(){
+    function load(key, fallback) {
+      try {
+        const v = localStorage.getItem(key);
+        return v ? JSON.parse(v) : fallback;
+      } catch {
+        return fallback;
+      }
+    }
+
+    function save(key, val) {
+      localStorage.setItem(key, JSON.stringify(val));
+    }
+
+    // === Generate 12 bulan mulai Oktober ===
+    function generateMonths() {
+      const monthNames = ["Jan","Feb","Mar","Apr","Mei","Jun","Jul","Agu","Sep","Okt","Nov","Des"];
       const now = new Date();
-      const year = now.getMonth() >= 9 ? now.getFullYear() : now.getFullYear()-1; // if month >= October (9 index), start this year
-      const months = [];
-      const monthNames = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
-      for(let i=0;i<12;i++){
-        const mIndex = (9 + i) % 12; // 9 corresponds to October
-        const y = year + Math.floor((9 + i)/12);
-        months.push({key: mIndex+1, label: monthNames[mIndex] + ' ' + y});
+      const startYear = now.getMonth() >= 9 ? now.getFullYear() : now.getFullYear() - 1;
+      const arr = [];
+      for (let i = 0; i < 12; i++) {
+        const idx = (9 + i) % 12;
+        const year = startYear + Math.floor((9 + i) / 12);
+        arr.push(monthNames[idx] + " " + year);
       }
-      return months;
+      return arr;
     }
-    const MONTHS = generateMonthsFromOctober();
 
-    // Ensure each child has payment status map in localStorage
-    function ensureChildStatus(){
-      children = children.map(c=>{
-        if(!c.status) c.status = {}; // key: 'MM-YYYY' -> boolean
-        return c;
+    const MONTHS = generateMonths();
+
+    function renderHeader() {
+      const tr = document.getElementById("monthHeader");
+      tr.innerHTML = "<th>Nama</th>";
+      MONTHS.forEach(m => {
+        const th = document.createElement("th");
+        th.textContent = m;
+        tr.appendChild(th);
       });
-      save('kas_children', children);
+      const thTotal = document.createElement("th");
+      thTotal.textContent = "Total (Rp)";
+      tr.appendChild(thTotal);
     }
-    ensureChildStatus();
 
-    // ======= Rendering ========
-    function renderChildrenTable(){
-      const tbody = qs('childrenBody'); tbody.innerHTML = '';
-      children.forEach((c, idx)=>{
-        const tr = document.createElement('tr');
-        tr.innerHTML = `<td>${idx+1}</td><td>${escapeHtml(c.name)}</td><td>${escapeHtml(c.kelas||'')}</td>`;
-        MONTHS.forEach(m=>{
-          const key = keyForMonth(m);
-          const checked = !!c.status[key];
-          const td = document.createElement('td'); td.className='month-col'; td.style.textAlign='center';
-          const input = document.createElement('input'); input.type='checkbox'; input.disabled = !settings.admin;
-          input.checked = checked;
-          input.dataset.childId = c.id; input.dataset.monthKey = key;
-          input.addEventListener('change', onPaymentToggle);
-          td.appendChild(input);
+    function renderTable() {
+      const body = document.getElementById("childrenBody");
+      body.innerHTML = "";
+      children.forEach(c => {
+        let total = 0;
+        const tr = document.createElement("tr");
+        tr.innerHTML = `<td style="text-align:left">${escapeHtml(c.name)}</td>`;
+
+        MONTHS.forEach(m => {
+          const td = document.createElement("td");
+          td.style.textAlign = "center";
+          const cb = document.createElement("input");
+          cb.type = "checkbox";
+          cb.checked = !!c.status[m];
+          cb.disabled = !settings.admin;
+          cb.addEventListener("change", () => {
+            c.status[m] = cb.checked;
+            save("kas_children", children);
+            renderTable();
+          });
+          td.appendChild(cb);
           tr.appendChild(td);
+          if (c.status[m]) total += CHECK_AMOUNT;
         });
-        const actionTd = document.createElement('td');
-        if(settings.admin){
-          const del = document.createElement('button'); del.textContent='Hapus'; del.addEventListener('click',()=>{ if(confirm('Hapus anak ini?')){ deleteChild(c.id);} });
-          actionTd.appendChild(del);
-        } else {
-          actionTd.textContent = '';
-        }
-        tr.appendChild(actionTd);
-        tbody.appendChild(tr);
-      });
-      renderMonthHeaders();
-    }
 
-    function renderMonthHeaders(){
-      const thead = qs('childrenTable').querySelector('thead tr');
-      // remove existing month headers (between kelas and aksi)
-      // keep first 3 th and last th
-      while(thead.children.length > 4) thead.removeChild(thead.children[3]);
-      MONTHS.forEach(m=>{
-        const th = document.createElement('th'); th.className='sticky month-col'; th.textContent = m.label; thead.insertBefore(th, thead.children[3]);
+        const tdTotal = document.createElement("td");
+        tdTotal.textContent = total.toLocaleString("id-ID");
+        tdTotal.className = "right";
+        tr.appendChild(tdTotal);
+
+        body.appendChild(tr);
       });
     }
 
-    function renderIncome(){
-      const tbody = qs('incomeBody'); tbody.innerHTML = '';
-      income.forEach((it, i)=>{
-        const tr = document.createElement('tr');
-        tr.innerHTML = `<td>${i+1}</td><td>${escapeHtml(it.date)}</td><td>${escapeHtml(it.desc)}</td><td class='right'>${formatIDR(it.amount)}</td>`;
-        const actionTd = document.createElement('td');
-        if(settings.admin){ const del = document.createElement('button'); del.textContent='Hapus'; del.addEventListener('click',()=>{ if(confirm('Hapus pemasukan ini?')){ income.splice(i,1); save('kas_income',income); renderIncome(); } }); actionTd.appendChild(del); }
-        tr.appendChild(actionTd);
-        tbody.appendChild(tr);
-      });
-      const total = income.reduce((s,it)=>s+Number(it.amount||0),0);
-      qs('incomeTotal').textContent = formatIDR(total);
+    function escapeHtml(s) {
+      return s.replace(/[&<>"']/g, c => (
+        { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]
+      ));
     }
 
-    function renderExpense(){
-      const tbody = qs('expenseBody'); tbody.innerHTML = '';
-      expense.forEach((it, i)=>{
-        const tr = document.createElement('tr');
-        tr.innerHTML = `<td>${i+1}</td><td>${escapeHtml(it.date)}</td><td>${escapeHtml(it.desc)}</td><td class='right'>${formatIDR(it.amount)}</td>`;
-        const actionTd = document.createElement('td');
-        if(settings.admin){ const del = document.createElement('button'); del.textContent='Hapus'; del.addEventListener('click',()=>{ if(confirm('Hapus pengeluaran ini?')){ expense.splice(i,1); save('kas_expense',expense); renderExpense(); } }); actionTd.appendChild(del); }
-        tr.appendChild(actionTd);
-        tbody.appendChild(tr);
-      });
-      const total = expense.reduce((s,it)=>s+Number(it.amount||0),0);
-      qs('expenseTotal').textContent = formatIDR(total);
-    }
-
-    // ======= Event handlers ========
-    function onPaymentToggle(e){
-      const cb = e.target; const childId = Number(cb.dataset.childId); const monthKey = cb.dataset.monthKey;
-      const child = children.find(x=>x.id===childId);
-      if(!child) return;
-      if(cb.checked){
-        // mark paid
-        child.status[monthKey] = true;
-        // create income entry
-        const desc = `Kas ${child.name} ${monthKey}`;
-        const it = {date: new Date().toLocaleDateString('id-ID'), desc, amount: CHECK_AMOUNT, meta:{childId, month:monthKey}};
-        income.push(it); save('kas_income',income);
-        save('kas_children',children);
-        renderIncome();
-      } else {
-        // uncheck: remove status and remove corresponding income entry (match by meta childId+month)
-        delete child.status[monthKey];
-        // find and remove the income entry generated for this
-        for(let i=income.length-1;i>=0;i--){ const it=income[i]; if(it.meta && it.meta.childId===childId && it.meta.month===monthKey && Number(it.amount)===CHECK_AMOUNT){ income.splice(i,1); } }
-        save('kas_income',income);
-        save('kas_children',children);
-        renderIncome();
-      }
-      renderChildrenTable();
-    }
-
-    // ======= Admin actions ========
-    function enterAdmin(){
-      const pass = prompt('Masukkan sandi admin:');
-      if(pass === ADMIN_PASSWORD){ settings.admin = true; save('kas_settings',settings); applyAdminMode(); alert('Berhasil masuk sebagai admin'); }
-      else alert('Sandi salah');
-    }
-    function exitAdmin(){ settings.admin = false; save('kas_settings',settings); applyAdminMode(); }
-
-    function applyAdminMode(){
-      if(settings.admin){
-        qs('adminBtn').classList.add('hidden'); qs('logoutBtn').classList.remove('hidden'); qs('addChildBtn').classList.remove('hidden'); qs('addExpenseBtn').classList.remove('hidden');
-      } else {
-        qs('adminBtn').classList.remove('hidden'); qs('logoutBtn').classList.add('hidden'); qs('addChildBtn').classList.add('hidden'); qs('addExpenseBtn').classList.add('hidden');
-      }
-      renderChildrenTable(); renderIncome(); renderExpense();
-    }
-
-    function addChild(){
-      const name = prompt('Nama anak:'); if(!name) return; const kelas = prompt('Kelas:')||'';
-      const id = (children.reduce((m,c)=>Math.max(m,c.id),0) || 0) + 1;
-      children.push({id,name,kelas,status:{}}); save('kas_children',children); renderChildrenTable();
-    }
-
-    function deleteChild(id){
-      children = children.filter(c=>c.id!==id);
-      // remove associated income entries
-      income = income.filter(it => !(it.meta && it.meta.childId===id));
-      save('kas_children',children); save('kas_income',income);
-      renderChildrenTable(); renderIncome();
-    }
-
-    function addExpense(){
-      const desc = prompt('Deskripsi pengeluaran:'); if(!desc) return; const amt = Number(prompt('Nominal (angka):')); if(!amt) return; const it = {date:new Date().toLocaleDateString('id-ID'), desc, amount:amt}; expense.push(it); save('kas_expense',expense); renderExpense();
-    }
-
-    // ======= Helpers ========
-    function keyForMonth(m){ // returns label used to store, e.g. 'Okt 2025'
-      return m.label;
-    }
-    function escapeHtml(s){ if(!s) return ''; return String(s).replace(/[&"'<>]/g,function(a){return {'&':'&amp;','"':'&quot;',"'":'&#39;','<':'&lt;','>':'&gt;'}[a];}); }
-
-    // ======= Wire up buttons ========
-    qs('adminBtn').addEventListener('click', enterAdmin);
-    qs('logoutBtn').addEventListener('click', ()=>{ if(confirm('Keluar dari mode admin?')) exitAdmin(); });
-    qs('addChildBtn').addEventListener('click', addChild);
-    qs('addExpenseBtn').addEventListener('click', addExpense);
-
-    // ======= Init render ========
-    applyAdminMode();
-    renderChildrenTable(); renderIncome(); renderExpense();
-
-    // ======= Save on unload (defensive) ========
-    window.addEventListener('beforeunload', ()=>{
-      save('kas_children',children); save('kas_income',income); save('kas_expense',expense); save('kas_settings',settings);
+    document.getElementById("adminBtn").addEventListener("click", () => {
+      const pass = prompt("Masukkan sandi admin:");
+      if (pass === ADMIN_PASSWORD) {
+        settings.admin = true;
+        save("kas_settings", settings);
+        applyAdminMode();
+        alert("Berhasil masuk sebagai admin");
+      } else alert("Sandi salah");
     });
+
+    document.getElementById("logoutBtn").addEventListener("click", () => {
+      settings.admin = false;
+      save("kas_settings", settings);
+      applyAdminMode();
+    });
+
+    function applyAdminMode() {
+      document.getElementById("adminBtn").classList.toggle("hidden", settings.admin);
+      document.getElementById("logoutBtn").classList.toggle("hidden", !settings.admin);
+      renderTable();
+    }
+
+    renderHeader();
+    applyAdminMode();
   </script>
 </body>
 </html>
