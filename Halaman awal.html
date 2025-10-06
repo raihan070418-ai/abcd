@@ -5,91 +5,121 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Assalam - Halaman Utama</title>
   <style>
-    :root {
-      --blue-dark: #0a1930;  /* Biru navy gelap elegan */
-      --blue-medium: #1e3a8a; /* Biru sedang modern */
-      --blue-light: #3b82f6;  /* Biru terang lembut */
-      --text-color: #f0f6ff;
-      --glass-bg: rgba(255, 255, 255, 0.05);
-      --radius: 16px;
-      --transition: all 0.3s ease;
-    }
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
 
     * {
-      box-sizing: border-box;
       margin: 0;
       padding: 0;
+      box-sizing: border-box;
     }
 
     body {
-      height: 100vh;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #0a0a0a, #1a1a1a, #2b2b2b);
+      color: #f5f5f5;
+      min-height: 100vh;
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
-      font-family: 'Poppins', sans-serif;
-      background: linear-gradient(135deg, var(--blue-dark), var(--blue-medium), var(--blue-light));
-      background-attachment: fixed;
-      background-size: cover;
-      background-position: center;
-      color: var(--text-color);
+      overflow: hidden;
+      animation: fadeIn 1s ease-in-out;
     }
 
-    .container {
-      background: var(--glass-bg);
-      border-radius: var(--radius);
-      padding: 40px;
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    header {
+      position: absolute;
+      top: 20px;
+      left: 40px;
+      font-weight: 700;
+      font-size: 20px;
+      color: #e0e0e0;
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    header span {
+      color: #00bfff;
+    }
+
+    main {
       text-align: center;
-      backdrop-filter: blur(12px) saturate(160%);
-      box-shadow: 0 8px 25px rgba(9, 7, 7, 0.155);
-      width: 90%;
-      max-width: 500px;
+      margin-top: 60px;
     }
 
     h1 {
-      font-size: 28px;
+      font-size: 42px;
+      font-weight: 700;
+      color: #fff;
       margin-bottom: 12px;
-      letter-spacing: 1px;
     }
 
     p {
-      font-size: 14px;
-      opacity: 0.85;
-      margin-bottom: 24px;
+      color: #cfcfcf;
+      font-size: 16px;
+      margin-bottom: 40px;
     }
 
     .buttons {
       display: flex;
       flex-direction: column;
+      align-items: center;
       gap: 16px;
     }
 
     button {
-      background: linear-gradient(135deg, #2563eb, #1d4ed8);
-      border: none;
-      border-radius: 12px;
-      padding: 14px 20px;
+      background: #2d2d2d;
+      color: #f5f5f5;
+      border: 1px solid #3f3f3f;
+      border-radius: 10px;
+      padding: 14px 40px;
       font-size: 16px;
-      color: #fff;
       font-weight: 600;
+      letter-spacing: 0.5px;
       cursor: pointer;
-      transition: var(--transition);
+      transition: all 0.3s ease;
+      width: 220px;
     }
 
     button:hover {
-      transform: translateY(-3px);
-      background: linear-gradient(135deg, #3b82f6, #2563eb);
-      box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+      background: #3a3a3a;
+      box-shadow: 0 4px 20px rgba(0, 191, 255, 0.15);
+      transform: translateY(-2px);
     }
 
     footer {
-      margin-top: 20px;
-      font-size: 12px;
-      opacity: 0.7;
+      position: absolute;
+      bottom: 20px;
+      font-size: 13px;
+      color: #999;
+    }
+
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 32px;
+      }
+      button {
+        width: 180px;
+        font-size: 15px;
+      }
+      header {
+        left: 20px;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="container">
+  <header>
+    <div><span>Assalam</span>.com</div>
+  </header>
+
+  <main>
     <h1>Catatan Kas Assalam</h1>
     <p>Pilih kategori kas di bawah ini:</p>
     <div class="buttons">
@@ -97,7 +127,8 @@
       <button onclick="location.href='kas-assalam.html'">Kas Assalam</button>
       <button onclick="location.href='kas-putri.html'">Kas Putri</button>
     </div>
-    <footer>© 2025 Assalam</footer>
-  </div>
+  </main>
+
+  <footer>© 2025 Assalam. All rights reserved.</footer>
 </body>
 </html>
