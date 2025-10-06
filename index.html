@@ -2,147 +2,136 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <title>Kas Assalam | Bendahara</title>
+  <title>Assalam.com</title>
   <style>
-    /* ============ GLOBAL ============ */
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: 'Poppins', 'Segoe UI', sans-serif;
+    body { 
+      font-family: 'Segoe UI', Tahoma, sans-serif; 
       margin: 0;
-      background: linear-gradient(145deg, #0d0d0d, #1a1a1a);
-      color: #f5f5f5;
-      min-height: 100vh;
+      background: linear-gradient(135deg, #ffffff, #e6f0ff, #cce0ff);
+      color: #222;
     }
 
-    h1, h2, h3 {
-      color: #fff;
-      text-align: center;
-    }
-
-    /* ============ HEADER ============ */
     header {
       display: flex;
       align-items: center;
       gap: 15px;
       padding: 20px;
-      background: #0f0f0f;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
-      border-bottom: 1px solid #222;
+      background: linear-gradient(135deg, #0066cc, #3399ff);
+      color: white;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.2);
     }
 
     header img {
       width: 70px;
       height: 70px;
       border-radius: 50%;
+      border: 3px solid white;
       object-fit: cover;
-      border: 2px solid #444;
     }
 
-    .judul h1 {
+    header .judul h1 {
       margin: 0;
       font-size: 22px;
-      color: #00aaff;
-      font-weight: 700;
+      font-weight: bold;
     }
 
-    .judul p {
-      margin: 5px 0 0;
-      color: #aaa;
+    header .judul p {
+      margin: 3px 0 0;
       font-size: 14px;
+      opacity: 0.9;
     }
 
-    /* ============ BUTTONS ============ */
     .controls {
       display: flex;
       justify-content: center;
       gap: 10px;
-      margin: 20px 0;
+      margin: 15px;
       flex-wrap: wrap;
     }
 
     button {
-      background: #1f1f1f;
-      border: 1px solid #333;
+      background: linear-gradient(135deg, #0066cc, #3399ff);
+      border: none;
       padding: 10px 18px;
-      border-radius: 10px;
-      color: #eee;
-      font-weight: 600;
+      border-radius: 8px;
+      color: white;
+      font-weight: bold;
       cursor: pointer;
-      transition: all 0.3s ease;
-      box-shadow: 3px 3px 6px #0a0a0a, -3px -3px 6px #242424;
+      transition: 0.3s;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.15);
     }
 
     button:hover {
-      background: #2b2b2b;
+      background: linear-gradient(135deg, #0052a3, #1a8cff);
       transform: scale(1.05);
-      box-shadow: inset 2px 2px 4px #0a0a0a, inset -2px -2px 4px #242424;
     }
 
-    /* ============ TABEL ============ */
-    table {
-      width: 95%;
-      margin: 25px auto;
-      border-collapse: collapse;
-      background: #141414;
+    #bendaharaMenu { 
+      margin: 20px; 
+      display: none; 
+      text-align: center;
+    }
+
+    #bendaharaMenu input {
+      padding: 8px;
+      border-radius: 6px;
+      border: 1px solid #aaa;
+      width: 200px;
+      margin-bottom: 10px;
+    }
+
+    table { 
+      border-collapse: collapse; 
+      margin: 20px auto; 
+      width: 95%; 
+      background: white;
       border-radius: 12px;
       overflow: hidden;
-      box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.6);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     }
 
-    th, td {
-      padding: 10px;
-      text-align: center;
-      border: 1px solid #222;
+    th, td { 
+      border: 1px solid #ddd; 
+      padding: 10px; 
+      text-align: center; 
     }
 
-    th {
-      background: #1e1e1e;
-      color: #00aaff;
-      font-size: 13px;
+    th { 
+      background: linear-gradient(135deg, #0073e6, #3399ff);
+      color: white;
+      font-size: 14px;
       text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
 
     td {
-      color: #ddd;
-      background: #121212;
+      background: #f9fcff;
+      font-size: 14px;
     }
 
-    tr:nth-child(even) td {
-      background: #181818;
-    }
+    tr:nth-child(even) td { background: #f1f7ff; }
+    tr:hover td { background: #e6f2ff; transition: 0.3s; }
 
-    tr:hover td {
-      background: #202020;
-      transition: 0.3s;
-    }
+    input[type=checkbox] { transform: scale(1.2); cursor: pointer; }
 
-    input[type=checkbox] {
-      transform: scale(1.2);
-      cursor: pointer;
-      accent-color: #00aaff;
-    }
+    .total-merah { color: #e60000; font-weight: bold; }
+    .total-kuning { color: #e6a700; font-weight: bold; }
+    .total-hijau { color: #009933; font-weight: bold; }
 
-    /* ============ TOTAL STYLE ============ */
-    .total-merah { color: #ff4d4d; font-weight: bold; }
-    .total-kuning { color: #ffc107; font-weight: bold; }
-    .total-hijau { color: #4caf50; font-weight: bold; }
-
-    /* ============ SALDO BOX ============ */
+    /* saldoBox */
     #saldoBox {
       display: flex;
       justify-content: center;
       gap: 40px;
-      margin: 25px auto;
-      background: #141414;
-      padding: 15px 25px;
-      border-radius: 15px;
-      box-shadow: 4px 4px 8px #0a0a0a, -4px -4px 8px #242424;
-      width: fit-content;
+      margin: 20px auto;
       font-weight: bold;
-      color: #00aaff;
+      font-size: 16px;
+      color: #004080;
+      background: white;
+      padding: 12px 20px;
+      border-radius: 10px;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.15);
+      width: fit-content;
     }
 
     #saldoBox div {
@@ -151,50 +140,87 @@
       gap: 6px;
     }
 
-    /* ============ FOOTER ============ */
     footer {
-      margin-top: 40px;
-      padding: 20px;
+      margin-top: 30px;
+      padding: 15px 25px;
       font-size: 13px;
-      background: #0f0f0f;
-      border-top: 1px solid #222;
-      color: #999;
-      text-align: center;
+      color: #333;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #f0f6ff;
+      border-top: 2px solid #cce0ff;
     }
 
-    footer strong {
-      color: #00aaff;
-    }
+    .rekening { text-align: left; font-size: 14px; line-height: 1.6; }
+    .copy { text-align: right; font-size: 12px; color: #666; }
 
-    /* ============ RESPONSIVE ============ */
-    @media (max-width: 768px) {
-      header {
-        flex-direction: column;
-        text-align: center;
-      }
+    /* Responsif untuk HP */
+@media (max-width: 768px) {
+  header {
+    flex-direction: column;
+    text-align: center;
+  }
 
-      .controls {
-        flex-direction: column;
-        gap: 10px;
-      }
+  header img {
+    width: 60px;
+    height: 60px;
+  }
 
-      button {
-        width: 90%;
-      }
+  header .judul h1 {
+    font-size: 18px;
+  }
 
-      table {
-        font-size: 12px;
-        display: block;
-        overflow-x: auto;
-      }
+  header .judul p {
+    font-size: 13px;
+  }
 
-      #saldoBox {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 8px;
-        width: 90%;
-      }
-    }
+  .controls {
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+
+  button {
+    width: 90%;
+    font-size: 14px;
+    padding: 10px;
+  }
+
+  table {
+    width: 100%;
+    font-size: 12px;
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  th, td {
+    padding: 8px;
+  }
+
+  #saldoBox {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    text-align: left;
+    width: 90%;
+  }
+
+  footer {
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+    gap: 10px;
+    font-size: 12px;
+  }
+
+  .rekening, .copy {
+    text-align: left;
+    width: 100%;
+  }
+}
+
   </style>
 </head>
 <body>
@@ -203,10 +229,10 @@
     <img src="assalam.jpg" alt="Foto Profil">
     <div class="judul">
       <h1>Bendahara Assalam</h1>
-      <p>Kelola iuran dan pengeluaran Kas Organisasi Assalam</p>
+      <p>Kelola iuran, saldo tambahan, dan pengeluaran Kas Organisasi Assalam</p>
     </div>
   </header>
-
+  
   <div class="controls">
     <button id="toggleMode">Masuk Sebagai Admin</button>
     <button id="gantiPassword" style="display:none;">Ganti Sandi</button>
@@ -215,10 +241,11 @@
     <button id="tambahPengeluaran" style="display:none;">Tambah Pengeluaran</button>
   </div>
 
-  <div id="bendaharaMenu" style="text-align:center; display:none;">
-    <input type="text" id="cariAnak" placeholder="Cari nama anak..." style="padding:8px; border-radius:8px; border:none; background:#1a1a1a; color:#fff;">
+  <div id="bendaharaMenu">
+    <input type="text" id="cariAnak" placeholder="Cari nama anak...">
   </div>
 
+  <!-- Tabel Iuran Anak -->
   <table id="kasTable">
     <thead>
       <tr>
@@ -243,42 +270,52 @@
     <tbody></tbody>
   </table>
 
+  
+  <!-- Tabel Saldo Lain -->
+   <h2>Pemasukan</h2>
+<table id="lainTable" style="display:none;">
+  <thead>
+    <tr>
+      <th>No</th>
+      <th>Keterangan</th>
+      <th>Jumlah</th>
+        <th class="aksi-col" style="display:none;">Aksi</th>
+    </tr>
+  </thead>
+  <tbody></tbody>
+</table>
+
+
+  <!-- Tabel Pengeluaran -->
+   <H2>Pengluaran</H2>
+  <table id="pengeluaranTable" style="display:none;">
+    <thead>
+      <tr>
+        <th>No</th>
+        <th>Keterangan</th>
+        <th>Jumlah</th>
+        <th class="aksi-col" style="display:none;">Aksi</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <!-- saldoBox -->
   <div id="saldoBox">
-    <div>💰 Saldo Masuk: Rp <span id="totalSaldo">0</span></div>
-    <div>💸 Saldo Keluar: Rp <span id="totalKeluar">0</span></div>
-    <div>🏦 Saldo Terkini: Rp <span id="saldoTerkini">0</span></div>
+    <div>💰 <span>Saldo Masuk: Rp <span id="totalSaldo">0</span></span></div>
+    <div>💸 <span>Saldo Keluar: Rp <span id="totalKeluar">0</span></span></div>
+    <div>🏦 <span>Saldo Terkini: Rp <span id="saldoTerkini">0</span></span></div>
   </div>
 
   <footer>
-    <div>
-      <strong>Rekening Dana:</strong> 0856-6423-8134 (a.n Muhammad Raihan)<br>
-      <strong>Kirim Bukti Transfer ke Admin:</strong> 0856-6423-8134 (WhatsApp)<br><br>
-      © 2025 Assalam. All rights reserved.
+    <div class="rekening">
+      <strong>Rekening Dana:</strong> 0856-6423-8134(a.n Muhammad Raihan)<br>
+      <strong>Kirim Bukti Transfer ke Admin:</strong> 0856-6423-8134 (WhatsApp)
+    </div>
+    <div class="copy">
+      Kas Assalam © 2025 - Bendahara 2025/Muhammad Raihan & Luqmanul Hakim
     </div>
   </footer>
-
-  <!-- SCRIPT kamu tetap sama seperti sebelumnya -->
-  <script>
-    /* --- Script kamu disini tanpa perubahan --- */
-  </script>
-</body>
-  </style>
-</head>
-<body>
-
- 
-  
-  <div class="controls">
-  
-    <button id="gantiPassword" style="display:none;">Ganti Sandi</button>
-    <button id="tambahAnak" style="display:none;">Tambah Anak</button>
-    <button id="tambahSaldoLain" style="display:none;">Tambah Saldo Lain</button>
-    <button id="tambahPengeluaran" style="display:none;">Tambah Pengeluaran</button>
-  </div>
-
-  <div id="bendaharaMenu">
-    <input type="text" id="cariAnak" placeholder="Cari nama anak...">
-  </div>
 
 <script>
 let data = JSON.parse(localStorage.getItem("kasData")) || [
