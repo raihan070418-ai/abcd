@@ -357,12 +357,33 @@ input[type="checkbox"]:checked {
           chk.type = 'checkbox';
           chk.checked = !!data.santri[nama][m];
           chk.disabled = !isAdmin;
-          chk.addEventListener('change', ()=>{
-            data.santri[nama][m] = chk.checked;
-            saveAll();
-            renderSantri();
-            renderTotals();
-          });
+         chk.addEventListener('change', ()=>{
+  data.santri[nama][m] = chk.checked;
+  saveAll();
+
+  // === Tambahan otomatis masuk ke pemasukan ===
+  if (chk.checked) {
+    const tanggal = new Date().toISOString().slice(0,10);
+    data.pemasukan.push({
+      tanggal: tanggal,
+      keterangan: `Iuran bulanan ${nama} (${m})`,
+      pj: nama,
+      jumlah: PER_CEK
+    });
+    saveAll();
+  } else {
+    // kalau checkbox dibatalkan, hapus pemasukan terkait
+    data.pemasukan = data.pemasukan.filter(r =>
+      !(r.keterangan === `Iuran bulanan ${nama} (${m})` && r.jumlah === PER_CEK)
+    );
+    saveAll();
+  }
+
+  renderSantri();
+  renderInOut();
+  renderTotals();
+});
+
           td.appendChild(chk);
           tr.appendChild(td);
           if (chk.checked) personTotal += PER_CEK;
