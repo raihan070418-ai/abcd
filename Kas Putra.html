@@ -449,27 +449,39 @@
       saveAll(); $('outDate').value=''; $('outKeterangan').value=''; $('outPJ').value=''; $('outJumlah').value='';
       renderInOut(); renderTotals();
     });
+$('addAnakBtn').addEventListener('click', ()=>{
+  if (!isAdmin) return alert('Hanya admin yang dapat menambah anak.');
+  const nama = $('namaBaru').value.trim();
+  if (!nama) return alert('Nama tidak boleh kosong.');
+  if (data.santri[nama]) return alert('Nama sudah ada di daftar.');
+  data.santri[nama] = {};
+  saveAll();
+  $('namaBaru').value = '';
+  renderSantri();
+  alert('Santri baru berhasil ditambahkan!');
+});
 
     /* ---------- Admin login ---------- */
-    $('loginBtn').addEventListener('click', ()=>{
-      const pass = prompt('Masukkan sandi admin:');
-      if (pass === ADMIN_PASSWORD){
-        isAdmin = true;
-        $('loginBtn').style.display='none';
-        $('logoutBtn').style.display='inline-block';
-        document.querySelectorAll('#inForm, #outForm').forEach(e=> e.style.display='flex');
-        renderSantri(); renderInOut();
-        alert('Mode admin aktif.');
-      } else alert('Sandi salah.');
-    });
+   $('loginBtn').addEventListener('click', ()=>{
+  const pass = prompt('Masukkan sandi admin:');
+  if (pass === ADMIN_PASSWORD){
+    isAdmin = true;
+    $('loginBtn').style.display='none';
+    $('logoutBtn').style.display='inline-block';
+    document.querySelectorAll('#inForm, #outForm, #addAnakForm').forEach(e=> e.style.display='flex');
+    renderSantri(); renderInOut();
+    alert('Mode admin aktif.');
+  } else alert('Sandi salah.');
+});
+$('logoutBtn').addEventListener('click', ()=>{
+  isAdmin = false;
+  $('loginBtn').style.display='inline-block';
+  $('logoutBtn').style.display='none';
+  document.querySelectorAll('#inForm, #outForm, #addAnakForm').forEach(e=> e.style.display='none');
+  renderSantri(); renderInOut();
+});
 
-    $('logoutBtn').addEventListener('click', ()=>{
-      isAdmin = false;
-      $('loginBtn').style.display='inline-block';
-      $('logoutBtn').style.display='none';
-      document.querySelectorAll('#inForm, #outForm').forEach(e=> e.style.display='none');
-      renderSantri(); renderInOut();
-    });
+
 
     /* toggle forms */
     $('toggleForms').addEventListener('click', ()=>{
