@@ -5,134 +5,99 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Assalam - Halaman Utama</title>
   <style>
-    :root{
-      --deep-blue-1: #021428; /* sangat gelap */
-      --deep-blue-2: #042a5f; /* sedang */
-      --accent: #1fb6ff;
-      --glass-bg: rgba(255,255,255,0.06);
-      --radius: 14px;
-      --btn-padding: 14px 26px;
-      --btn-font: 16px;
+    :root {
+      --blue-dark: #0a1930;  /* Biru navy gelap elegan */
+      --blue-medium: #1e3a8a; /* Biru sedang modern */
+      --blue-light: #3b82f6;  /* Biru terang lembut */
+      --text-color: #f0f6ff;
+      --glass-bg: rgba(255, 255, 255, 0.05);
+      --radius: 16px;
+      --transition: all 0.3s ease;
     }
 
-    /* Reset kecil */
-    *{box-sizing:border-box;margin:0;padding:0}
-    html,body{height:100%}
-
-    body{
-      font-family: Inter, Roboto, 'Segoe UI', system-ui, -apple-system, 'Noto Sans', sans-serif;
-      -webkit-font-smoothing:antialiased;
-      -moz-osx-font-smoothing:grayscale;
-      color:#e9f2ff;
-      min-height:100%;
-
-      /* Background: foto + modern deep-blue gradient overlay */
-      background-image:
-        linear-gradient(180deg, rgba(2,20,40,0.55), rgba(4,42,95,0.65)),
-        url('assalam.jpg'); /* ganti dengan foto Anda */
-      background-size:cover;
-      background-position:center;
-      background-repeat:no-repeat;
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
 
-    /* tengah layar */
-    .wrap{
-      min-height:100vh;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      padding:32px;
+    body {
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, var(--blue-dark), var(--blue-medium), var(--blue-light));
+      background-attachment: fixed;
+      background-size: cover;
+      background-position: center;
+      color: var(--text-color);
     }
 
-    .card{
-      width:min(880px, 96%);
-      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
-      border-radius:var(--radius);
-      padding:36px;
-      box-shadow:0 10px 30px rgba(11, 21, 49, 0.6);
-      backdrop-filter: blur(6px) saturate(120%);
-      border:1px solid rgba(255,255,255,0.04);
-      display:flex;
-      flex-direction:column;
-      gap:18px;
-      align-items:center;
+    .container {
+      background: var(--glass-bg);
+      border-radius: var(--radius);
+      padding: 40px;
+      text-align: center;
+      backdrop-filter: blur(12px) saturate(160%);
+      box-shadow: 0 8px 25px rgba(9, 7, 7, 0.155);
+      width: 90%;
+      max-width: 500px;
     }
 
-    header h1{
-      font-size:28px;
-      letter-spacing:0.2px;
-      margin-bottom:6px;
-      color: #f2fbff;
-    }
-    header p{
-      color: rgba(235,245,255,0.85);
-      margin-bottom:8px;
-      font-size:14px;
+    h1 {
+      font-size: 28px;
+      margin-bottom: 12px;
+      letter-spacing: 1px;
     }
 
-    .buttons{
-      display:flex;
-      gap:18px;
-      width:100%;
-      justify-content:center;
-      flex-wrap:wrap;
-      margin-top:8px;
+    p {
+      font-size: 14px;
+      opacity: 0.85;
+      margin-bottom: 24px;
     }
 
-    .btn{
-      background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
-      border: 1px solid rgba(255,255,255,0.06);
-      padding:var(--btn-padding);
-      border-radius:12px;
-      min-width:170px;
-      text-align:center;
-      font-weight:600;
-      font-size:var(--btn-font);
-      color: #e8f6ff;
-      cursor:pointer;
-      transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
-      box-shadow: 0 6px 20px rgba(6,28,66,0.35);
+    .buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
     }
 
-    .btn:hover{
-      transform: translateY(-4px);
-      box-shadow: 0 12px 30px rgba(6,28,66,0.45);
+    button {
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
+      border: none;
+      border-radius: 12px;
+      padding: 14px 20px;
+      font-size: 16px;
+      color: #fff;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
     }
 
-    /* accent style untuk satu tombol (opsional) */
-    .btn.primary{
-      background: linear-gradient(135deg, rgba(31,182,255,0.12), rgba(31,182,255,0.06));
-      border: 1px solid rgba(31,182,255,0.18);
-      color: #dff6ff;
+    button:hover {
+      transform: translateY(-3px);
+      background: linear-gradient(135deg, #3b82f6, #2563eb);
+      box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
     }
 
-    /* responsive */
-    @media (max-width:560px){
-      header h1{font-size:20px}
-      .btn{min-width:140px;padding:12px 18px;font-size:15px}
-      .card{padding:22px}
+    footer {
+      margin-top: 20px;
+      font-size: 12px;
+      opacity: 0.7;
     }
-
-    /* small footer note */
-    .note{font-size:12px;color:rgba(230,245,255,0.7);margin-top:6px}
   </style>
 </head>
 <body>
-  <div class="wrap">
-    <main class="card" role="main">
-      <header>
-        <h1>Bendahara Organisasi Assalam</h1>
-        <p>Pilih kategori kas — hanya tampilan. Ganti foto latar di file <code>background.jpg</code>.</p>
-      </header>
-
-      <nav class="buttons" aria-label="Menu Kas">
-        <button class="btn" onclick="location.href='kas-putra.html'">Kas Putra</button>
-        <button class="btn primary" onclick="location.href='kas-assalam.html'">Kas Assalam</button>
-        <button class="btn" onclick="location.href='kas-putri.html'">Kas Putri</button>
-      </nav>
-
-      <div class="note"> </code> </div>
-    </main>
+  <div class="container">
+    <h1>Catatan Kas Assalam</h1>
+    <p>Pilih kategori kas di bawah ini:</p>
+    <div class="buttons">
+      <button onclick="location.href='kas-putra.html'">Kas Putra</button>
+      <button onclick="location.href='kas-assalam.html'">Kas Assalam</button>
+      <button onclick="location.href='kas-putri.html'">Kas Putri</button>
+    </div>
+    <footer>© 2025 Assalam</footer>
   </div>
 </body>
 </html>
