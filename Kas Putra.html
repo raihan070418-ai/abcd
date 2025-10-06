@@ -1,287 +1,509 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <title>Kas Putra</title>
+  <meta charset="utf-8" />
+  <title>Kas Putra — Assalam</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <style>
-    body {
-      font-family: 'Poppins', sans-serif;
-      background: radial-gradient(circle at center, #1b1b1b 0%, #0d0d0d 100%);
-      color: #f1f1f1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      min-height: 100vh;
-      margin: 0;
+    /* ---------- Theme: dark elegan ---------- */
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap');
+    :root{
+      --bg-1:#0d0d0d;
+      --bg-2:#161616;
+      --card:#1b1b1b;
+      --muted:#a8a8a8;
+      --accent:#00c8ff;
+      --accent2:#00ffc3;
+      --danger:#ff5c5c;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      min-height:100vh;
+      font-family:'Poppins',system-ui,Segoe UI,Arial;
+      background: radial-gradient(circle at center, #1a1a1a 0%, #0d0d0d 100%);
+      color:#eaeaea;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      padding:28px 18px;
     }
 
-    header {
-      width: 100%;
-      text-align: center;
-      padding: 30px 0 10px;
-    }
-
-    header h1 {
-      color: #00c8ff;
-      font-size: 2rem;
-      margin-bottom: 10px;
-    }
-
-    header p {
-      color: #ccc;
-      font-size: 1rem;
-      margin: 0;
-    }
+    header{ width:100%; max-width:1200px; text-align:center; margin-bottom:18px;}
+    header h1{ color:var(--accent); margin:0; font-size:1.9rem; letter-spacing:0.6px;}
+    header p{ margin:6px 0 0; color:var(--muted); }
 
     .container {
-      background: #161616;
-      box-shadow: 0 0 20px rgba(0, 255, 255, 0.15);
-      border-radius: 15px;
-      padding: 25px;
-      width: 90%;
-      max-width: 1100px;
-      margin: 20px auto;
+      width:100%;
+      max-width:1200px;
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
+      border-radius:14px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.6);
+      padding:22px;
+      border:1px solid rgba(255,255,255,0.02);
     }
 
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 15px;
-      background: #1f1f1f;
-      border-radius: 10px;
-      overflow: hidden;
+    .top-actions{
+      display:flex;
+      gap:10px;
+      justify-content:flex-end;
+      align-items:center;
+      margin-bottom:12px;
+    }
+    .top-actions .btn {
+      background:var(--accent);
+      color:#000;
+      border:none;
+      padding:9px 14px;
+      border-radius:10px;
+      font-weight:600;
+      cursor:pointer;
+      transition:transform .15s ease;
+    }
+    .top-actions .btn:active{ transform:scale(.98) }
+    .top-actions .btn.ghost{
+      background:transparent; color:var(--muted); border:1px solid rgba(255,255,255,0.04);
     }
 
-    th, td {
-      border: 1px solid #333;
-      padding: 8px;
-      text-align: center;
+    /* table area */
+    .main-grid{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap:18px;
     }
 
-    th {
-      background: #00c8ff;
-      color: #000;
+    /* Data anak (full width) */
+    .card{
+      background:var(--card);
+      border-radius:12px;
+      padding:14px;
+      box-shadow: 0 6px 20px rgba(0,200,255,0.03);
+      border:1px solid rgba(255,255,255,0.02);
+    }
+    .card h2{ margin:0 0 8px 0; color:var(--accent2); font-size:1.05rem; }
+    .small{ color:var(--muted); font-size:0.92rem; margin-bottom:8px; }
+
+    /* ceklis table styling */
+    table{ width:100%; border-collapse:collapse; background:transparent; }
+    th, td{
+      padding:8px 6px; text-align:center;
+      border-bottom:1px solid rgba(255,255,255,0.03);
+      font-size:0.95rem;
+    }
+    thead th{
+      background:var(--accent); color:#000; font-weight:700;
+      position:sticky; top:0;
+    }
+    tbody tr:hover{ background: rgba(255,255,255,0.01); }
+
+    input[type="checkbox"]{ transform:scale(1.25); cursor:pointer; }
+
+    .row-actions button{ padding:6px 9px; border-radius:8px; border:none; cursor:pointer; }
+    .hapus-btn{ background:var(--danger); color:#fff; }
+
+    /* income/expense side-by-side */
+    .dual{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:16px;
+      margin-top:10px;
     }
 
-    td {
-      color: #e4e4e4;
-    }
+    .mini-table{ background:transparent; overflow:auto; }
+    .mini-table table th{ background: rgba(0,200,255,0.9); color:#000; }
+    .mini-table table td{ text-align:left; padding:8px 10px; }
 
-    input[type="checkbox"] {
-      transform: scale(1.3);
-      cursor: pointer;
+    .form-inline{
+      display:flex; gap:8px; align-items:center; margin-bottom:10px; flex-wrap:wrap;
     }
-
-    .actions {
-      margin-top: 15px;
-      text-align: center;
+    .form-inline input[type="text"],
+    .form-inline input[type="date"],
+    .form-inline input[type="number"]{
+      padding:8px 10px; border-radius:8px; border:1px solid rgba(255,255,255,0.04);
+      background:#121212; color:#fff; min-width:120px;
     }
+    .form-inline input[type="number"]{ text-align:right; }
 
-    button {
-      background: #00c8ff;
-      color: #000;
-      font-weight: 600;
-      border: none;
-      padding: 10px 18px;
-      border-radius: 8px;
-      margin: 4px;
-      cursor: pointer;
-      transition: all 0.25s ease;
+    .totals{
+      display:flex; gap:12px; justify-content:space-between; align-items:center; margin-top:12px;
     }
+    .totals .box{ background:rgba(255,255,255,0.02); padding:10px 12px; border-radius:8px; }
+    .totals .box strong{ display:block; color:var(--accent2); font-size:1.05rem; }
+    .saldo-box{ text-align:right; }
 
-    button:hover {
-      background: #00a6d9;
-      transform: scale(1.05);
-    }
+    footer{ margin-top:18px; color:var(--muted); text-align:center; font-size:0.9rem; }
 
-    #addForm {
-      text-align: center;
-      margin: 10px 0;
-    }
-
-    input[type="text"] {
-      background: #2a2a2a;
-      border: 1px solid #444;
-      color: white;
-      padding: 8px;
-      border-radius: 8px;
-      width: 180px;
-    }
-
-    .hapus-btn {
-      background: #ff4d4d;
-      color: white;
-      padding: 6px 10px;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      transition: 0.25s;
-    }
-
-    .hapus-btn:hover {
-      background: #d93636;
-    }
-
-    #totalKas {
-      text-align: right;
-      margin-top: 10px;
-      font-weight: bold;
-      color: #00ffc3;
-      font-size: 1.2em;
-    }
-
-    footer {
-      margin-top: auto;
-      padding: 15px 0;
-      color: #666;
-      font-size: 0.9em;
+    /* responsive */
+    @media (max-width:900px){
+      .dual{ grid-template-columns: 1fr; }
+      .top-actions{ justify-content:center; margin-bottom:14px; }
     }
   </style>
 </head>
 <body>
+
   <header>
-    <h1>Kas Putra</h1>
-    <p>Data pembayaran kas santri putra</p>
+    <h1>Assalam.com</h1>
+    <p>Kas Putra — Sistem pencatatan pembayaran & arus kas</p>
   </header>
 
   <div class="container">
-    <div class="actions">
-      <button id="loginBtn">Masuk Admin</button>
-      <button id="logoutBtn" style="display:none;">Keluar Admin</button>
+    <div class="top-actions">
+      <button id="loginBtn" class="btn">Masuk Admin</button>
+      <button id="logoutBtn" class="btn" style="display:none;">Keluar Admin</button>
     </div>
 
-    <div id="addForm" style="display:none;">
-      <input type="text" id="newName" placeholder="Nama baru...">
-      <button id="addBtn">+ Tambah Anak</button>
+    <!-- DATA ANAK (ceklist) -->
+    <div class="card" id="cekCard">
+      <h2>Daftar Santri & Pembayaran Bulanan</h2>
+      <p class="small">Setiap ceklis bernilai Rp 3.000 (hanya admin yang dapat mengubah)</p>
+
+      <div style="overflow:auto;">
+        <table id="cekTable">
+          <thead>
+            <tr>
+              <th>Nama</th>
+              <th>Okt</th><th>Nov</th><th>Des</th><th>Jan</th>
+              <th>Feb</th><th>Mar</th><th>Apr</th><th>Mei</th>
+              <th>Jun</th><th>Jul</th><th>Agu</th><th>Sep</th>
+              <th>Total</th><th>Aksi</th>
+            </tr>
+          </thead>
+          <tbody id="cekBody"></tbody>
+        </table>
+      </div>
     </div>
 
-    <table id="kasTable">
-      <thead>
-        <tr>
-          <th>Nama</th>
-          <th>Okt</th><th>Nov</th><th>Des</th><th>Jan</th>
-          <th>Feb</th><th>Mar</th><th>Apr</th><th>Mei</th>
-          <th>Jun</th><th>Jul</th><th>Agu</th><th>Sep</th>
-          <th>Total</th><th>Aksi</th>
-        </tr>
-      </thead>
-      <tbody id="dataBody"></tbody>
-    </table>
+    <!-- DUAL: pemasukan & pengeluaran -->
+    <div class="dual">
+      <!-- PEMASUKAN -->
+      <div class="card mini-table" id="inCard">
+        <h2>Pemasukan</h2>
+        <p class="small">Tambah pemasukan: Tanggal • Keterangan • Penanggung Jawab • Total (Rp)</p>
 
-    <div id="totalKas">Total Kas: Rp 0</div>
+        <div id="inForm" style="display:none;" class="form-inline">
+          <input type="date" id="inDate">
+          <input type="text" id="inKeterangan" placeholder="Keterangan">
+          <input type="text" id="inPJ" placeholder="Penanggung jawab">
+          <input type="number" id="inJumlah" placeholder="Jumlah" min="0" step="1">
+          <button id="addInBtn" class="btn">Tambah</button>
+        </div>
+
+        <div style="overflow:auto; max-height:280px;">
+          <table id="inTable">
+            <thead><tr><th>Tanggal</th><th>Keterangan</th><th>PJ</th><th style="text-align:right">Total (Rp)</th><th>Aksi</th></tr></thead>
+            <tbody id="inBody"></tbody>
+          </table>
+        </div>
+        <div class="totals" style="margin-top:8px;">
+          <div class="box">
+            <div style="font-size:0.85rem; color:var(--muted)">Total Pemasukan</div>
+            <strong id="totalIn">Rp 0</strong>
+          </div>
+          <div style="flex:1"></div>
+        </div>
+      </div>
+
+      <!-- PENGELUARAN -->
+      <div class="card mini-table" id="outCard">
+        <h2>Pengeluaran</h2>
+        <p class="small">Tambah pengeluaran: Tanggal • Keterangan • Penanggung Jawab • Total (Rp)</p>
+
+        <div id="outForm" style="display:none;" class="form-inline">
+          <input type="date" id="outDate">
+          <input type="text" id="outKeterangan" placeholder="Keterangan">
+          <input type="text" id="outPJ" placeholder="Penanggung jawab">
+          <input type="number" id="outJumlah" placeholder="Jumlah" min="0" step="1">
+          <button id="addOutBtn" class="btn">Tambah</button>
+        </div>
+
+        <div style="overflow:auto; max-height:280px;">
+          <table id="outTable">
+            <thead><tr><th>Tanggal</th><th>Keterangan</th><th>PJ</th><th style="text-align:right">Total (Rp)</th><th>Aksi</th></tr></thead>
+            <tbody id="outBody"></tbody>
+          </table>
+        </div>
+        <div class="totals" style="margin-top:8px;">
+          <div class="box">
+            <div style="font-size:0.85rem; color:var(--muted)">Total Pengeluaran</div>
+            <strong id="totalOut">Rp 0</strong>
+          </div>
+          <div style="flex:1"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SALDO -->
+    <div style="margin-top:14px; display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap;">
+      <div class="card" style="flex:1;">
+        <div style="display:flex; justify-content:space-between; align-items:center; gap:12px;">
+          <div>
+            <div style="color:var(--muted)">Total Semua Kas</div>
+            <div style="font-size:1.15rem; color:var(--accent2); font-weight:700" id="grandTotal">Rp 0</div>
+          </div>
+          <div style="text-align:right;">
+            <div style="color:var(--muted)">Saldo Akhir</div>
+            <div style="font-size:1.25rem; font-weight:800; color:var(--accent);" id="saldoAkhir">Rp 0</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="width:240px; text-align:center;">
+        <div style="color:var(--muted); font-size:0.9rem;">Admin Controls</div>
+        <div style="margin-top:8px;">
+          <button id="toggleForms" class="btn ghost" title="Tampilkan/ sembunyikan form tambah">Tampilkan Form</button>
+          <button id="exportBtn" class="btn" title="Ekspor data ke CSV">Ekspor CSV</button>
+        </div>
+      </div>
+    </div>
+
   </div>
 
-  <footer>© 2025 Assalam. All rights reserved.</footer>
+  <footer>© 2025 Assalam • Tema dark elegan</footer>
 
   <script>
+    /* ---------- Data & Config ---------- */
     const ADMIN_PASSWORD = "admin123";
-    let isAdmin = false;
+    const PER_CEK = 3000;
 
-    const bulan = ["Okt", "Nov", "Des", "Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep"];
-
-    let data = JSON.parse(localStorage.getItem("kasPutraData")) || {
-      "Ahmad": {}, "Budi": {}, "Candra": {}, "Deni": {}, "Eko": {}
+    // load or initialize
+    let data = JSON.parse(localStorage.getItem("kasPutraData_v3")) || {
+      santri: { "Ahmad": {}, "Budi": {}, "Candra": {}, "Deni": {}, "Eko": {} },
+      pemasukan: [],
+      pengeluaran: []
     };
 
-    const tbody = document.getElementById("dataBody");
-    const totalKasDisplay = document.getElementById("totalKas");
+    let isAdmin = false;
 
-    function renderTable() {
+    /* ---------- Helpers ---------- */
+    const $ = id => document.getElementById(id);
+    const fmtRupiah = n => {
+      // ensure integer
+      n = Number(n) || 0;
+      return "Rp " + n.toLocaleString('id-ID');
+    };
+
+    function saveAll(){ localStorage.setItem("kasPutraData_v3", JSON.stringify(data)); }
+
+    /* ---------- Render ceklist santri ---------- */
+    function renderSantri(){
+      const tbody = $('cekBody');
       tbody.innerHTML = "";
       let totalKas = 0;
 
-      Object.keys(data).forEach(nama => {
-        let row = document.createElement("tr");
-        let total = 0;
+      Object.keys(data.santri).forEach(nama=>{
+        const tr = document.createElement('tr');
+        const nameTd = document.createElement('td');
+        nameTd.textContent = nama;
+        tr.appendChild(nameTd);
 
-        let nameCell = document.createElement("td");
-        nameCell.textContent = nama;
-        row.appendChild(nameCell);
-
-        bulan.forEach(b => {
-          let cell = document.createElement("td");
-          let check = document.createElement("input");
-          check.type = "checkbox";
-          check.disabled = !isAdmin;
-          check.checked = data[nama][b] || false;
-
-          check.addEventListener("change", () => {
-            data[nama][b] = check.checked;
-            saveData();
-            renderTable();
+        let personTotal = 0;
+        const months = ["Okt","Nov","Des","Jan","Feb","Mar","Apr","Mei","Jun","Jul","Agu","Sep"];
+        months.forEach(m=>{
+          const td = document.createElement('td');
+          const chk = document.createElement('input');
+          chk.type = 'checkbox';
+          chk.checked = !!data.santri[nama][m];
+          chk.disabled = !isAdmin;
+          chk.addEventListener('change', ()=>{
+            data.santri[nama][m] = chk.checked;
+            saveAll();
+            renderSantri();
+            renderTotals();
           });
-
-          cell.appendChild(check);
-          row.appendChild(cell);
-
-          if (check.checked) total += 3000;
+          td.appendChild(chk);
+          tr.appendChild(td);
+          if (chk.checked) personTotal += PER_CEK;
         });
 
-        let totalCell = document.createElement("td");
-        totalCell.textContent = "Rp " + total.toLocaleString();
-        row.appendChild(totalCell);
+        const totalTd = document.createElement('td');
+        totalTd.textContent = fmtRupiah(personTotal);
+        tr.appendChild(totalTd);
 
-        let actionCell = document.createElement("td");
-        if (isAdmin) {
-          let delBtn = document.createElement("button");
-          delBtn.textContent = "Hapus";
-          delBtn.className = "hapus-btn";
-          delBtn.onclick = () => {
-            if (confirm(`Hapus ${nama}?`)) {
-              delete data[nama];
-              saveData();
-              renderTable();
+        const aksiTd = document.createElement('td');
+        if (isAdmin){
+          const del = document.createElement('button');
+          del.className='hapus-btn';
+          del.textContent='Hapus';
+          del.addEventListener('click', ()=>{
+            if (confirm('Hapus '+nama+' dari daftar?')) {
+              delete data.santri[nama];
+              saveAll(); renderSantri(); renderTotals();
             }
-          };
-          actionCell.appendChild(delBtn);
+          });
+          aksiTd.appendChild(del);
         } else {
-          actionCell.textContent = "-";
+          aksiTd.textContent = '-';
         }
-        row.appendChild(actionCell);
+        tr.appendChild(aksiTd);
 
-        totalKas += total;
-        tbody.appendChild(row);
+        tbody.appendChild(tr);
+        totalKas += personTotal;
+      });
+      // we don't display totalKas here because monetary totals are from pemasukan/pengeluaran.
+    }
+
+    /* ---------- Render pemasukan/pengeluaran ---------- */
+    function renderInOut(){
+      // pemasukan
+      const inBody = $('inBody'); inBody.innerHTML='';
+      let totalIn = 0;
+      data.pemasukan.slice().reverse().forEach((row, idxRev)=>{
+        const idx = data.pemasukan.length - 1 - idxRev;
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td>${row.tanggal}</td>
+                        <td>${escapeHtml(row.keterangan)}</td>
+                        <td>${escapeHtml(row.pj)}</td>
+                        <td style="text-align:right">${Number(row.jumlah).toLocaleString('id-ID')}</td>
+                        <td style="text-align:center"></td>`;
+        const aksiTd = tr.querySelector('td:last-child');
+        if (isAdmin){
+          const b = document.createElement('button');
+          b.className='hapus-btn';
+          b.textContent='Hapus';
+          b.addEventListener('click', ()=>{
+            if (confirm('Hapus pemasukan ini?')){
+              data.pemasukan.splice(idx,1);
+              saveAll(); renderInOut(); renderTotals();
+            }
+          });
+          aksiTd.appendChild(b);
+        } else aksiTd.textContent='-';
+        inBody.appendChild(tr);
+        totalIn += Number(row.jumlah) || 0;
       });
 
-      totalKasDisplay.textContent = "Total Kas: Rp " + totalKas.toLocaleString();
+      $('totalIn').textContent = fmtRupiah(totalIn);
+
+      // pengeluaran
+      const outBody = $('outBody'); outBody.innerHTML='';
+      let totalOut = 0;
+      data.pengeluaran.slice().reverse().forEach((row, idxRev)=>{
+        const idx = data.pengeluaran.length - 1 - idxRev;
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td>${row.tanggal}</td>
+                        <td>${escapeHtml(row.keterangan)}</td>
+                        <td>${escapeHtml(row.pj)}</td>
+                        <td style="text-align:right">${Number(row.jumlah).toLocaleString('id-ID')}</td>
+                        <td style="text-align:center"></td>`;
+        const aksiTd = tr.querySelector('td:last-child');
+        if (isAdmin){
+          const b = document.createElement('button');
+          b.className='hapus-btn';
+          b.textContent='Hapus';
+          b.addEventListener('click', ()=>{
+            if (confirm('Hapus pengeluaran ini?')){
+              data.pengeluaran.splice(idx,1);
+              saveAll(); renderInOut(); renderTotals();
+            }
+          });
+          aksiTd.appendChild(b);
+        } else aksiTd.textContent='-';
+        outBody.appendChild(tr);
+        totalOut += Number(row.jumlah) || 0;
+      });
+
+      $('totalOut').textContent = fmtRupiah(totalOut);
     }
 
-    function saveData() {
-      localStorage.setItem("kasPutraData", JSON.stringify(data));
+    /* ---------- Totals & Saldo ---------- */
+    function renderTotals(){
+      // totals from pemasukan/pengeluaran
+      const totalIn = data.pemasukan.reduce((s,r)=> s + (Number(r.jumlah)||0), 0);
+      const totalOut = data.pengeluaran.reduce((s,r)=> s + (Number(r.jumlah)||0), 0);
+      const grand = totalIn - totalOut; // saldo
+      $('grandTotal').textContent = fmtRupiah(totalIn);
+      $('saldoAkhir').textContent = fmtRupiah(grand);
     }
 
-    document.getElementById("addBtn").onclick = () => {
-      const newName = document.getElementById("newName").value.trim();
-      if (!newName) return alert("Nama tidak boleh kosong!");
-      if (data[newName]) return alert("Nama sudah ada!");
-      data[newName] = {};
-      saveData();
-      document.getElementById("newName").value = "";
-      renderTable();
-    };
+    /* ---------- Add handlers ---------- */
+    $('addInBtn').addEventListener('click', ()=>{
+      if (!isAdmin) return alert('Hanya admin yang dapat menambah data.');
+      const t = $('inDate').value;
+      const ket = $('inKeterangan').value.trim();
+      const pj = $('inPJ').value.trim();
+      const num = Number($('inJumlah').value);
+      if (!t || !ket || !pj || !num || num<=0) return alert('Isi semua field pemasukan dengan benar.');
+      data.pemasukan.push({ tanggal: t, keterangan: ket, pj: pj, jumlah: Math.round(num) });
+      saveAll(); $('inDate').value=''; $('inKeterangan').value=''; $('inPJ').value=''; $('inJumlah').value='';
+      renderInOut(); renderTotals();
+    });
 
-    document.getElementById("loginBtn").onclick = () => {
-      const pass = prompt("Masukkan sandi admin:");
-      if (pass === ADMIN_PASSWORD) {
+    $('addOutBtn').addEventListener('click', ()=>{
+      if (!isAdmin) return alert('Hanya admin yang dapat menambah data.');
+      const t = $('outDate').value;
+      const ket = $('outKeterangan').value.trim();
+      const pj = $('outPJ').value.trim();
+      const num = Number($('outJumlah').value);
+      if (!t || !ket || !pj || !num || num<=0) return alert('Isi semua field pengeluaran dengan benar.');
+      data.pengeluaran.push({ tanggal: t, keterangan: ket, pj: pj, jumlah: Math.round(num) });
+      saveAll(); $('outDate').value=''; $('outKeterangan').value=''; $('outPJ').value=''; $('outJumlah').value='';
+      renderInOut(); renderTotals();
+    });
+
+    /* ---------- Admin login ---------- */
+    $('loginBtn').addEventListener('click', ()=>{
+      const pass = prompt('Masukkan sandi admin:');
+      if (pass === ADMIN_PASSWORD){
         isAdmin = true;
-        document.getElementById("loginBtn").style.display = "none";
-        document.getElementById("logoutBtn").style.display = "inline";
-        document.getElementById("addForm").style.display = "block";
-        renderTable();
-      } else {
-        alert("Sandi salah!");
-      }
-    };
+        $('loginBtn').style.display='none';
+        $('logoutBtn').style.display='inline-block';
+        document.querySelectorAll('#inForm, #outForm').forEach(e=> e.style.display='flex');
+        renderSantri(); renderInOut();
+        alert('Mode admin aktif.');
+      } else alert('Sandi salah.');
+    });
 
-    document.getElementById("logoutBtn").onclick = () => {
+    $('logoutBtn').addEventListener('click', ()=>{
       isAdmin = false;
-      document.getElementById("loginBtn").style.display = "inline";
-      document.getElementById("logoutBtn").style.display = "none";
-      document.getElementById("addForm").style.display = "none";
-      renderTable();
-    };
+      $('loginBtn').style.display='inline-block';
+      $('logoutBtn').style.display='none';
+      document.querySelectorAll('#inForm, #outForm').forEach(e=> e.style.display='none');
+      renderSantri(); renderInOut();
+    });
 
-    renderTable();
+    /* toggle forms */
+    $('toggleForms').addEventListener('click', ()=>{
+      const visible = document.querySelector('#inForm').style.display !== 'none';
+      document.querySelectorAll('#inForm, #outForm').forEach(e=> e.style.display = visible ? 'none' : 'flex');
+    });
+
+    /* ---------- Export CSV (simple) ---------- */
+    function arrayToCSV(rows){
+      return rows.map(r => r.map(c => `"${String(c).replace(/"/g,'""')}"`).join(',')).join('\n');
+    }
+
+    $('exportBtn').addEventListener('click', ()=>{
+      const rows = [];
+      rows.push(['--- Pemasukan ---']);
+      rows.push(['Tanggal','Keterangan','Penanggung Jawab','Jumlah']);
+      data.pemasukan.forEach(r => rows.push([r.tanggal, r.keterangan, r.pj, r.jumlah]));
+      rows.push([]);
+      rows.push(['--- Pengeluaran ---']);
+      rows.push(['Tanggal','Keterangan','Penanggung Jawab','Jumlah']);
+      data.pengeluaran.forEach(r => rows.push([r.tanggal, r.keterangan, r.pj, r.jumlah]));
+      const csv = arrayToCSV(rows);
+      const blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'kas-putra-export.csv';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    });
+
+    /* ---------- Utils ---------- */
+    function escapeHtml(t){ return String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+    /* ---------- Initial render ---------- */
+    (function init(){
+      // hide forms by default (unless admin)
+      document.querySelectorAll('#inForm, #outForm').forEach(e=> e.style.display='none');
+      renderSantri(); renderInOut(); renderTotals();
+    })();
+
   </script>
 </body>
 </html>
