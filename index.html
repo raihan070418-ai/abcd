@@ -243,20 +243,6 @@
     <tbody></tbody>
   </table>
 
-  <h2>Pemasukan</h2>
-  <table id="lainTable" style="display:none;">
-    <thead>
-      <tr>
-        <th>No</th>
-        <th>Keterangan</th>
-        <th>Jumlah</th>
-        <th class="aksi-col" style="display:none;">Aksi</th>
-      </tr>
-    </thead>
-    <tbody></tbody>
-  </table>
-
-
   <div id="saldoBox">
     <div>💰 Saldo Masuk: Rp <span id="totalSaldo">0</span></div>
     <div>💸 Saldo Keluar: Rp <span id="totalKeluar">0</span></div>
@@ -280,16 +266,10 @@
 </head>
 <body>
 
-  <header>
-    <img src="assalam.jpg" alt="Foto Profil">
-    <div class="judul">
-      <h1>Bendahara Assalam</h1>
-      <p>Kelola iuran, saldo tambahan, dan pengeluaran Kas Organisasi Assalam</p>
-    </div>
-  </header>
+ 
   
   <div class="controls">
-    <button id="toggleMode">Masuk Sebagai Admin</button>
+  
     <button id="gantiPassword" style="display:none;">Ganti Sandi</button>
     <button id="tambahAnak" style="display:none;">Tambah Anak</button>
     <button id="tambahSaldoLain" style="display:none;">Tambah Saldo Lain</button>
@@ -299,78 +279,6 @@
   <div id="bendaharaMenu">
     <input type="text" id="cariAnak" placeholder="Cari nama anak...">
   </div>
-
-  <!-- Tabel Iuran Anak -->
-  <table id="kasTable">
-    <thead>
-      <tr>
-        <th>No</th>
-        <th>Nama Anak</th>
-        <th>Oktober</th>
-        <th>November</th>
-        <th>Desember</th>
-        <th>Januari</th>
-        <th>Februari</th>
-        <th>Maret</th>
-        <th>April</th>
-        <th>Mei</th>
-        <th>Juni</th>
-        <th>Juli</th>
-        <th>Agustus</th>
-        <th>September</th>
-        <th>Total Bayar</th>
-        <th class="aksi-col" style="display:none;">Aksi</th>
-      </tr>
-    </thead>
-    <tbody></tbody>
-  </table>
-
-  
-  <!-- Tabel Saldo Lain -->
-   <h2>Pemasukan</h2>
-<table id="lainTable" style="display:none;">
-  <thead>
-    <tr>
-      <th>No</th>
-      <th>Keterangan</th>
-      <th>Jumlah</th>
-        <th class="aksi-col" style="display:none;">Aksi</th>
-    </tr>
-  </thead>
-  <tbody></tbody>
-</table>
-
-
-  <!-- Tabel Pengeluaran -->
-   <H2>Pengluaran</H2>
-  <table id="pengeluaranTable" style="display:none;">
-    <thead>
-      <tr>
-        <th>No</th>
-        <th>Keterangan</th>
-        <th>Jumlah</th>
-        <th class="aksi-col" style="display:none;">Aksi</th>
-      </tr>
-    </thead>
-    <tbody></tbody>
-  </table>
-
-  <!-- saldoBox -->
-  <div id="saldoBox">
-    <div>💰 <span>Saldo Masuk: Rp <span id="totalSaldo">0</span></span></div>
-    <div>💸 <span>Saldo Keluar: Rp <span id="totalKeluar">0</span></span></div>
-    <div>🏦 <span>Saldo Terkini: Rp <span id="saldoTerkini">0</span></span></div>
-  </div>
-
-  <footer>
-    <div class="rekening">
-      <strong>Rekening Dana:</strong> 0856-6423-8134(a.n Muhammad Raihan)<br>
-      <strong>Kirim Bukti Transfer ke Admin:</strong> 0856-6423-8134 (WhatsApp)
-    </div>
-    <div class="copy">
-      Kas Assalam © 2025 - Bendahara 2025/Muhammad Raihan & Luqmanul Hakim
-    </div>
-  </footer>
 
 <script>
 let data = JSON.parse(localStorage.getItem("kasData")) || [
