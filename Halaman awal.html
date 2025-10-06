@@ -15,20 +15,27 @@
 
     body {
       font-family: 'Poppins', sans-serif;
-      background: linear-gradient(135deg, #0a0a0a, #1a1a1a, #2b2b2b);
-      color: #f5f5f5;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
+      color: #f5f5f5;
+   background: url('microsoft.jpeg') no-repeat center center fixed;
+
+      background-size: cover;
+      backdrop-filter: blur(12px);
+      position: relative;
       overflow: hidden;
-      animation: fadeIn 1s ease-in-out;
     }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
+    /* Lapisan gelap transparan di atas foto */
+    body::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.6);
+      z-index: 0;
     }
 
     header {
@@ -42,6 +49,7 @@
       display: flex;
       align-items: center;
       gap: 8px;
+      z-index: 2;
     }
 
     header span {
@@ -49,19 +57,26 @@
     }
 
     main {
+      z-index: 2;
       text-align: center;
       margin-top: 60px;
-      background: rgba(45,45,45,0.4);
-      padding: 40px 60px;
+      background: rgba(30, 30, 30, 0.4);
+      backdrop-filter: blur(15px);
+      padding: 50px 70px;
       border-radius: 20px;
-      border: 1px solid rgba(255,255,255,0.08);
-      box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 4px 40px rgba(0, 0, 0, 0.6);
+      animation: fadeIn 1.2s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     h1 {
       font-size: 36px;
       font-weight: 700;
-      color: #fff;
       margin-bottom: 12px;
     }
 
@@ -80,22 +95,22 @@
     }
 
     button {
-      background: #2d2d2d;
+      background: rgba(255, 255, 255, 0.08);
       color: #f5f5f5;
-      border: 1px solid #3f3f3f;
+      border: 1px solid rgba(255, 255, 255, 0.2);
       border-radius: 12px;
       padding: 14px 32px;
       font-size: 16px;
       font-weight: 600;
-      letter-spacing: 0.5px;
       cursor: pointer;
       transition: all 0.3s ease;
       min-width: 160px;
+      backdrop-filter: blur(10px);
     }
 
     button:hover {
-      background: #3a3a3a;
-      box-shadow: 0 4px 20px rgba(0, 191, 255, 0.15);
+      background: rgba(0, 191, 255, 0.15);
+      box-shadow: 0 4px 20px rgba(0, 191, 255, 0.25);
       transform: translateY(-2px);
     }
 
@@ -103,19 +118,20 @@
       position: absolute;
       bottom: 20px;
       font-size: 13px;
-      color: #999;
+      color: #aaa;
+      z-index: 2;
     }
 
     @media (max-width: 600px) {
       h1 {
         font-size: 28px;
       }
+      main {
+        padding: 30px;
+      }
       button {
         min-width: 130px;
         font-size: 14px;
-      }
-      main {
-        padding: 24px;
       }
       header {
         left: 20px;
@@ -125,8 +141,7 @@
 </head>
 <body>
   <header>
-    <div><span>Assalam</span>(Aliasnsi Santri Asal Lampung)
-  </div>
+    <div><span>Assalam</span> (Aliansi Santri Asal Lampung)</div>
   </header>
 
   <main>
@@ -134,8 +149,8 @@
     <p>Pilih kategori di bawah ini:</p>
     <div class="buttons">
       <button onclick="window.location.href='Kas Putra.html'">Kas Putra</button>
-      <button onclick="location.href='kas assalam.html'">Kas Assalam</button>
-      <button onclick="location.href='kas putri.html'">Kas Putri</button>
+      <button onclick="window.location.href='kas assalam.html'">Kas Assalam</button>
+      <button onclick="window.location.href='kas putri.html'">Kas Putri</button>
     </div>
   </main>
 
