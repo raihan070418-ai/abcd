@@ -5,185 +5,186 @@
   <title>Kas Putra — Assalam</title>
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <style>
-    /* ---------- Theme: dark elegan ---------- */
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap');
-    :root{
-      --bg-1:#0d0d0d;
-      --bg-2:#161616;
-      --card:#1b1b1b;
-      --muted:#a8a8a8;
-      --accent:#00c8ff;
-      --accent2:#00ffc3;
-      --danger:#ff5c5c;
-    }
-    *{box-sizing:border-box}
-    body{
-     
-  margin:0;
-  min-height:100vh;
-  font-family:'Poppins',system-ui,Segoe UI,Arial;
-  background: linear-gradient(135deg, #0b0b0b 0%, #121212 50%, #0e0e0e 100%);
-  color:#eaeaea;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  padding:28px 18px;
-}
+   
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap');
+  :root {
+    --bg-1:#0d0d0d;
+    --bg-2:#161616;
+    --card:#1b1b1b;
+    --muted:#a8a8a8;
+    --accent:#00c8ff;
+    --accent2:#00ffc3;
+    --danger:#ff4d4d;
+  }
 
-    
+  *{box-sizing:border-box;}
+  body {
+    margin:0;
+    min-height:100vh;
+    font-family:'Poppins',system-ui,Segoe UI,Arial;
+    background: radial-gradient(circle at top left, #0a0a0a 0%, #121212 50%, #090909 100%);
+    color:#f1f1f1;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    padding:28px 18px;
+  }
 
-    header{ width:100%; max-width:1200px; text-align:center; margin-bottom:18px;}
-    header h1{ color:var(--accent); margin:0; font-size:1.9rem; letter-spacing:0.6px;}
-    header p{ margin:6px 0 0; color:var(--muted); }
-.container {
-  width:100%;
-  max-width:1200px;
-  background:rgba(255,255,255,0.015);
-  border-radius:14px;
-  box-shadow:0 8px 40px rgba(0,0,0,0.8);
-  padding:22px;
-  border:1px solid rgba(255,255,255,0.04);
-  backdrop-filter: blur(6px);
-}
+  header {
+    width:100%;
+    max-width:1200px;
+    text-align:center;
+    margin-bottom:18px;
+  }
+  header h1 {
+    color:var(--accent);
+    font-size:2rem;
+    letter-spacing:1px;
+    text-shadow:0 0 15px rgba(0,200,255,0.7);
+  }
+  header p { color:var(--muted); }
 
+  .container {
+    width:100%;
+    max-width:1200px;
+    background:rgba(255,255,255,0.02);
+    border-radius:16px;
+    box-shadow:0 8px 40px rgba(0,0,0,0.9);
+    padding:22px;
+    border:1px solid rgba(255,255,255,0.04);
+    backdrop-filter: blur(6px);
+  }
 
-    .top-actions{
-      display:flex;
-      gap:10px;
-      justify-content:flex-end;
-      align-items:center;
-      margin-bottom:12px;
-    }
-    .top-actions .btn {
-      background:var(--accent);
-      color:#000;
-      border:none;
-      padding:9px 14px;
-      border-radius:10px;
-      font-weight:600;
-      cursor:pointer;
-      transition:transform .15s ease;
-    }
-    .top-actions .btn:active{ transform:scale(.98) }
-    .top-actions .btn.ghost{
-      background:transparent; color:var(--muted); border:1px solid rgba(255,255,255,0.04);
-    }
+  /* === Tombol elegan futuristik === */
+  .btn {
+    border:none;
+    border-radius:12px;
+    padding:10px 16px;
+    font-weight:600;
+    cursor:pointer;
+    font-family:'Poppins',sans-serif;
+    background: linear-gradient(135deg, #00c8ff 0%, #00ffc3 100%);
+    color:#000;
+    box-shadow:0 0 10px rgba(0,255,255,0.4);
+    transition: all .25s ease;
+  }
+  .btn:hover {
+    transform: translateY(-2px);
+    box-shadow:0 0 16px rgba(0,255,255,0.8);
+  }
+  .btn:active {
+    transform: scale(0.96);
+  }
+  .btn.ghost {
+    background: linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.1));
+    color:#eaeaea;
+    border:1px solid rgba(255,255,255,0.1);
+    text-shadow:0 0 6px rgba(255,255,255,0.4);
+  }
+  .btn.ghost:hover {
+    background: linear-gradient(135deg, rgba(255,255,255,0.15), rgba(255,255,255,0.25));
+  }
 
-    /* table area */
-    .main-grid{
-      display:grid;
-      grid-template-columns: 1fr;
-      gap:18px;
-    }
+  .hapus-btn {
+    background: linear-gradient(135deg, #ff4d4d, #ff7373);
+    color:#fff;
+    border:none;
+    border-radius:8px;
+    padding:6px 10px;
+    cursor:pointer;
+    font-weight:600;
+    transition: all .25s ease;
+    box-shadow:0 0 6px rgba(255,0,0,0.5);
+  }
+  .hapus-btn:hover {
+    box-shadow:0 0 12px rgba(255,0,0,0.8);
+    transform:translateY(-1px);
+  }
 
-    /* Data anak (full width) */
-    .card{
-      background:var(--card);
-      border-radius:12px;
-      padding:14px;
-      box-shadow: 0 6px 20px rgba(0,200,255,0.03);
-      border:1px solid rgba(255,255,255,0.02);
-    }
-    .card h2{ margin:0 0 8px 0; color:var(--accent2); font-size:1.05rem; }
-    .small{ color:var(--muted); font-size:0.92rem; margin-bottom:8px; }
+  /* === Struktur umum tetap sama === */
+  .top-actions {
+    display:flex;
+    gap:10px;
+    justify-content:flex-end;
+    align-items:center;
+    margin-bottom:12px;
+    flex-wrap:wrap;
+  }
 
-    /* ceklis table styling */
-    table{ width:100%; border-collapse:collapse; background:transparent; }
-    th, td{
-      padding:8px 6px; text-align:center;
-      border-bottom:1px solid rgba(255,255,255,0.03);
-      font-size:0.95rem;
-    }
-    thead th{
-      background:var(--accent); color:#000; font-weight:700;
-      position:sticky; top:0;
-    }
-    tbody tr:hover{ background: rgba(255,255,255,0.01); }
+  .card {
+    background:var(--card);
+    border-radius:12px;
+    padding:14px;
+    box-shadow: 0 6px 20px rgba(0,200,255,0.03);
+    border:1px solid rgba(255,255,255,0.02);
+  }
 
-    input[type="checkbox"]{ transform:scale(1.25); cursor:pointer; }
+  .card h2 {
+    margin:0 0 8px 0;
+    color:var(--accent2);
+    font-size:1.1rem;
+    text-shadow:0 0 8px rgba(0,255,195,0.4);
+  }
 
-    .row-actions button{ padding:6px 9px; border-radius:8px; border:none; cursor:pointer; }
-    .hapus-btn{ background:var(--danger); color:#fff; }
+  .small { color:var(--muted); font-size:0.92rem; margin-bottom:8px; }
 
-    /* income/expense side-by-side */
-    .dual{
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap:16px;
-      margin-top:10px;
-    }
+  table { width:100%; border-collapse:collapse; background:transparent; }
+  th, td {
+    padding:8px 6px; text-align:center;
+    border-bottom:1px solid rgba(255,255,255,0.05);
+  }
+  thead th {
+    background: linear-gradient(135deg, #00c8ff, #00ffc3);
+    color:#000;
+    font-weight:700;
+    position:sticky;
+    top:0;
+  }
+  tbody tr:hover { background: rgba(255,255,255,0.02); }
 
-    .mini-table{ background:transparent; overflow:auto; }
-    .mini-table table th{ background: rgba(0,200,255,0.9); color:#000; }
-    .mini-table table td{ text-align:left; padding:8px 10px; }
+  /* === Checkbox biru neon === */
+  input[type="checkbox"] {
+    appearance:none;
+    width:18px; height:18px;
+    border:2px solid var(--accent);
+    border-radius:4px;
+    background:transparent;
+    cursor:pointer;
+    transition:all 0.25s ease;
+    position:relative;
+  }
+  input[type="checkbox"]:checked {
+    background:var(--accent);
+    box-shadow:0 0 6px rgba(0,200,255,0.6);
+    animation:popCheck .25s ease-out;
+  }
+  input[type="checkbox"]:checked::after {
+    content:'✓';
+    color:#000;
+    font-weight:700;
+    font-size:13px;
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-58%);
+  }
+  @keyframes popCheck {
+    0%{transform:scale(0.8);}
+    60%{transform:scale(1.2);}
+    100%{transform:scale(1);}
+  }
 
-    .form-inline{
-      display:flex; gap:8px; align-items:center; margin-bottom:10px; flex-wrap:wrap;
-    }
-    .form-inline input[type="text"],
-    .form-inline input[type="date"],
-    .form-inline input[type="number"]{
-      padding:8px 10px; border-radius:8px; border:1px solid rgba(255,255,255,0.04);
-      background:#121212; color:#fff; min-width:120px;
-    }
-    .form-inline input[type="number"]{ text-align:right; }
-
-    .totals{
-      display:flex; gap:12px; justify-content:space-between; align-items:center; margin-top:12px;
-    }
-    .totals .box{ background:rgba(255,255,255,0.02); padding:10px 12px; border-radius:8px; }
-    .totals .box strong{ display:block; color:var(--accent2); font-size:1.05rem; }
-    .saldo-box{ text-align:right; }
-
-    footer{ margin-top:18px; color:var(--muted); text-align:center; font-size:0.9rem; }
-
-    /* responsive */
-    @media (max-width:900px){
-      .dual{ grid-template-columns: 1fr; }
-      .top-actions{ justify-content:center; margin-bottom:14px; }
-    }
-    /* === Warna ceklis biru elegan === */
-input[type="checkbox"] {
-  appearance: none;
-  width: 18px;
-  height: 18px;
-  border: 2px solid var(--accent);
-  border-radius: 4px;
-  background-color: transparent;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  position: relative;
-}
-
-input[type="checkbox"]:checked {
-  background-color: var(--accent);
-  box-shadow: 0 0 6px rgba(0, 200, 255, 0.5);
-}
-
-input[type="checkbox"]:checked::after {
-  content: '✓';
-  color: #000;
-  font-size: 13px;
-  font-weight: 700;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -58%);
-}
-/* === Animasi pop saat dicentang === */
-input[type="checkbox"]:active {
-  transform: scale(0.85);
-}
-
-input[type="checkbox"]:checked {
-  animation: popCheck 0.25s ease-out;
-}
-
-@keyframes popCheck {
-  0% { transform: scale(0.8); }
-  60% { transform: scale(1.2); }
-  100% { transform: scale(1); }
-}
+  footer {
+    margin-top:20px;
+    color:var(--muted);
+    text-align:center;
+    font-size:0.9rem;
+  }
+  @media(max-width:900px){
+    .dual{grid-template-columns:1fr;}
+    .top-actions{justify-content:center;}
+  }
+</style>
 
   </style>
 </head>
