@@ -4,224 +4,195 @@
   <meta charset="UTF-8">
   <title>Assalam.com</title>
   <style>
-    body { 
-      font-family: 'Segoe UI', Tahoma, sans-serif; 
-      margin: 0;
-      background: linear-gradient(135deg, #ffffff, #e6f0ff, #cce0ff);
-      color: #222;
-    }
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
 
-    header {
-      display: flex;
-      align-items: center;
-      gap: 15px;
-      padding: 20px;
-      background: linear-gradient(135deg, #0066cc, #3399ff);
-      color: white;
-      box-shadow: 0 3px 6px rgba(0,0,0,0.2);
-    }
-
-    header img {
-      width: 70px;
-      height: 70px;
-      border-radius: 50%;
-      border: 3px solid white;
-      object-fit: cover;
-    }
-
-    header .judul h1 {
-      margin: 0;
-      font-size: 22px;
-      font-weight: bold;
-    }
-
-    header .judul p {
-      margin: 3px 0 0;
-      font-size: 14px;
-      opacity: 0.9;
-    }
-
-    .controls {
-      display: flex;
-      justify-content: center;
-      gap: 10px;
-      margin: 15px;
-      flex-wrap: wrap;
-    }
-
-    button {
-      background: linear-gradient(135deg, #0066cc, #3399ff);
-      border: none;
-      padding: 10px 18px;
-      border-radius: 8px;
-      color: white;
-      font-weight: bold;
-      cursor: pointer;
-      transition: 0.3s;
-      box-shadow: 0 3px 6px rgba(0,0,0,0.15);
-    }
-
-    button:hover {
-      background: linear-gradient(135deg, #0052a3, #1a8cff);
-      transform: scale(1.05);
-    }
-
-    #bendaharaMenu { 
-      margin: 20px; 
-      display: none; 
-      text-align: center;
-    }
-
-    #bendaharaMenu input {
-      padding: 8px;
-      border-radius: 6px;
-      border: 1px solid #aaa;
-      width: 200px;
-      margin-bottom: 10px;
-    }
-
-    table { 
-      border-collapse: collapse; 
-      margin: 20px auto; 
-      width: 95%; 
-      background: white;
-      border-radius: 12px;
-      overflow: hidden;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    }
-
-    th, td { 
-      border: 1px solid #ddd; 
-      padding: 10px; 
-      text-align: center; 
-    }
-
-    th { 
-      background: linear-gradient(135deg, #0073e6, #3399ff);
-      color: white;
-      font-size: 14px;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-
-    td {
-      background: #f9fcff;
-      font-size: 14px;
-    }
-
-    tr:nth-child(even) td { background: #f1f7ff; }
-    tr:hover td { background: #e6f2ff; transition: 0.3s; }
-
-    input[type=checkbox] { transform: scale(1.2); cursor: pointer; }
-
-    .total-merah { color: #e60000; font-weight: bold; }
-    .total-kuning { color: #e6a700; font-weight: bold; }
-    .total-hijau { color: #009933; font-weight: bold; }
-
-    /* saldoBox */
-    #saldoBox {
-      display: flex;
-      justify-content: center;
-      gap: 40px;
-      margin: 20px auto;
-      font-weight: bold;
-      font-size: 16px;
-      color: #004080;
-      background: white;
-      padding: 12px 20px;
-      border-radius: 10px;
-      box-shadow: 0 3px 6px rgba(0,0,0,0.15);
-      width: fit-content;
-    }
-
-    #saldoBox div {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    footer {
-      margin-top: 30px;
-      padding: 15px 25px;
-      font-size: 13px;
-      color: #333;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: #f0f6ff;
-      border-top: 2px solid #cce0ff;
-    }
-
-    .rekening { text-align: left; font-size: 14px; line-height: 1.6; }
-    .copy { text-align: right; font-size: 12px; color: #666; }
-
-    /* Responsif untuk HP */
-@media (max-width: 768px) {
-  header {
-    flex-direction: column;
-    text-align: center;
-  }
-
-  header img {
-    width: 60px;
-    height: 60px;
-  }
-
-  header .judul h1 {
-    font-size: 18px;
-  }
-
-  header .judul p {
-    font-size: 13px;
-  }
-
-  .controls {
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
-  }
-
-  button {
-    width: 90%;
-    font-size: 14px;
-    padding: 10px;
-  }
-
-  table {
-    width: 100%;
-    font-size: 12px;
-    display: block;
-    overflow-x: auto;
-    white-space: nowrap;
-  }
-
-  th, td {
-    padding: 8px;
-  }
-
-  #saldoBox {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 10px;
-    text-align: left;
-    width: 90%;
-  }
-
-  footer {
-    flex-direction: column;
-    align-items: flex-start;
-    text-align: left;
-    gap: 10px;
-    font-size: 12px;
-  }
-
-  .rekening, .copy {
-    text-align: left;
-    width: 100%;
-  }
+:root {
+  --bg-main: radial-gradient(circle at top left, #0d0d0d, #121212, #1a1a1a);
+  --card-bg: rgba(20, 20, 20, 0.75);
+  --accent: #00c8ff;
+  --text: #ffffff;
+  --muted: #a0a0a0;
+  --border: rgba(255,255,255,0.08);
+  --hover: rgba(255,255,255,0.1);
 }
 
-  </style>
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  background: var(--bg-main);
+  background-attachment: fixed;
+  color: var(--text);
+  min-height: 100vh;
+}
+
+/* Header */
+header {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 20px 30px;
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+}
+
+header img {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  border: 2px solid var(--accent);
+  object-fit: cover;
+}
+
+header .judul h1 {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+header .judul p {
+  margin: 4px 0 0;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+/* Tombol Kontrol */
+.controls {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin: 25px 0;
+}
+
+button {
+  background: var(--card-bg);
+  color: var(--text);
+  border: 1px solid var(--border);
+  padding: 10px 18px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.3s ease;
+  backdrop-filter: blur(8px);
+}
+
+button:hover {
+  background: var(--hover);
+  color: var(--accent);
+  transform: translateY(-2px);
+}
+
+/* Pencarian */
+#bendaharaMenu {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+#bendaharaMenu input {
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,0.05);
+  color: var(--text);
+  width: 250px;
+  backdrop-filter: blur(10px);
+}
+
+#bendaharaMenu input::placeholder {
+  color: var(--muted);
+}
+
+/* Tabel Kas */
+table {
+  border-collapse: collapse;
+  width: 95%;
+  margin: 0 auto 40px;
+  background: var(--card-bg);
+  backdrop-filter: blur(10px);
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+}
+
+th, td {
+  border: 1px solid var(--border);
+  padding: 10px;
+  text-align: center;
+  color: var(--text);
+  font-size: 14px;
+}
+
+th {
+  background: rgba(255,255,255,0.05);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+tr:hover td {
+  background: rgba(255,255,255,0.05);
+  transition: 0.3s;
+}
+
+input[type=checkbox] {
+  transform: scale(1.2);
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+
+.total-merah { color: #ff4d4d; font-weight: bold; }
+.total-kuning { color: #ffcc00; font-weight: bold; }
+.total-hijau { color: #00ff88; font-weight: bold; }
+
+/* Saldo Box */
+#saldoBox {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  background: var(--card-bg);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--border);
+  width: fit-content;
+  margin: 30px auto;
+  padding: 15px 25px;
+  border-radius: 12px;
+  font-weight: 600;
+  color: var(--accent);
+}
+
+/* Footer */
+footer {
+  background: rgba(0,0,0,0.5);
+  backdrop-filter: blur(10px);
+  border-top: 1px solid var(--border);
+  color: var(--muted);
+  padding: 20px 30px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+}
+
+footer strong {
+  color: var(--accent);
+}
+
+.copy {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+/* Responsif */
+@media (max-width: 768px) {
+  header { flex-direction: column; text-align: center; }
+  .controls { flex-direction: column; gap: 8px; }
+  table { width: 100%; font-size: 12px; }
+  #saldoBox { flex-direction: column; gap: 10px; }
+  footer { flex-direction: column; gap: 10px; text-align: left; }
+}
+</style>
+
 </head>
 <body>
 
