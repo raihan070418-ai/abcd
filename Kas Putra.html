@@ -1,205 +1,151 @@
-<!DOCTYPE html>
+<DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <title>Assalam.com</title>
-  <style>
+  <meta charset="utf-8" />
+  <title>Kas Putra — Assalam</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+<style>
   @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap');
 
+  :root {
+    --bg-1:#0d0d0d;
+    --bg-2:#161616;
+    --card:#1b1b1b;
+    --muted:#a8a8a8;
+    --accent:#00c8ff;
+    --accent2:#00ffc3;
+    --danger:#ff4d4d;
+  }
+
+  * { box-sizing: border-box; }
+
   body {
-    font-family: 'Poppins', sans-serif;
     margin: 0;
     min-height: 100vh;
-    background: url('background.jpg') no-repeat center center/cover;
-    color: #fff;
+    font-family: 'Poppins', system-ui, Arial, sans-serif;
+    background: radial-gradient(circle at top left, #0a0a0a 0%, #121212 50%, #090909 100%);
+    color: #f1f1f1;
     display: flex;
     flex-direction: column;
+    align-items: center;
+    padding: 28px 18px;
   }
 
   header {
-    background: rgba(0, 0, 0, 0.35);
-    backdrop-filter: blur(12px);
-    color: #fff;
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    padding: 20px 30px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+    text-align: center;
+    margin-bottom: 18px;
   }
 
-  header img {
-    width: 70px;
-    height: 70px;
-    border-radius: 50%;
-    border: 2px solid rgba(255,255,255,0.7);
-    object-fit: cover;
+  header h1 {
+    color: var(--accent);
+    font-size: 2rem;
+    text-shadow: 0 0 15px rgba(0,200,255,0.7);
   }
 
-  header .judul h1 {
-    margin: 0;
-    font-size: 22px;
-    font-weight: 700;
+  header p {
+    color: var(--muted);
   }
 
-  header .judul p {
-    margin: 4px 0 0;
-    font-size: 14px;
-    opacity: 0.85;
+  .container {
+    width: 100%;
+    max-width: 1200px;
+    background: rgba(255,255,255,0.02);
+    border-radius: 16px;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.9);
+    padding: 22px;
+    border: 1px solid rgba(255,255,255,0.04);
+    backdrop-filter: blur(6px);
   }
 
-  .controls {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin: 25px auto;
-  }
-
-  button {
-    background: rgba(255, 255, 255, 0.08);
-    color: #fff;
-    border: 1px solid rgba(255,255,255,0.2);
-    padding: 10px 20px;
-    border-radius: 10px;
+  .btn {
+    border: none;
+    border-radius: 12px;
+    padding: 10px 16px;
     font-weight: 600;
     cursor: pointer;
-    transition: all 0.3s ease;
-    backdrop-filter: blur(8px);
-    box-shadow: 0 3px 10px rgba(0,0,0,0.3);
+    background: linear-gradient(135deg, #00c8ff 0%, #00ffc3 100%);
+    color: #000;
+    transition: all .25s ease;
   }
 
-  button:hover {
-    background: rgba(255,255,255,0.18);
-    transform: translateY(-2px);
-  }
+  .btn:hover { transform: translateY(-2px); }
 
-  #bendaharaMenu {
-    text-align: center;
-    display: none;
-    margin-bottom: 15px;
-  }
-
-  #bendaharaMenu input {
-    background: rgba(255,255,255,0.08);
-    border: 1px solid rgba(255,255,255,0.25);
+  .hapus-btn {
+    background: linear-gradient(135deg, #ff4d4d, #ff7373);
     color: #fff;
-    padding: 10px;
+    border: none;
     border-radius: 8px;
-    width: 250px;
-    outline: none;
+    padding: 6px 10px;
+    cursor: pointer;
+    font-weight: 600;
   }
+
+  .card {
+    background: var(--card);
+    border-radius: 12px;
+    padding: 14px;
+    margin-bottom: 14px;
+  }
+
+  .card h2 {
+    color: var(--accent2);
+    font-size: 1.1rem;
+    text-shadow: 0 0 8px rgba(0,255,195,0.4);
+  }
+
+  .small { color: var(--muted); font-size: 0.9rem; }
 
   table {
-    width: 95%;
-    margin: 20px auto;
+    width: 100%;
     border-collapse: collapse;
-    background: rgba(255,255,255,0.06);
-    border-radius: 16px;
-    overflow: hidden;
-    backdrop-filter: blur(12px);
-    box-shadow: 0 4px 30px rgba(0,0,0,0.3);
+    background: transparent;
   }
 
   th, td {
-    border: 1px solid rgba(255,255,255,0.15);
-    padding: 10px;
+    padding: 8px 6px;
     text-align: center;
-    color: #fff;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
   }
 
-  th {
-    background: rgba(255,255,255,0.1);
-    font-weight: 600;
+  thead th {
+    background: linear-gradient(135deg, #00c8ff, #00ffc3);
+    color: #000;
+    font-weight: 700;
+    position: sticky;
+    top: 0;
+    z-index: 1;
   }
 
-  tr:nth-child(even) td {
-    background: rgba(255,255,255,0.03);
+  /* === SCROLLABLE TABLE === */
+  .scrollable {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
   }
 
-  input[type=checkbox] {
-    transform: scale(1.3);
-    cursor: pointer;
-    accent-color: #00c8ff;
-  }
-
-  .total-merah { color: #ff4d4d; font-weight: bold; }
-  .total-kuning { color: #ffcc00; font-weight: bold; }
-  .total-hijau { color: #00ff88; font-weight: bold; }
-
-  #saldoBox {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 25px;
-    background: rgba(255,255,255,0.08);
-    border-radius: 16px;
-    backdrop-filter: blur(10px);
-    padding: 15px 25px;
-    margin: 25px auto;
-    width: fit-content;
-    box-shadow: 0 4px 25px rgba(0,0,0,0.4);
-    color: #fff;
-    font-weight: 600;
+  .scrollable table {
+    min-width: 800px;
+    white-space: nowrap;
   }
 
   footer {
-    background: rgba(0,0,0,0.4);
-    backdrop-filter: blur(10px);
-    color: #ddd;
-    padding: 15px 25px;
-    font-size: 13px;
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    box-shadow: 0 -3px 15px rgba(0,0,0,0.4);
+    margin-top: 20px;
+    color: var(--muted);
+    text-align: center;
+    font-size: 0.85rem;
   }
 
-  footer .rekening {
-    font-size: 14px;
-  }
-
-  footer .copy {
-    font-size: 12px;
-    opacity: 0.8;
-  }
-
+  /* === Responsive untuk HP === */
   @media (max-width: 768px) {
-    header {
+    body { padding: 16px 10px; }
+    header h1 { font-size: 1.6rem; }
+    .btn { padding: 8px 12px; font-size: 0.9rem; }
+    .top-actions {
       flex-direction: column;
-      text-align: center;
+      align-items: stretch;
+      gap: 8px;
     }
-
-    header img {
-      width: 60px;
-      height: 60px;
-    }
-
-    .controls {
-      flex-direction: column;
-      width: 90%;
-    }
-
-    button {
-      width: 100%;
-    }
-
-    table {
-      font-size: 12px;
-      display: block;
-      overflow-x: auto;
-      white-space: nowrap;
-    }
-
-    #saldoBox {
-      flex-direction: column;
-      text-align: center;
-      width: 90%;
-    }
-
-    footer {
-      flex-direction: column;
-      text-align: center;
-    }
+    input, select { width: 100%; margin-bottom: 6px; }
+    table { font-size: 0.85rem; }
   }
 </style>
 
@@ -207,323 +153,407 @@
 <body>
 
   <header>
-    <img src="assalam.jpg" alt="Foto Profil">
-    <div class="judul">
-      <h1>Bendahara Assalam</h1>
-      <p>Kelola iuran, saldo tambahan, dan pengeluaran Kas Organisasi Assalam</p>
-    </div>
+    <h1>Assalam.com</h1>
+    <p>Kas Putra — Sistem pencatatan pembayaran & arus kas</p>
   </header>
-  
-  <div class="controls">
-    <button id="toggleMode">Masuk Sebagai Admin</button>
-    <button id="gantiPassword" style="display:none;">Ganti Sandi</button>
-    <button id="tambahAnak" style="display:none;">Tambah Anak</button>
-    <button id="tambahSaldoLain" style="display:none;">Tambah Saldo Lain</button>
-    <button id="tambahPengeluaran" style="display:none;">Tambah Pengeluaran</button>
-  </div>
 
-  <div id="bendaharaMenu">
-    <input type="text" id="cariAnak" placeholder="Cari nama anak...">
-  </div>
-
-  <!-- Tabel Iuran Anak -->
-  <table id="kasTable">
-    <thead>
-      <tr>
-        <th>No</th>
-        <th>Nama Anak</th>
-        <th>Oktober</th>
-        <th>November</th>
-        <th>Desember</th>
-        <th>Januari</th>
-        <th>Februari</th>
-        <th>Maret</th>
-        <th>April</th>
-        <th>Mei</th>
-        <th>Juni</th>
-        <th>Juli</th>
-        <th>Agustus</th>
-        <th>September</th>
-        <th>Total Bayar</th>
-        <th class="aksi-col" style="display:none;">Aksi</th>
-      </tr>
-    </thead>
-    <tbody></tbody>
-  </table>
-
-  
-  <!-- Tabel Saldo Lain -->
-   <h2>Pemasukan</h2>
-<table id="lainTable" style="display:none;">
-  <thead>
-    <tr>
-      <th>No</th>
-      <th>Keterangan</th>
-      <th>Jumlah</th>
-        <th class="aksi-col" style="display:none;">Aksi</th>
-    </tr>
-  </thead>
-  <tbody></tbody>
-</table>
-
-
-  <!-- Tabel Pengeluaran -->
-   <H2>Pengluaran</H2>
-  <table id="pengeluaranTable" style="display:none;">
-    <thead>
-      <tr>
-        <th>No</th>
-        <th>Keterangan</th>
-        <th>Jumlah</th>
-        <th class="aksi-col" style="display:none;">Aksi</th>
-      </tr>
-    </thead>
-    <tbody></tbody>
-  </table>
-
-  <!-- saldoBox -->
-  <div id="saldoBox">
-    <div>💰 <span>Saldo Masuk: Rp <span id="totalSaldo">0</span></span></div>
-    <div>💸 <span>Saldo Keluar: Rp <span id="totalKeluar">0</span></span></div>
-    <div>🏦 <span>Saldo Terkini: Rp <span id="saldoTerkini">0</span></span></div>
-  </div>
-
-  <footer>
-    <div class="rekening">
-      <strong>Rekening Dana:</strong> 0856-6423-8134(a.n Muhammad Raihan)<br>
-      <strong>Kirim Bukti Transfer ke Admin:</strong> 0856-6423-8134 (WhatsApp)
+  <div class="container">
+    <div class="top-actions">
+      <button id="loginBtn" class="btn">🔐 Masuk Admin</button>
+    <button id="logoutBtn" class="btn" style="display:none;">🚪 Keluar</button>
     </div>
-    <div class="copy">
-      Kas Assalam © 2025 - Bendahara 2025/Muhammad Raihan & Luqmanul Hakim
+
+    <!-- DATA ANAK (ceklist) -->
+    <div class="card" id="cekCard">
+      <h2>Daftar Santri & Pembayaran Bulanan</h2>
+      <div id="addAnakForm" style="display:none; margin-bottom:10px;" class="form-inline">
+  <input type="text" id="namaBaru" placeholder="Nama santri baru">
+  <button id="addAnakBtn" class="btn">➕ Tambah Anak</button>
+...
+</div>
+
+      <p class="small">Setiap ceklis bernilai Rp 3.000 (hanya admin yang dapat mengubah)</p>
+
+     <div class="scrollable">
+  <table id="cekTable">
+
+          <thead>
+            <tr>
+              <th>Nama</th>
+              <th>Okt</th><th>Nov</th><th>Des</th><th>Jan</th>
+              <th>Feb</th><th>Mar</th><th>Apr</th><th>Mei</th>
+              <th>Jun</th><th>Jul</th><th>Agu</th><th>Sep</th>
+              <th>Total</th><th>Aksi</th>
+            </tr>
+          </thead>
+          <tbody id="cekBody"></tbody>
+        </table>
+      </div>
     </div>
-  </footer>
 
-<script>
-let data = JSON.parse(localStorage.getItem("kasData")) || [
-  {nama:"Muhammad Raihan", bulan:[true,true,true,true,true,false,false,false,false,false,false,false]},
-  {nama:"Nama Baru", bulan:[false,true,false,false,false,false,false,false,false,false,false,false]},
-  {nama:"Andi", bulan:[true,false,true,false,false,false,false,false,false,false,false,false]}
-];
+    <!-- DUAL: pemasukan & pengeluaran -->
+    <div class="dual">
+      <!-- PEMASUKAN -->
+      <div class="card mini-table" id="inCard">
+        <h2>Pemasukan</h2>
+        <p class="small">Tambah pemasukan: Tanggal • Keterangan • Penanggung Jawab • Total (Rp)</p>
 
-let pengeluaran = JSON.parse(localStorage.getItem("kasPengeluaran")) || [];
-let saldoLain = JSON.parse(localStorage.getItem("kasSaldoLain")) || [];
+        <div id="inForm" style="display:none;" class="form-inline">
+          <input type="date" id="inDate">
+          <input type="text" id="inKeterangan" placeholder="Keterangan">
+          <input type="text" id="inPJ" placeholder="Penanggung jawab">
+          <input type="number" id="inJumlah" placeholder="Jumlah" min="0" step="1">
+          <button id="addInBtn" class="btn">Tambah</button>
+        </div>
 
-let isLocked = true;
-let passwordBendahara = localStorage.getItem("kasPassword") || "1234"; 
-let filterText = "";
-const hargaCeklis = 3000;
+        <div style="overflow:auto; max-height:280px;">
+          <table id="inTable">
+            <thead><tr><th>Tanggal</th><th>Keterangan</th><th>PJ</th><th style="text-align:right">Total (Rp)</th><th>Aksi</th></tr></thead>
+            <tbody id="inBody"></tbody>
+          </table>
+        </div>
+        <div class="totals" style="margin-top:8px;">
+          <div class="box">
+            <div style="font-size:0.85rem; color:var(--muted)">Total Pemasukan</div>
+            <strong id="totalIn">Rp 0</strong>
+          </div>
+          <div style="flex:1"></div>
+        </div>
+      </div>
 
-function saveData(){
-  localStorage.setItem("kasData", JSON.stringify(data));
-  localStorage.setItem("kasPengeluaran", JSON.stringify(pengeluaran));
-  localStorage.setItem("kasSaldoLain", JSON.stringify(saldoLain));
-}
+      <!-- PENGELUARAN -->
+      <div class="card mini-table" id="outCard">
+        <h2>Pengeluaran</h2>
+        <p class="small">Tambah pengeluaran: Tanggal • Keterangan • Penanggung Jawab • Total (Rp)</p>
 
-function renderTable(){
-  const tbody = document.querySelector("#kasTable tbody");
-  tbody.innerHTML = "";
+        <div id="outForm" style="display:none;" class="form-inline">
+          <input type="date" id="outDate">
+          <input type="text" id="outKeterangan" placeholder="Keterangan">
+          <input type="text" id="outPJ" placeholder="Penanggung jawab">
+          <input type="number" id="outJumlah" placeholder="Jumlah" min="0" step="1">
+          <button id="addOutBtn" class="btn">💸 Tambah</button>
+        </div>
 
-  let filteredData = data
-    .filter(d => d.nama.toLowerCase().includes(filterText.toLowerCase()))
-    .sort((a,b)=> a.nama.localeCompare(b.nama));
+        <div style="overflow:auto; max-height:280px;">
+          <table id="outTable">
+            <thead><tr><th>Tanggal</th><th>Keterangan</th><th>PJ</th><th style="text-align:right">Total (Rp)</th><th>Aksi</th></tr></thead>
+            <tbody id="outBody"></tbody>
+          </table>
+        </div>
+        <div class="totals" style="margin-top:8px;">
+          <div class="box">
+            <div style="font-size:0.85rem; color:var(--muted)">Total Pengeluaran</div>
+            <strong id="totalOut">Rp 0</strong>
+          </div>
+          <div style="flex:1"></div>
+        </div>
+      </div>
+    </div>
 
-  let totalSaldo = 0;
+    <!-- SALDO -->
+    <div style="margin-top:14px; display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap;">
+      <div class="card" style="flex:1;">
+        <div style="display:flex; justify-content:space-between; align-items:center; gap:12px;">
+          <div>
+            <div style="color:var(--muted)">Total Semua Kas</div>
+            <div style="font-size:1.15rem; color:var(--accent2); font-weight:700" id="grandTotal">Rp 0</div>
+          </div>
+          <div style="text-align:right;">
+            <div style="color:var(--muted)">Saldo Akhir</div>
+            <div style="font-size:1.25rem; font-weight:800; color:var(--accent);" id="saldoAkhir">Rp 0</div>
+          </div>
+        </div>
+      </div>
 
-  filteredData.forEach((d,i)=>{
-    let row = document.createElement("tr");
-    row.innerHTML = `<td>${i+1}</td><td>${d.nama}</td>`;
+      <div class="card" style="width:240px; text-align:center;">
+        <div style="color:var(--muted); font-size:0.9rem;">Admin Controls</div>
+        <div style="margin-top:8px;">
+          <button id="toggleForms" class="btn ghost" title="Tampilkan/ sembunyikan form tambah">🧾 Form</button>
+<button id="exportBtn" class="btn" title="Ekspor data ke CSV">📤 Ekspor CSV</button>
+        </div>
+      </div>
+    </div>
 
-    d.bulan.forEach((val, bulanIndex)=>{
-      row.innerHTML += `<td><input type="checkbox" ${val ? "checked" : ""} ${isLocked ? 'onclick="return false;"' : ''}></td>`;
+  </div>
+
+  <footer>© 2025 Assalam • Tema dark elegan</footer>
+
+  <script>
+    /* ---------- Data & Config ---------- */
+    const ADMIN_PASSWORD = "admin123";
+    const PER_CEK = 3000;
+
+    // load or initialize
+    let data = JSON.parse(localStorage.getItem("kasPutraData_v3")) || {
+      santri: { "Ahmad": {}, "Budi": {}, "Candra": {}, "Deni": {}, "Eko": {} },
+      pemasukan: [],
+      pengeluaran: []
+    };
+
+    let isAdmin = false;
+
+    /* ---------- Helpers ---------- */
+    const $ = id => document.getElementById(id);
+    const fmtRupiah = n => {
+      // ensure integer
+      n = Number(n) || 0;
+      return "Rp " + n.toLocaleString('id-ID');
+    };
+
+    function saveAll(){ localStorage.setItem("kasPutraData_v3", JSON.stringify(data)); }
+
+    /* ---------- Render ceklist santri ---------- */
+    function renderSantri(){
+      const tbody = $('cekBody');
+      tbody.innerHTML = "";
+      let totalKas = 0;
+
+      Object.keys(data.santri).forEach(nama=>{
+        const tr = document.createElement('tr');
+        const nameTd = document.createElement('td');
+        nameTd.textContent = nama;
+        tr.appendChild(nameTd);
+
+        let personTotal = 0;
+        const months = ["Okt","Nov","Des","Jan","Feb","Mar","Apr","Mei","Jun","Jul","Agu","Sep"];
+        months.forEach(m=>{
+          const td = document.createElement('td');
+          const chk = document.createElement('input');
+          chk.type = 'checkbox';
+          chk.checked = !!data.santri[nama][m];
+          chk.disabled = !isAdmin;
+         chk.addEventListener('change', ()=>{
+  data.santri[nama][m] = chk.checked;
+  saveAll();
+
+  // === Tambahan otomatis masuk ke pemasukan ===
+  if (chk.checked) {
+    const tanggal = new Date().toISOString().slice(0,10);
+    data.pemasukan.push({
+      tanggal: tanggal,
+      keterangan: `Iuran bulanan ${nama} (${m})`,
+      pj: nama,
+      jumlah: PER_CEK
     });
+    saveAll();
+  } else {
+    // kalau checkbox dibatalkan, hapus pemasukan terkait
+    data.pemasukan = data.pemasukan.filter(r =>
+      !(r.keterangan === `Iuran bulanan ${nama} (${m})` && r.jumlah === PER_CEK)
+    );
+    saveAll();
+  }
 
-    const total = d.bulan.filter(v=>v).length;
-    const totalUang = total * hargaCeklis;
-    totalSaldo += totalUang;
+  renderSantri();
+  renderInOut();
+  renderTotals();
+});
 
-    let kelas = total===0 ? "total-merah" : total<7 ? "total-kuning" : "total-hijau";
-    row.innerHTML += `<td class="${kelas}">${total} bulan = Rp ${totalUang.toLocaleString()}</td>`;
+          td.appendChild(chk);
+          tr.appendChild(td);
+          if (chk.checked) personTotal += PER_CEK;
+        });
 
-    if (!isLocked) {
-      row.innerHTML += `<td><button onclick="hapusAnak(${data.indexOf(d)})">Hapus</button></td>`;
-    } else {
-      row.innerHTML += `<td style="display:none;"></td>`;
-    }
+        const totalTd = document.createElement('td');
+        totalTd.textContent = fmtRupiah(personTotal);
+        tr.appendChild(totalTd);
 
-    tbody.appendChild(row);
-  });
+        const aksiTd = document.createElement('td');
+        if (isAdmin){
+          const del = document.createElement('button');
+          del.className='hapus-btn';
+          del.textContent='Hapus';
+          del.addEventListener('click', ()=>{
+            if (confirm('Hapus '+nama+' dari daftar?')) {
+              delete data.santri[nama];
+              saveAll(); renderSantri(); renderTotals();
+            }
+          });
+          aksiTd.appendChild(del);
+        } else {
+          aksiTd.textContent = '-';
+        }
+        tr.appendChild(aksiTd);
 
-  if (!isLocked){
-    tbody.querySelectorAll("input[type=checkbox]").forEach((cb, idx)=>{
-      cb.addEventListener("change", ()=>{
-        const anakIndex = Math.floor(idx/12);
-        const bulanIndex = idx % 12;
-        let filteredData = data
-          .filter(d => d.nama.toLowerCase().includes(filterText.toLowerCase()))
-          .sort((a,b)=> a.nama.localeCompare(b.nama));
-        const realIndex = data.indexOf(filteredData[anakIndex]);
-        data[realIndex].bulan[bulanIndex] = cb.checked;
-        saveData();
-        renderTable();
+        tbody.appendChild(tr);
+        totalKas += personTotal;
       });
+      // we don't display totalKas here because monetary totals are from pemasukan/pengeluaran.
+    }
+
+    /* ---------- Render pemasukan/pengeluaran ---------- */
+    function renderInOut(){
+      // pemasukan
+      const inBody = $('inBody'); inBody.innerHTML='';
+      let totalIn = 0;
+      data.pemasukan.slice().reverse().forEach((row, idxRev)=>{
+        const idx = data.pemasukan.length - 1 - idxRev;
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td>${row.tanggal}</td>
+                        <td>${escapeHtml(row.keterangan)}</td>
+                        <td>${escapeHtml(row.pj)}</td>
+                        <td style="text-align:right">${Number(row.jumlah).toLocaleString('id-ID')}</td>
+                        <td style="text-align:center"></td>`;
+        const aksiTd = tr.querySelector('td:last-child');
+        if (isAdmin){
+          const b = document.createElement('button');
+          b.className='hapus-btn';
+          b.textContent='Hapus';
+          b.addEventListener('click', ()=>{
+            if (confirm('Hapus pemasukan ini?')){
+              data.pemasukan.splice(idx,1);
+              saveAll(); renderInOut(); renderTotals();
+            }
+          });
+          aksiTd.appendChild(b);
+        } else aksiTd.textContent='-';
+        inBody.appendChild(tr);
+        totalIn += Number(row.jumlah) || 0;
+      });
+
+      $('totalIn').textContent = fmtRupiah(totalIn);
+
+      // pengeluaran
+      const outBody = $('outBody'); outBody.innerHTML='';
+      let totalOut = 0;
+      data.pengeluaran.slice().reverse().forEach((row, idxRev)=>{
+        const idx = data.pengeluaran.length - 1 - idxRev;
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td>${row.tanggal}</td>
+                        <td>${escapeHtml(row.keterangan)}</td>
+                        <td>${escapeHtml(row.pj)}</td>
+                        <td style="text-align:right">${Number(row.jumlah).toLocaleString('id-ID')}</td>
+                        <td style="text-align:center"></td>`;
+        const aksiTd = tr.querySelector('td:last-child');
+        if (isAdmin){
+          const b = document.createElement('button');
+          b.className='hapus-btn';
+          b.textContent='Hapus';
+          b.addEventListener('click', ()=>{
+            if (confirm('Hapus pengeluaran ini?')){
+              data.pengeluaran.splice(idx,1);
+              saveAll(); renderInOut(); renderTotals();
+            }
+          });
+          aksiTd.appendChild(b);
+        } else aksiTd.textContent='-';
+        outBody.appendChild(tr);
+        totalOut += Number(row.jumlah) || 0;
+      });
+
+      $('totalOut').textContent = fmtRupiah(totalOut);
+    }
+
+    /* ---------- Totals & Saldo ---------- */
+    function renderTotals(){
+      // totals from pemasukan/pengeluaran
+      const totalIn = data.pemasukan.reduce((s,r)=> s + (Number(r.jumlah)||0), 0);
+      const totalOut = data.pengeluaran.reduce((s,r)=> s + (Number(r.jumlah)||0), 0);
+      const grand = totalIn - totalOut; // saldo
+      $('grandTotal').textContent = fmtRupiah(totalIn);
+      $('saldoAkhir').textContent = fmtRupiah(grand);
+    }
+
+    /* ---------- Add handlers ---------- */
+    $('addInBtn').addEventListener('click', ()=>{
+      if (!isAdmin) return alert('Hanya admin yang dapat menambah data.');
+      const t = $('inDate').value;
+      const ket = $('inKeterangan').value.trim();
+      const pj = $('inPJ').value.trim();
+      const num = Number($('inJumlah').value);
+      if (!t || !ket || !pj || !num || num<=0) return alert('Isi semua field pemasukan dengan benar.');
+      data.pemasukan.push({ tanggal: t, keterangan: ket, pj: pj, jumlah: Math.round(num) });
+      saveAll(); $('inDate').value=''; $('inKeterangan').value=''; $('inPJ').value=''; $('inJumlah').value='';
+      renderInOut(); renderTotals();
     });
-  }
 
-  renderAll(totalSaldo);
-}
+    $('addOutBtn').addEventListener('click', ()=>{
+      if (!isAdmin) return alert('Hanya admin yang dapat menambah data.');
+      const t = $('outDate').value;
+      const ket = $('outKeterangan').value.trim();
+      const pj = $('outPJ').value.trim();
+      const num = Number($('outJumlah').value);
+      if (!t || !ket || !pj || !num || num<=0) return alert('Isi semua field pengeluaran dengan benar.');
+      data.pengeluaran.push({ tanggal: t, keterangan: ket, pj: pj, jumlah: Math.round(num) });
+      saveAll(); $('outDate').value=''; $('outKeterangan').value=''; $('outPJ').value=''; $('outJumlah').value='';
+      renderInOut(); renderTotals();
+    });
+$('addAnakBtn').addEventListener('click', ()=>{
+  if (!isAdmin) return alert('Hanya admin yang dapat menambah anak.');
+  const nama = $('namaBaru').value.trim();
+  if (!nama) return alert('Nama tidak boleh kosong.');
+  if (data.santri[nama]) return alert('Nama sudah ada di daftar.');
+  data.santri[nama] = {};
+  saveAll();
+  $('namaBaru').value = '';
+  renderSantri();
+  alert('Santri baru berhasil ditambahkan!');
+});
 
-function renderAll(totalSaldo){
-  renderPengeluaran();
-  let totalLain = renderSaldoLain();
-  let totalKeluar = pengeluaran.reduce((sum,p)=>sum+p.jumlah,0);
-  let saldoTerkini = totalSaldo + totalLain - totalKeluar;
+    /* ---------- Admin login ---------- */
+   $('loginBtn').addEventListener('click', ()=>{
+  const pass = prompt('Masukkan sandi admin:');
+  if (pass === ADMIN_PASSWORD){
+    isAdmin = true;
+    $('loginBtn').style.display='none';
+    $('logoutBtn').style.display='inline-block';
+    document.querySelectorAll('#inForm, #outForm, #addAnakForm').forEach(e=> e.style.display='flex');
+    renderSantri(); renderInOut();
+    alert('Mode admin aktif.');
+  } else alert('Sandi salah.');
+});
+$('logoutBtn').addEventListener('click', ()=>{
+  isAdmin = false;
+  $('loginBtn').style.display='inline-block';
+  $('logoutBtn').style.display='none';
+  document.querySelectorAll('#inForm, #outForm, #addAnakForm').forEach(e=> e.style.display='none');
+  renderSantri(); renderInOut();
+});
 
-  document.getElementById("lainTable").style.display = "table";
-  document.getElementById("pengeluaranTable").style.display = "table";
-  document.getElementById("saldoBox").style.display = "flex";
-  document.getElementById("totalSaldo").innerText = (totalSaldo+totalLain).toLocaleString();
-  document.getElementById("totalKeluar").innerText = totalKeluar.toLocaleString();
-  document.getElementById("saldoTerkini").innerText = saldoTerkini.toLocaleString();
-}
 
-function renderPengeluaran(){
-  const tbody = document.querySelector("#pengeluaranTable tbody");
-  tbody.innerHTML = "";
-  pengeluaran.forEach((p,i)=>{
-    let row = document.createElement("tr");
-    row.innerHTML = `<td>${i+1}</td><td>${p.ket}</td><td>Rp ${p.jumlah.toLocaleString()}</td>`;
-    if (!isLocked){
-      row.innerHTML += `<td><button onclick="hapusPengeluaran(${i})">Hapus</button></td>`;
-    } else {
-      row.innerHTML += `<td class="aksi-col">-</td>`;
+
+    /* toggle forms */
+    $('toggleForms').addEventListener('click', ()=>{
+      const visible = document.querySelector('#inForm').style.display !== 'none';
+      document.querySelectorAll('#inForm, #outForm').forEach(e=> e.style.display = visible ? 'none' : 'flex');
+    });
+
+    /* ---------- Export CSV (simple) ---------- */
+    function arrayToCSV(rows){
+      return rows.map(r => r.map(c => `"${String(c).replace(/"/g,'""')}"`).join(',')).join('\n');
     }
-    tbody.appendChild(row);
-  });
-}
 
-function renderSaldoLain(){
-  const tbody = document.querySelector("#lainTable tbody");
-  tbody.innerHTML = "";
-  let totalLain = 0;
-  saldoLain.forEach((s,i)=>{
-    totalLain += s.jumlah;
-    let row = document.createElement("tr");
-    row.innerHTML = `<td>${i+1}</td><td>${s.ket}</td><td>Rp ${s.jumlah.toLocaleString()}</td>`;
-    if (!isLocked){
-      row.innerHTML += `<td><button onclick="hapusSaldoLain(${i})">Hapus</button></td>`;
-    } else {
-      row.innerHTML += `<td class="aksi-col">-</td>`;
-    }
-    tbody.appendChild(row);
-  });
-  return totalLain;
-}
+    $('exportBtn').addEventListener('click', ()=>{
+      const rows = [];
+      rows.push(['--- Pemasukan ---']);
+      rows.push(['Tanggal','Keterangan','Penanggung Jawab','Jumlah']);
+      data.pemasukan.forEach(r => rows.push([r.tanggal, r.keterangan, r.pj, r.jumlah]));
+      rows.push([]);
+      rows.push(['--- Pengeluaran ---']);
+      rows.push(['Tanggal','Keterangan','Penanggung Jawab','Jumlah']);
+      data.pengeluaran.forEach(r => rows.push([r.tanggal, r.keterangan, r.pj, r.jumlah]));
+      const csv = arrayToCSV(rows);
+      const blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'kas-putra-export.csv';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    });
 
-function hapusAnak(index){
-  if(confirm("Yakin hapus anak ini?")){
-    data.splice(index,1);
-    saveData();
-    renderTable();
-  }
-}
+    /* ---------- Utils ---------- */
+    function escapeHtml(t){ return String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 
-function hapusPengeluaran(index){
-  if(confirm("Yakin hapus pengeluaran ini?")){
-    pengeluaran.splice(index,1);
-    saveData();
-    renderTable();
-  }
-}
+    /* ---------- Initial render ---------- */
+    (function init(){
+      // hide forms by default (unless admin)
+      document.querySelectorAll('#inForm, #outForm').forEach(e=> e.style.display='none');
+      renderSantri(); renderInOut(); renderTotals();
+    })();
 
-function hapusSaldoLain(index){
-  if(confirm("Yakin hapus saldo lain ini?")){
-    saldoLain.splice(index,1);
-    saveData();
-    renderTable();
-  }
-}
-
-document.getElementById("toggleMode").addEventListener("click", ()=>{
-  if (isLocked) {
-    let pass = prompt("Masukkan sandi Admin:");
-    if (pass === passwordBendahara) {
-      isLocked = false;
-      document.getElementById("toggleMode").innerText = "Keluar dari Bendahara";
-      document.getElementById("gantiPassword").style.display = "inline-block";
-      document.getElementById("bendaharaMenu").style.display = "block";
-      document.getElementById("tambahAnak").style.display = "inline-block";
-      document.getElementById("tambahSaldoLain").style.display = "inline-block";
-      document.getElementById("tambahPengeluaran").style.display = "inline-block";
-      document.querySelectorAll(".aksi-col").forEach(el=>el.style.display="table-cell");
-      renderTable();
-    } else {
-      alert("Sandi salah!");
-    }
-  } else {
-    isLocked = true;
-    document.getElementById("toggleMode").innerText = "Masuk Sebagai Admin";
-    document.getElementById("gantiPassword").style.display = "none";
-    document.getElementById("bendaharaMenu").style.display = "none";
-    document.getElementById("tambahAnak").style.display = "none";
-    document.getElementById("tambahSaldoLain").style.display = "none";
-    document.getElementById("tambahPengeluaran").style.display = "none";
-    document.querySelectorAll(".aksi-col").forEach(el=>el.style.display="none");
-    renderTable();
-  }
-});
-
-document.getElementById("gantiPassword").addEventListener("click", ()=>{
-  let oldPass = prompt("Masukkan sandi lama:");
-  if (oldPass === passwordBendahara) {
-    let newPass = prompt("Masukkan sandi baru:");
-    if (newPass && newPass.trim() !== "") {
-      passwordBendahara = newPass;
-      localStorage.setItem("kasPassword", newPass);
-      alert("Sandi berhasil diganti!");
-    } else {
-      alert("Sandi baru tidak boleh kosong.");
-    }
-  } else {
-    alert("Sandi lama salah!");
-  }
-});
-
-document.getElementById("tambahAnak").addEventListener("click", ()=>{
-  let nama = prompt("Masukkan nama anak:");
-  if(nama && nama.trim()!==""){
-    data.push({nama:nama.trim(), bulan:Array(12).fill(false)});
-    saveData();
-    renderTable();
-  }
-});
-
-document.getElementById("tambahPengeluaran").addEventListener("click", ()=>{
-  let ket = prompt("Masukkan keterangan pengeluaran:");
-  let jumlah = parseInt(prompt("Masukkan jumlah pengeluaran:"));
-  if(ket && jumlah && jumlah>0){
-    pengeluaran.push({ket:ket.trim(), jumlah:jumlah});
-    saveData();
-    renderTable();
-  }
-});
-
-document.getElementById("tambahSaldoLain").addEventListener("click", ()=>{
-  let ket = prompt("Masukkan keterangan saldo lain:");
-  let jumlah = parseInt(prompt("Masukkan jumlah saldo lain:"));
-  if(ket && jumlah && jumlah>0){
-    saldoLain.push({ket:ket.trim(), jumlah:jumlah});
-    saveData();
-    renderTable();
-  }
-});
-
-document.getElementById("cariAnak").addEventListener("input", (e)=>{
-  filterText = e.target.value;
-  renderTable();
-});
-
-renderTable();
-</script>
+  </script>
 </body>
 </html>
-
