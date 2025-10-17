@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Absen Ngaji - Kamar F63</title>
+  <style>
+    :root{--bg:#0f1724;--card:#0b1020;--accent:#2dd4bf;--muted:#94a3b8;--glass: rgba(255,255,255,0.04)}
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,'Helvetica Neue',Arial;color:#e6eef6;background:linear-gradient(180deg,#071126 0%, #081826 60%);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
+    .wrap{width:100%;max-width:1100px}
+    header{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+    header h1{margin:0;font-size:20px}
+    header .room{color:var(--muted);font-size:13px}
+    .grid{display:grid;grid-template-columns:1fr 420px;gap:18px}
+    @media(max-width:900px){.grid{grid-template-columns:1fr} .right{order:2}}
+    .card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:16px;border-radius:12px;box-shadow:0 6px 18px rgba(2,6,23,0.6)}
+
+    /* left */
+    .controls{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+    .controls > *{flex:1;min-width:120px}
+    input,select,button,textarea{padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.06);background:transparent;color:inherit}
+    button{cursor:pointer;background:var(--accent);border:none;color:#042024;font-weight:600}
+    .student-list{max-height:520px;overflow:auto;margin-top:8px}
+    .student{display:flex;align-items:center;justify-content:space-between;padding:10px;border-radius:8px;margin-bottom:8px;background:var(--glass)}
+    .student .meta{display:flex;gap:12px;align-items:center}
+    .student .name{font-weight:600}
+    .student button{padding:8px 10px;border-radius:8px}
+    .present{background:#10b981;color:white}
+    .absent{background:#ef4444;color:white}
+    .muted{color:var(--muted);font-size:13px}
+
+    /* right */
+    .right .card{height:100%;display:flex;flex-direction:column}
+    .form-row{display:flex;gap:8px;margin-bottom:10px}
+    .form-row > *{flex:1}
+    .small{font-size:13px;padding:8px}
+    .history{margin-top:8px;max-height:380px;overflow:auto}
+    table{width:100%;border-collapse:collapse}
+    td,th{padding:8px;border-bottom:1px dashed rgba(255,255,255,0.03);text-align:left}
+    .top-actions{display:flex;gap:8px;flex-wrap:wrap}
+    footer{margin-top:12px;color:var(--muted);font-size:13px;text-align:center}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div>
+        <h1>Absen Ngaji — Kamar F63</h1>
+        <div class="room">Daftar & absensi santri kamar F63</div>
+      </div>
+      <div class="top-actions">
+        <button id="exportCsv">Export CSV</button>
+        <button id="printBtn">Print</button>
+        <button id="clearAll" style="background:#ef4444;color:white">Hapus Semua</button>
+      </div>
+    </header>
+
+    <div class="grid">
+      <div class="left">
+        <div class="card">
+          <div class="controls">
+            <input id="search" placeholder="Cari nama..." />
+            <select id="filterDate"></select>
+            <input id="addName" placeholder="Tambah nama santri (enter)" />
+            <button id="bulkImport">Import CSV</button>
+          </div>
+
+          <div class="student-list" id="studentList"></div>
+        </div>
+      </div>
+
+      <div class="right">
+        <div class="card">
+          <div style="display:flex;align-items:center;justify-content:space-between">
+            <div>
+              <div style="font-weight:700">Rekap Absensi</div>
+              <div class="muted">Pilih tanggal untuk melihat atau cetak laporan</div>
+            </div>
+            <div>
+              <label class="muted">Admin PIN</label>
+              <input id="adminPin" class="small" placeholder="PIN" style="width:90px" />
+            </div>
+          </div>
+
+          <div style="margin-top:12px">
+            <div class="form-row">
+              <input id="reportDate" type="date" />
+              <button id="showReport">Tampilkan</button>
+              <button id="markAllPresent">Centang Semua</button>
+            </div>
+            <div class="muted">Jumlah santri: <span id="count">0</span></div>
+            <div class="history" id="historyBox"></div>
+          </div>
+
+          <div style="margin-top:auto">
+            <div style="display:flex;gap:8px;align-items:center;margin-top:10px">
+              <input id="roomNote" placeholder="Catatan (untuk laporan)" />
+              <button id="saveNote">Simpan Catatan</button>
+            </div>
+            <footer>Disimpan di browser (localStorage). Untuk backup: Export CSV.</footer>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <input id="fileInput" type="file" accept="text/csv" style="display:none" />
+
+  <script>
+    // Simple localStorage-based attendance app
+    const ROOM = 'Kamar F63';
+    const LS_KEY = 'absen_ngaji_f63_v1';
+    const ADMIN_PIN = '1234'; // ubah kalau perlu
+
+    function loadData(){
+      const raw = localStorage.getItem(LS_KEY);
+      if(!raw) return {students: [], records: {}, notes: {}};
+      try{return JSON.parse(raw)}catch(e){return {students: [], records: {}, notes:{}}}
+    }
+    function saveData(d){localStorage.setItem(LS_KEY, JSON.stringify(d))}
+
+    let state = loadData();
+
+    // DOM
+    const studentList = document.getElementById('studentList');
+    const addName = document.getElementById('addName');
+    const countEl = document.getElementById('count');
+    const search = document.getElementById('search');
+    const filterDate = document.getElementById('filterDate');
+    const reportDate = document.getElementById('reportDate');
+    const historyBox = document.getElementById('historyBox');
+    const adminPin = document.getElementById('adminPin');
+    const exportCsv = document.getElementById('exportCsv');
+    const printBtn = document.getElementById('printBtn');
+    const bulkImport = document.getElementById('bulkImport');
+    const fileInput = document.getElementById('fileInput');
+    const clearAll = document.getElementById('clearAll');
+    const markAllPresent = document.getElementById('markAllPresent');
+    const showReport = document.getElementById('showReport');
+    const roomNote = document.getElementById('roomNote');
+    const saveNote = document.getElementById('saveNote');
+
+    function todayISO(){const d=new Date();return d.toISOString().slice(0,10)}
+
+    function ensureRecordsForDate(date){if(!state.records[date]){
+      state.records[date] = {};
+      state.students.forEach(s=> state.records[date][s.id]=false);
+    }}
+
+    function renderList(){
+      const q = search.value.trim().toLowerCase();
+      studentList.innerHTML='';
+      const date = todayISO();
+      ensureRecordsForDate(date);
+      const arr = state.students.filter(s=> s.name.toLowerCase().includes(q));
+      arr.forEach(s=>{
+        const present = !!(state.records[date] && state.records[date][s.id]);
+        const el = document.createElement('div'); el.className='student';
+        el.innerHTML = `<div class='meta'><div class='name'>${s.name}</div><div class='muted'>${s.nis||''}</div></div>`;
+        const btn = document.createElement('button'); btn.textContent = present? 'Hadir':'Absen';
+        btn.className = present? 'present':'absent';
+        btn.onclick = ()=>{
+          if(adminPin.value !== ADMIN_PIN){alert('Masukkan PIN admin yang benar untuk mengubah absensi.');return}
+          state.records[date][s.id] = !state.records[date][s.id]; saveData(state); renderList(); renderSummary();
+        }
+        el.appendChild(btn);
+        studentList.appendChild(el);
+      });
+      countEl.textContent = state.students.length;
+    }
+
+    function renderFilterDates(){
+      filterDate.innerHTML='';
+      const dates = Object.keys(state.records).sort((a,b)=>b.localeCompare(a));
+      const opt = document.createElement('option'); opt.value=''; opt.textContent='-- pilih tanggal --'; filterDate.appendChild(opt);
+      dates.forEach(d=>{const o=document.createElement('option');o.value=d;o.textContent=d;filterDate.appendChild(o)})
+    }
+
+    function renderSummary(date){
+      if(!date) date = reportDate.value || todayISO();
+      historyBox.innerHTML='';
+      if(!state.records[date]){historyBox.innerHTML='<div class="muted">Belum ada data untuk tanggal ini.</div>';return}
+      const tbl = document.createElement('table');
+      const header = document.createElement('tr'); header.innerHTML='<th>Nama</th><th>Status</th>';
+      tbl.appendChild(header);
+      state.students.forEach(s=>{
+        const tr = document.createElement('tr');
+        const pres = state.records[date][s.id] ? 'Hadir' : 'Tidak';
+        tr.innerHTML = `<td>${s.name}</td><td>${pres}</td>`;
+        tbl.appendChild(tr);
+      });
+      const note = state.notes[date]||'';
+      historyBox.appendChild(tbl);
+      if(note){const p=document.createElement('div');p.className='muted';p.style.marginTop='10px';p.textContent='Catatan: '+note;historyBox.appendChild(p)}
+    }
+
+    function renderSummaryListForFilter(){renderFilterDates();}
+    function renderSummaryAndStuff(){renderList(); renderFilterDates(); renderSummary();}
+
+    function addStudent(name, nis){
+      name = name.trim(); if(!name) return;
+      const id = 's_'+Math.random().toString(36).slice(2,9);
+      state.students.push({id,name,nis});
+      // add to existing records
+      Object.keys(state.records).forEach(d=> state.records[d][id]=false);
+      saveData(state); renderList(); renderFilterDates();
+    }
+
+    addName.addEventListener('keydown', (e)=>{ if(e.key==='Enter'){ addStudent(addName.value); addName.value=''; } });
+
+    bulkImport.addEventListener('click', ()=> fileInput.click());
+    fileInput.addEventListener('change', (e)=>{
+      const f = e.target.files[0]; if(!f) return; const reader = new FileReader();
+      reader.onload = ()=>{
+        const txt = reader.result; // simple CSV: name,nis
+        const rows = txt.split(/\r?\n/).map(r=>r.trim()).filter(Boolean);
+        rows.forEach(r=>{const cols = r.split(','); addStudent(cols[0]?.trim()||'', cols[1]?.trim()||'')});
+        fileInput.value='';
+      }
+      reader.readAsText(f,'utf-8');
+    });
+
+    search.addEventListener('input', ()=> renderList());
+
+    exportCsv.addEventListener('click', ()=>{
+      // Export all dates as CSV: date,name,status
+      const lines=['date,name,status,nis'];
+      Object.keys(state.records).forEach(d=>{
+        state.students.forEach(s=>{
+          const st = state.records[d][s.id] ? 'Hadir':'Tidak';
+          lines.push(`${d},"${s.name}",${st},${s.nis||''}`)
+        })
+      });
+      const blob = new Blob([lines.join('\n')],{type:'text/csv'});
+      const url = URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='absen_kamar_f63_all.csv'; a.click(); URL.revokeObjectURL(url);
+    });
+
+    printBtn.addEventListener('click', ()=> window.print());
+
+    clearAll.addEventListener('click', ()=>{
+      if(!confirm('Hapus semua data? Tindakan ini tidak bisa dibatalkan.')) return;
+      localStorage.removeItem(LS_KEY); state = {students:[],records:{},notes:{}}; renderSummaryAndStuff();
+    });
+
+    filterDate.addEventListener('change', ()=>{
+      const d = filterDate.value; if(!d) return; reportDate.value = d; renderSummary(d);
+    });
+
+    showReport.addEventListener('click', ()=>{
+      const d = reportDate.value || todayISO(); renderSummary(d);
+    });
+
+    markAllPresent.addEventListener('click', ()=>{
+      if(adminPin
