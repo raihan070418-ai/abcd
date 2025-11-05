@@ -298,10 +298,12 @@ let data = JSON.parse(localStorage.getItem("kasData")) || [
   {nama:"Nama Baru", bulan:[false,true,false,false,false,false,false,false,false,false,false,false]},
   {nama:"Andi", bulan:[true,false,true,false,false,false,false,false,false,false,false,false]}
 ];
+
 let pengeluaran = JSON.parse(localStorage.getItem("kasPengeluaran")) || [];
 let saldoLain = JSON.parse(localStorage.getItem("kasSaldoLain")) || [];
+
 let isLocked = true;
-let passwordBendahara = localStorage.getItem("kasPassword") || "1234";
+let passwordBendahara = localStorage.getItem("kasPassword") || "1234"; 
 let filterText = "";
 const hargaCeklis = 3000;
 
@@ -314,34 +316,34 @@ function saveData(){
 function renderTable(){
   const tbody = document.querySelector("#kasTable tbody");
   tbody.innerHTML = "";
+
   let filteredData = data
     .filter(d => d.nama.toLowerCase().includes(filterText.toLowerCase()))
     .sort((a,b)=> a.nama.localeCompare(b.nama));
+
   let totalSaldo = 0;
 
   filteredData.forEach((d,i)=>{
     let row = document.createElement("tr");
-    row.innerHTML = `
-      <td>${i+1}</td>
-      <td>${d.nama}</td>
-    `;
+    row.innerHTML = `<td>${i+1}</td><td>${d.nama}</td>`;
+
     d.bulan.forEach((val, bulanIndex)=>{
-      row.innerHTML += `
-        <td><input type="checkbox" ${val ? "checked" : ""} ${isLocked ? 'onclick="return false;"' : ''}></td>
-      `;
+      row.innerHTML += `<td><input type="checkbox" ${val ? "checked" : ""} ${isLocked ? 'onclick="return false;"' : ''}></td>`;
     });
+
     const total = d.bulan.filter(v=>v).length;
     const totalUang = total * hargaCeklis;
     totalSaldo += totalUang;
+
     let kelas = total===0 ? "total-merah" : total<7 ? "total-kuning" : "total-hijau";
-    row.innerHTML += `
-      <td class="${kelas}">${total} bulan = Rp ${totalUang.toLocaleString()}</td>
-    `;
+    row.innerHTML += `<td class="${kelas}">${total} bulan = Rp ${totalUang.toLocaleString()}</td>`;
+
     if (!isLocked) {
       row.innerHTML += `<td><button onclick="hapusAnak(${data.indexOf(d)})">Hapus</button></td>`;
     } else {
       row.innerHTML += `<td style="display:none;"></td>`;
     }
+
     tbody.appendChild(row);
   });
 
@@ -383,11 +385,7 @@ function renderPengeluaran(){
   tbody.innerHTML = "";
   pengeluaran.forEach((p,i)=>{
     let row = document.createElement("tr");
-    row.innerHTML = `
-      <td>${i+1}</td>
-      <td>${p.ket}</td>
-      <td>Rp ${p.jumlah.toLocaleString()}</td>
-    `;
+    row.innerHTML = `<td>${i+1}</td><td>${p.ket}</td><td>Rp ${p.jumlah.toLocaleString()}</td>`;
     if (!isLocked){
       row.innerHTML += `<td><button onclick="hapusPengeluaran(${i})">Hapus</button></td>`;
     } else {
@@ -404,11 +402,7 @@ function renderSaldoLain(){
   saldoLain.forEach((s,i)=>{
     totalLain += s.jumlah;
     let row = document.createElement("tr");
-    row.innerHTML = `
-      <td>${i+1}</td>
-      <td>${s.ket}</td>
-      <td>Rp ${s.jumlah.toLocaleString()}</td>
-    `;
+    row.innerHTML = `<td>${i+1}</td><td>${s.ket}</td><td>Rp ${s.jumlah.toLocaleString()}</td>`;
     if (!isLocked){
       row.innerHTML += `<td><button onclick="hapusSaldoLain(${i})">Hapus</button></td>`;
     } else {
@@ -524,6 +518,5 @@ document.getElementById("cariAnak").addEventListener("input", (e)=>{
 
 renderTable();
 </script>
-
 </body>
 </html>
